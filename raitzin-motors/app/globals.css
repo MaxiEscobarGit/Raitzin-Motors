@@ -103,13 +103,3 @@
     text-wrap: balance;
   }
 }
-.hero-bg {
-  background-attachment: fixed;
-}
-
-@supports (-webkit-touch-callout: none) {
-  .hero-bg {
-    background-attachment: scroll;
-    background-position: center top;
-  }
-}

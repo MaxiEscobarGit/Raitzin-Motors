@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { useEffect, useRef } from "react"
 import { Car, Zap, CreditCard, RefreshCw } from "lucide-react"
 
 const serviceButtons = [
@@ -11,22 +12,39 @@ const serviceButtons = [
 ]
 
 export function HeroSection() {
+  const imageRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Only apply parallax on md+ screens — skip on mobile to avoid Safari iOS issues
+      if (window.innerWidth < 768) return
+      const scrolled = window.scrollY
+      if (imageRef.current) {
+        imageRef.current.style.transform = `translateY(${scrolled * 0.4}px)`
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
     <section
       id="inicio"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background Image con parallax */}
-      <div
-        className="absolute inset-0 hero-bg"
-        style={{
-          backgroundImage: `url('/portada.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
-        }}
-/>
+      {/* Background Image */}
+      <div ref={imageRef} className="absolute inset-0 will-change-transform">
+        <Image
+          src="/portada.jpg"
+          alt="Raitzin Motors showroom"
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
+          className="object-cover object-center sm:object-top"
+        />
+      </div>
 
       {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30" />
