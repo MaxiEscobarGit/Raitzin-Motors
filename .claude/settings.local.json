@@ -7,7 +7,9 @@
       "Bash(npx shadcn@latest init --defaults)",
       "Bash(npx shadcn@latest init --defaults --yes)",
       "Bash(printf 'y\\\\ny\\\\n')",
-      "Bash(npx shadcn@latest add card badge select input sheet dialog)"
+      "Bash(npx shadcn@latest add card badge select input sheet dialog)",
+      "Bash(npm run:*)",
+      "Bash(grep -rl '^// app/' 'C:\\\\Users\\\\maxim\\\\OneDrive\\\\Desktop\\\\Raitzin Motors\\\\raitzin-motors\\\\app' --include=*.tsx)"
     ]
   }
 }
