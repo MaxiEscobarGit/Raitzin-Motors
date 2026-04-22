@@ -12,15 +12,16 @@ const serviceButtons = [
 ]
 
 export function HeroSection() {
-  const imageRef = useRef<HTMLDivElement>(null)
+  const heroRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768
+    if (isMobile) return
+
     const handleScroll = () => {
-      // Only apply parallax on md+ screens — skip on mobile to avoid Safari iOS issues
-      if (window.innerWidth < 768) return
-      const scrolled = window.scrollY
-      if (imageRef.current) {
-        imageRef.current.style.transform = `translateY(${scrolled * 0.4}px)`
+      if (heroRef.current) {
+        const scrolled = window.scrollY
+        heroRef.current.style.transform = `translateY(${scrolled * 0.3}px)`
       }
     }
 
@@ -34,7 +35,7 @@ export function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background Image */}
-      <div ref={imageRef} className="absolute inset-0 will-change-transform">
+      <div ref={heroRef} className="absolute inset-0" style={{ willChange: "transform" }}>
         <Image
           src="/portada.jpg"
           alt="Raitzin Motors showroom"
