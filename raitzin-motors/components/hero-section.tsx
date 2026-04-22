@@ -17,13 +17,15 @@ export function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background Image */}
-      <Image
-        src="/portada.jpeg"
-        alt="Raitzin Motors"
-        fill
-        priority
-        className="object-cover object-top md:object-center"
-        sizes="100vw"
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url('/portada.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+        }}
       />
 
       {/* Dark gradient overlay */}
