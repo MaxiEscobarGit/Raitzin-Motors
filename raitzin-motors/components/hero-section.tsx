@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Car, Zap, CreditCard, RefreshCw } from "lucide-react"
 
 const serviceButtons = [
@@ -16,15 +17,17 @@ export function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('/images/hero-ranger-mountains.jpg')`,
-        }}
+      <Image
+        src="/portada.jpeg"
+        alt="Raitzin Motors"
+        fill
+        priority
+        className="object-cover object-top md:object-center"
+        sizes="100vw"
       />
 
       {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
