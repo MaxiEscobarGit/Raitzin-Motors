@@ -1,0 +1,1 @@
+// components/landing/Hero.tsx

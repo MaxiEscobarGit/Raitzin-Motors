@@ -1,0 +1,1 @@
+// components/vehicle/VehicleSpecs.tsx

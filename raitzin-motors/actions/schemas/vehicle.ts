@@ -1,0 +1,1 @@
+// actions/schemas/vehicle.ts

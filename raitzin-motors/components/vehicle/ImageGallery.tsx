@@ -1,0 +1,1 @@
+// components/vehicle/ImageGallery.tsx

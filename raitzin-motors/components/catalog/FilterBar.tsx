@@ -1,0 +1,1 @@
+// components/catalog/FilterBar.tsx
