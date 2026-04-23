@@ -1,4 +1,4 @@
-import { MessageCircle, Mail, MapPin } from "lucide-react"
+import { MessageCircle, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function ContactSection() {
@@ -32,8 +32,9 @@ export function ContactSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2"
+                  aria-label="Escribinos por WhatsApp"
                 >
-                  <MessageCircle className="h-4 w-4" />
+                  <MessageCircle className="h-4 w-4" aria-hidden="true" />
                   Escribinos por WhatsApp
                 </a>
               </Button>
@@ -44,7 +45,7 @@ export function ContactSection() {
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#1E2167] mb-4">
                 <MapPin className="h-7 w-7 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-[#1E2167] mb-2">Ubicacion</h3>
+              <h3 className="text-lg font-semibold text-[#1E2167] mb-2">Ubicación</h3>
               <p className="text-gray-600">Vice Almte. O'Connor 970, San Carlos de Bariloche, Río Negro</p>
               <p className="text-gray-600 text-sm mt-1">Lunes a Sábado 9:00 - 18:00</p>
             </div>
@@ -72,7 +73,7 @@ export function ContactSection() {
 // TODO: mover Footer a components/layout/Footer.tsx y reemplazar esta exportación por un import desde allí
 export function Footer() {
   return (
-    <footer className="bg-[#161A4D] py-6">
+    <footer className="bg-[#151849] py-6">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-white/60 text-sm">

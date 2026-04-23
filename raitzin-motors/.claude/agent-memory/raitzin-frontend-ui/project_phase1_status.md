@@ -4,7 +4,7 @@ description: Current state of Phase 1 landing page — which components exist, w
 type: project
 ---
 
-Phase 1 (Landing page) is in progress as of 2026-04-16.
+Phase 1 (Landing page) is in progress. Full audit conducted 2026-04-23 and all issues fixed.
 
 **Why:** The client (Francisco) has 60k+ Instagram followers but no web presence. The landing is the first conversion surface.
 
@@ -22,8 +22,10 @@ Components are currently flat in `components/` root, NOT in subdirectories:
 Subdirectories exist but contents are pending:
 - `components/landing/`, `components/catalog/`, `components/vehicle/`, `components/cards/`, `components/admin/`, `components/layout/`
 
-## app/page.tsx structure
-Imports all flat components directly. Inline "Sobre Nosotros" section lives in page.tsx itself (not extracted to a component yet).
+## app/page.tsx structure (post-audit correct order)
+Navbar → HeroSection → SearchSection → TagsSection → VehiclesSection → ServicesSection → ReviewsSection → ContactSection → Footer
+
+Note: TagsSection is a "Quiero un auto..." pill filter navigator that routes to `/catalogo?tag=...`. It sits between Search and Vehicles.
 
 ## Key notes
 - `VehiclesSection` uses hardcoded mock data (3 vehicles) — will be replaced with Supabase data in a later pass

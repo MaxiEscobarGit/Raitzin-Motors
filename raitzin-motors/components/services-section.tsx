@@ -7,12 +7,12 @@ import { Card, CardContent } from "@/components/ui/card"
 const services = [
   {
     icon: Zap,
-    title: "Compra y venta Inmediata",
+    title: "Compra y venta inmediata",
     description: "Te compramos tu auto al instante. Tasación justa y pago en el momento.",
   },
   {
     icon: CreditCard,
-    title: "Financiacion",
+    title: "Financiación",
     description: "Financiación propia a 12 meses con mínimos requisitos.",
   },
   {
@@ -22,13 +22,13 @@ const services = [
   },
   {
     icon: Handshake,
-    title: "Consignacion",
+    title: "Consignación",
     description: "Dejanos tu auto y lo vendemos por vos. Sin complicaciones.",
   },
   {
     icon: Shield,
-    title: "Garantia y Revision",
-    description: "Todos nuestros vehiculos pasan una revision mecanica exhaustiva.",
+    title: "Garantía y revisión",
+    description: "Todos nuestros vehículos pasan una revisión mecánica exhaustiva.",
   },
 ]
 
@@ -68,11 +68,11 @@ export function ServicesSection() {
             Nuestros Servicios
           </h2>
           <p className="text-gray-500 text-lg">
-            Todo lo que necesitas para tu proxima compra
+            Todo lo que necesitás para tu próxima compra
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {services.map((service, index) => (
             <div
               key={service.title}

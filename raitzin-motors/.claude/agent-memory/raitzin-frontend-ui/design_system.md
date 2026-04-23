@@ -41,3 +41,12 @@ shadcn/ui tokens: `--primary` = Burgundy, `--accent` = Sky Blue, `--secondary-fo
 
 ## Tailwind v4 note
 This project uses Tailwind v4 with `@import 'tailwindcss'` in globals.css. Brand color utilities (`bg-navy`, `text-burgundy`, etc.) are registered via `@theme inline` block — they work as regular Tailwind utilities.
+
+## Grid for 5-item service cards
+Use `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5` — never `lg:grid-cols-5` directly (too narrow at 1024px).
+
+## Touch target minimum
+All interactive elements (tag pills, mobile nav links, icon buttons) must have `min-h-[44px]`. Use `py-3.5` for pill buttons to achieve this.
+
+## Known palette violation to avoid
+Footer was accidentally using `#161A4D` instead of `#151849` (Navy Dark). Always use `#151849` for footer and hero dark backgrounds.

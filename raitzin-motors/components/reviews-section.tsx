@@ -143,11 +143,11 @@ export function ReviewsSection() {
     "grid-cols-4"
 
   return (
-    <section className="py-12 bg-white border-b border-gray-100">
+    <section id="nosotros" className="py-12 md:py-20 bg-white border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-sm font-medium text-[#1E2167] uppercase tracking-wider mb-8">
+        <h2 className="text-center text-sm font-medium text-[#1E2167] uppercase tracking-wider mb-8">
           Lo que dicen nuestros clientes
-        </p>
+        </h2>
 
         {/* Cards */}
         <div

@@ -21,10 +21,10 @@ export function SearchSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1E2167] font-sans mb-3">
-            Que auto estas buscando?
+            ¿Qué auto estás buscando?
           </h2>
           <p className="text-[#5A6A7A] text-lg">
-            Encuentra tu proximo vehiculo en segundos
+            Encontrá tu próximo vehículo en segundos
           </p>
         </div>
 

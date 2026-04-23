@@ -31,7 +31,7 @@ export function Navbar() {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-white border-b border-gray-200 shadow-sm" : "bg-white"
+        isScrolled ? "bg-white border-b border-gray-200 shadow-md" : "bg-white shadow-none"
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -72,7 +72,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <MessageCircle className="h-4 w-4" />
+                <MessageCircle className="h-4 w-4" aria-hidden="true" />
                 Consultanos
               </a>
             </Button>
@@ -83,7 +83,7 @@ export function Navbar() {
               className="md:hidden p-2 text-[#1E2167]"
               aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -110,9 +110,10 @@ export function Navbar() {
               href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hola%20mi%20nombre%20es%0AEstoy%20interesado%20en%20`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 mx-4 mt-2 px-4 py-2 bg-[#25D366] text-white rounded-full justify-center font-medium"
+              aria-label="Consultanos por WhatsApp"
+              className="flex items-center gap-2 mx-4 mt-2 px-4 py-3 bg-[#25D366] text-white rounded-full justify-center font-medium min-h-[44px]"
             >
-              <MessageCircle className="h-4 w-4" />
+              <MessageCircle className="h-4 w-4" aria-hidden="true" />
               Consultanos por WhatsApp
             </a>
           </div>

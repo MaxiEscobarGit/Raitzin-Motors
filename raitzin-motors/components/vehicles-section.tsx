@@ -3,7 +3,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
-import { formatPrice, formatKm } from "@/lib/utils"
+import Link from "next/link"
+import { formatPrice, formatKm, generateSlug } from "@/lib/utils"
 
 const vehicles = [
   {
@@ -61,12 +62,13 @@ export function VehiclesSection() {
               className="flex-shrink-0 snap-center w-[85vw] sm:w-[45vw] lg:w-[calc(25%-12px)]"
             >
               <Card className="bg-white border-[1.5px] border-[#e5e7eb] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group h-full">
-                <div className="overflow-hidden">
+                <div className="relative overflow-hidden">
                   <Image
                     src={vehicle.image}
-                    alt={`${vehicle.brand} ${vehicle.model}`}
+                    alt={`${vehicle.brand} ${vehicle.model} ${vehicle.year}`}
                     width={800}
                     height={600}
+                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 25vw"
                     className="w-full h-36 md:h-44 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <Badge className="absolute top-3 left-3 bg-[#1E2167] text-white">
@@ -76,7 +78,7 @@ export function VehiclesSection() {
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h3 className="text-sm md:text-base font-semibold text-[#1A1A2E]">{vehicle.model}</h3>
+                      <h3 className="text-sm md:text-base font-semibold text-[#1E2167]">{vehicle.model}</h3>
                       <p className="text-xs md:text-sm text-[#5A6A7A]">{vehicle.year}</p>
                     </div>
                     <p className="text-sm md:text-base lg:text-lg font-bold text-[#8B1A1A] mt-1">
@@ -97,9 +99,14 @@ export function VehiclesSection() {
 
                   <div className="flex gap-2">
                     <Button
+                      asChild
                       className="flex-1 bg-[#1E2167] hover:bg-[#151849] text-white rounded-full"
+                      aria-label={`Ver más sobre ${vehicle.brand} ${vehicle.model} ${vehicle.year}`}
                     >
-                      Ver más
+                      {/* TODO: replace with real slug from Supabase vehicle data */}
+                      <Link href={`/autos/${generateSlug(vehicle.brand, vehicle.model, vehicle.year)}`}>
+                        Ver más
+                      </Link>
                     </Button>
                     <Button
                       asChild
@@ -109,9 +116,9 @@ export function VehiclesSection() {
                         href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hola!%20Me%20interesa%20el%20${vehicle.brand}%20${vehicle.model}%20${vehicle.year}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label="Consultar por WhatsApp"
+                        aria-label={`Consultar por WhatsApp sobre ${vehicle.brand} ${vehicle.model} ${vehicle.year}`}
                       >
-                        <MessageCircle className="h-4 w-4" />
+                        <MessageCircle className="h-4 w-4" aria-hidden="true" />
                       </a>
                     </Button>
                   </div>

@@ -20,7 +20,6 @@ export function HeroSection() {
 
     const handleScroll = () => {
       const scrolled = window.pageYOffset
-      console.log('scroll fired:', scrolled)
       if (heroRef.current) {
         heroRef.current.style.transform = `translateY(${scrolled * 0.5}px)`
       }
@@ -77,9 +76,10 @@ export function HeroSection() {
               e.preventDefault()
               document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })
             }}
+            aria-label={`Ir a ${label}`}
             className={`flex flex-1 flex-col items-center justify-center py-6 text-white hover:bg-[#8B1A1A] transition-colors duration-300${index < serviceButtons.length - 1 ? " border-r border-white/20" : ""}`}
           >
-            <Icon size={28} />
+            <Icon size={28} aria-hidden="true" />
             <span className="text-sm font-semibold mt-2 text-center">{label}</span>
           </a>
         ))}
