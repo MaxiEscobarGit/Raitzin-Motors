@@ -19,14 +19,16 @@ export function HeroSection() {
     if (isMobile) return
 
     const handleScroll = () => {
+      const scrolled = window.pageYOffset
+      console.log('scroll fired:', scrolled)
       if (heroRef.current) {
-        const scrolled = window.scrollY
-        heroRef.current.style.transform = `translateY(${scrolled * 0.3}px)`
+        heroRef.current.style.transform = `translateY(${scrolled * 0.5}px)`
       }
     }
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    document.addEventListener("scroll", handleScroll, { passive: true })
+    
+    return () => document.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
@@ -35,7 +37,11 @@ export function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background Image */}
-      <div ref={heroRef} className="absolute inset-0" style={{ willChange: "transform" }}>
+      <div
+        ref={heroRef}
+        className="absolute inset-0 scale-125 origin-top"
+        style={{ willChange: "transform" }}
+      >
         <Image
           src="/portada.jpg"
           alt="Raitzin Motors showroom"

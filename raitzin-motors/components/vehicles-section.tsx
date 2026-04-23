@@ -54,69 +54,70 @@ export function VehiclesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide mb-10">
           {vehicles.map((vehicle) => (
-            <Card
+            <div
               key={vehicle.id}
-              className="bg-white border-[1.5px] border-[#e5e7eb] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group"
+              className="flex-shrink-0 snap-center w-[85vw] sm:w-[45vw] lg:w-[calc(25%-12px)]"
             >
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src={vehicle.image}
-                  alt={`${vehicle.brand} ${vehicle.model}`}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <Badge className="absolute top-3 left-3 bg-[#1E2167] text-white">
-                  {vehicle.brand}
-                </Badge>
-              </div>
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-lg font-semibold text-[#1A1A2E]">
-                      {vehicle.model}
-                    </h3>
-                    <p className="text-sm text-[#5A6A7A]">{vehicle.year}</p>
-                  </div>
-                  <p className="text-xl font-bold text-[#8B1A1A]">
-                    {formatPrice(vehicle.price, vehicle.currency)}
-                  </p>
+              <Card className="bg-white border-[1.5px] border-[#e5e7eb] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group h-full">
+                <div className="overflow-hidden">
+                  <Image
+                    src={vehicle.image}
+                    alt={`${vehicle.brand} ${vehicle.model}`}
+                    width={800}
+                    height={600}
+                    className="w-full h-36 md:h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <Badge className="absolute top-3 left-3 bg-[#1E2167] text-white">
+                    {vehicle.brand}
+                  </Badge>
                 </div>
-
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center gap-1 text-sm text-[#5A6A7A]">
-                    <Gauge className="h-4 w-4" />
-                    {formatKm(vehicle.km)}
+                <CardContent className="p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="text-sm md:text-base font-semibold text-[#1A1A2E]">{vehicle.model}</h3>
+                      <p className="text-xs md:text-sm text-[#5A6A7A]">{vehicle.year}</p>
+                    </div>
+                    <p className="text-sm md:text-base lg:text-lg font-bold text-[#8B1A1A] mt-1">
+                      {formatPrice(vehicle.price, vehicle.currency)}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-[#5A6A7A]">
-                    <Fuel className="h-4 w-4" />
-                    {vehicle.fuel}
-                  </div>
-                </div>
 
-                <div className="flex gap-2">
-                  <Button
-                    className="flex-1 bg-[#1E2167] hover:bg-[#151849] text-white rounded-full"
-                  >
-                    Ver más
-                  </Button>
-                  <Button
-                    asChild
-                    className="bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full px-4"
-                  >
-                    <a
-                      href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hola!%20Me%20interesa%20el%20${vehicle.brand}%20${vehicle.model}%20${vehicle.year}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Consultar por WhatsApp"
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex items-center gap-1 text-xs md:text-sm text-[#5A6A7A]">
+                      <Gauge className="h-4 w-4" />
+                      {formatKm(vehicle.km)}
+                    </div>
+                    <div className="flex items-center gap-1 text-xs md:text-sm text-[#5A6A7A]">
+                      <Fuel className="h-4 w-4" />
+                      {vehicle.fuel}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      className="flex-1 bg-[#1E2167] hover:bg-[#151849] text-white rounded-full"
                     >
-                      <MessageCircle className="h-4 w-4" />
-                    </a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                      Ver más
+                    </Button>
+                    <Button
+                      asChild
+                      className="bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full px-4"
+                    >
+                      <a
+                        href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hola!%20Me%20interesa%20el%20${vehicle.brand}%20${vehicle.model}%20${vehicle.year}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Consultar por WhatsApp"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
 
