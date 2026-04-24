@@ -12,9 +12,9 @@ export default function HomePage() {
     <main>
       <Navbar />
       <HeroSection />
-      <SearchSection />
       <TagsSection />
       <VehiclesSection />
+      <SearchSection />
       <ServicesSection />
       <ReviewsSection />
       <ContactSection />
