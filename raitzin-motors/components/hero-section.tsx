@@ -79,7 +79,8 @@ export function HeroSection() {
         </h1>
 
         <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Hace más de 35 años trabajando en Bariloche. Ayudamos a gente como vos a encontrar su próximo auto. 
+          Hace más de 35 años trabajando en Bariloche. Ayudamos a gente como vos a encontrar su próximo auto.
+          <br />
           ¡Confianza, rapidez y buena onda!
         </p>
       </div>
