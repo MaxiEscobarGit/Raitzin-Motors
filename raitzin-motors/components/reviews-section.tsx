@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Star } from "lucide-react"
+import { Star, ChevronLeft, ChevronRight } from "lucide-react"
 
 const reviews = [
   {
@@ -95,6 +95,7 @@ export function ReviewsSection() {
   const [groupSize, setGroupSize] = useState(4)
   const [currentGroup, setCurrentGroup] = useState(0)
   const [visible, setVisible] = useState(true)
+  const [autoKey, setAutoKey] = useState(0)
 
   // Detect window size and update groupSize
   useEffect(() => {
@@ -124,7 +125,7 @@ export function ReviewsSection() {
       }, 300)
     }, 5000)
     return () => clearInterval(interval)
-  }, [groups.length])
+  }, [groups.length, autoKey])
 
   const goTo = (index: number) => {
     if (index === currentGroup) return
@@ -133,7 +134,11 @@ export function ReviewsSection() {
       setCurrentGroup(index)
       setVisible(true)
     }, 300)
+    setAutoKey((k) => k + 1)
   }
+
+  const goPrev = () => goTo((currentGroup - 1 + groups.length) % groups.length)
+  const goNext = () => goTo((currentGroup + 1) % groups.length)
 
   const group = groups[currentGroup] ?? []
 
@@ -149,33 +154,51 @@ export function ReviewsSection() {
           Lo que dicen nuestros clientes
         </h2>
 
-        {/* Cards */}
-        <div
-          className={`grid ${gridCols} gap-4 mb-6 transition-opacity duration-300`}
-          style={{ opacity: visible ? 1 : 0 }}
-        >
-          {group.map((review) => (
-            <div
-              key={review.name}
-              className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-[#7EB8D4] h-full"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: review.rating }).map((_, j) => (
-                    <Star key={j} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  ))}
+        {/* Cards + Arrows */}
+        <div className="flex items-center gap-2 md:gap-4 mb-6">
+          <button
+            onClick={goPrev}
+            aria-label="Grupo anterior"
+            className="flex-shrink-0 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#1E2167] text-[#1E2167] hover:bg-[#1E2167] hover:text-white transition-colors duration-200"
+          >
+            <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
+          </button>
+
+          <div
+            className={`grid ${gridCols} gap-4 flex-1 transition-opacity duration-300`}
+            style={{ opacity: visible ? 1 : 0 }}
+          >
+            {group.map((review) => (
+              <div
+                key={review.name}
+                className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-[#7EB8D4] h-full"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: review.rating }).map((_, j) => (
+                      <Star key={j} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-1 text-xs text-gray-400">
+                    <GoogleIcon />
+                    <span>Google</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-gray-400">
-                  <GoogleIcon />
-                  <span>Google</span>
-                </div>
+                <p className="text-sm text-gray-600 leading-relaxed flex-1">
+                  &ldquo;{review.text}&rdquo;
+                </p>
+                <p className="text-xs font-semibold text-[#1E2167] mt-3">{review.name}</p>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed flex-1">
-                &ldquo;{review.text}&rdquo;
-              </p>
-              <p className="text-xs font-semibold text-[#1E2167] mt-3">{review.name}</p>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <button
+            onClick={goNext}
+            aria-label="Grupo siguiente"
+            className="flex-shrink-0 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#1E2167] text-[#1E2167] hover:bg-[#1E2167] hover:text-white transition-colors duration-200"
+          >
+            <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
+          </button>
         </div>
 
         {/* Dots */}
