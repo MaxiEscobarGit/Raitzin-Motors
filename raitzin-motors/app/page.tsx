@@ -13,8 +13,8 @@ export default function HomePage() {
       <Navbar />
       <HeroSection />
       <TagsSection />
-      <VehiclesSection />
       <SearchSection />
+      <VehiclesSection />
       <ServicesSection />
       <ReviewsSection />
       <ContactSection />
