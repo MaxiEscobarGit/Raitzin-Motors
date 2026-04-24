@@ -40,6 +40,17 @@ const vehicles = [
     fuel: "Nafta",
     image: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?q=80&w=800&auto=format&fit=crop",
   },
+  {
+    id: 4,
+    brand: "Toyota",
+    model: "Corolla XEI",
+    year: 2021,
+    price: 21000000,
+    currency: "ARS" as const,
+    km: 42000,
+    fuel: "Nafta",
+    image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=800&auto=format&fit=crop",
+  },
 ]
 
 export function VehiclesSection() {
