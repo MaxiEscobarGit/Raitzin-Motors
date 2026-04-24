@@ -8,27 +8,22 @@ const services = [
   {
     icon: Zap,
     title: "Compra y venta inmediata",
-    description: "Te compramos tu auto al instante. Tasación justa y pago en el momento.",
+    description: "Si estás apurado en vender tu auto, te compramos tu auto al instante.",
   },
   {
     icon: CreditCard,
     title: "Financiación",
-    description: "Financiación propia a 12 meses con mínimos requisitos.",
+    description: "Financiación propia a 12 meses sin bancos de por medio. Cuotas fijas y mínimos requisitos.",
   },
   {
     icon: RefreshCw,
     title: "Permuta",
-    description: "Entrega tu auto como parte de pago. Tasación justa y transparente.",
+    description: " Entregas tu auto en parte de pago, y te llevás el que más te guste.",
   },
   {
     icon: Handshake,
     title: "Consignación",
     description: "Dejanos tu auto y lo vendemos por vos. Sin complicaciones.",
-  },
-  {
-    icon: Shield,
-    title: "Garantía y revisión",
-    description: "Todos nuestros vehículos pasan una revisión mecánica exhaustiva.",
   },
 ]
 
@@ -72,7 +67,7 @@ export function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <div
               key={service.title}
