@@ -1,14 +1,15 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useRef } from "react"
 import { Car, Zap, CreditCard, RefreshCw } from "lucide-react"
 
 const serviceButtons = [
-  { icon: Car, label: "Comprá tu auto" },
-  { icon: Zap, label: "Vendé tu auto" },
-  { icon: CreditCard, label: "Financiá tu auto" },
-  { icon: RefreshCw, label: "Cambiá tu auto" },
+  { icon: Car, label: "Comprá tu auto", href: "/catalogo" },
+  { icon: Zap, label: "Vendé tu auto", href: "#servicios" },
+  { icon: CreditCard, label: "Financiá tu auto", href: "#servicios" },
+  { icon: RefreshCw, label: "Cambiá tu auto", href: "#servicios" },
 ]
 
 export function HeroSection() {
@@ -87,21 +88,28 @@ export function HeroSection() {
 
       {/* Barra de servicios pegada al fondo */}
       <div className="absolute bottom-0 left-0 right-0 z-20 flex w-full bg-[#151849]">
-        {serviceButtons.map(({ icon: Icon, label }, index) => (
+        {serviceButtons.map(({ icon: Icon, label, href }, index) => {
+          const cls = `flex flex-1 flex-col items-center justify-center py-6 text-white hover:bg-[#8B1A1A] transition-colors duration-300${index < serviceButtons.length - 1 ? " border-r border-white/20" : ""}`
+          const content = (<><Icon size={28} aria-hidden="true" /><span className="text-sm font-semibold mt-2 text-center">{label}</span></>)
+          return href.startsWith('/') ? (
+            <Link key={label} href={href} aria-label={`Ir a ${label}`} className={cls}>
+              {content}
+            </Link>
+          ) : (
           <a
             key={label}
-            href="#servicios"
+            href={href}
             onClick={(e) => {
               e.preventDefault()
               document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })
             }}
             aria-label={`Ir a ${label}`}
-            className={`flex flex-1 flex-col items-center justify-center py-6 text-white hover:bg-[#8B1A1A] transition-colors duration-300${index < serviceButtons.length - 1 ? " border-r border-white/20" : ""}`}
+            className={cls}
           >
-            <Icon size={28} aria-hidden="true" />
-            <span className="text-sm font-semibold mt-2 text-center">{label}</span>
+            {content}
           </a>
-        ))}
+          )
+        })}
       </div>
     </section>
   )

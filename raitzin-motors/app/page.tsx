@@ -18,6 +18,7 @@ export default async function HomePage() {
     { data: yearsData },
     { data: fuelsData },
     { data: destacadosData },
+    { data: tagsData },
   ] = await Promise.all([
     supabase.from('marcas').select('nombre').order('nombre'),
     supabase.from('tipo_vehiculo').select('nombre').order('nombre'),
@@ -25,10 +26,11 @@ export default async function HomePage() {
     supabase.from('vehicles').select('fuel').eq('is_sold', false),
     supabase
       .from('vehicles')
-      .select('*, marcas(nombre), tipo_vehiculo(nombre), vehicle_tags(tag_id, tags(nombre))')
+      .select('*, marcas(nombre), tipo_vehiculo(nombre), vehicle_tags(tag_id)')
       .eq('is_featured', true)
       .eq('is_sold', false)
       .limit(6),
+    supabase.from('tags').select('id, nombre').order('nombre'),
   ])
 
   const toOption = (s: string) => ({ value: s, label: s })
@@ -58,7 +60,7 @@ export default async function HomePage() {
     cuotas: v.cuotas ?? null,
     valor_cuota: v.valor_cuota ?? null,
     currency: v.currency ?? 'ARS',
-    vehicle_tags: v.vehicle_tags ?? [],
+    vehicle_tags: (v.vehicle_tags ?? []).map((vt: { tag_id: number }) => ({ tag_id: vt.tag_id })),
     is_featured: v.is_featured ?? false,
     is_sold: v.is_sold ?? false,
     description: v.description ?? null,
@@ -71,7 +73,7 @@ export default async function HomePage() {
       <HeroSection />
       <TagsSection />
       <SearchSection marcas={marcas} tipos={tipos} years={years} fuels={fuels} />
-      <VehiclesSection vehicles={destacados} />
+      <VehiclesSection vehicles={destacados} allTags={tagsData ?? []} />
       <ServicesSection />
       <ReviewsSection />
       <ContactSection />

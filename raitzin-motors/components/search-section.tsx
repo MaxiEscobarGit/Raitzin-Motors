@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { FilterBar, type Filters } from '@/components/catalogo/FilterBar'
 
@@ -16,6 +17,7 @@ const EMPTY_FILTERS: Filters = { search: '', marca: '', tipo: '', year: '', fuel
 
 export function SearchSection({ marcas, tipos, years, fuels }: SearchSectionProps) {
   const router = useRouter()
+  const [showFilters, setShowFilters] = useState(false)
 
   function handleApply(filters: Filters) {
     const params = new URLSearchParams()
@@ -45,6 +47,8 @@ export function SearchSection({ marcas, tipos, years, fuels }: SearchSectionProp
           tipos={tipos}
           years={years}
           fuels={fuels}
+          showFilters={showFilters}
+          onToggleFilters={() => setShowFilters(f => !f)}
         />
       </div>
     </section>

@@ -4,15 +4,16 @@ import { useState } from "react"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { type Vehicle } from "@/lib/catalog-helpers"
+import { type Vehicle, type Tag } from "@/lib/catalog-helpers"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
 import { VehicleModal } from "@/components/catalogo/VehicleModal"
 
 type VehiclesSectionProps = {
   vehicles: Vehicle[]
+  allTags: Tag[]
 }
 
-export function VehiclesSection({ vehicles }: VehiclesSectionProps) {
+export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
   const [selected, setSelected] = useState<Vehicle | null>(null)
 
   return (
@@ -47,6 +48,7 @@ export function VehiclesSection({ vehicles }: VehiclesSectionProps) {
                 <VehicleCard
                   vehicle={vehicle}
                   onSelect={setSelected}
+                  allTags={allTags}
                 />
               </div>
             ))}
@@ -70,7 +72,7 @@ export function VehiclesSection({ vehicles }: VehiclesSectionProps) {
       </div>
     </section>
 
-    {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} />}
+    {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />}
     </>
   )
 }
