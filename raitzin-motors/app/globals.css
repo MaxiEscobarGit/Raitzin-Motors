@@ -1,6 +1,11 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Hide scrollbar on horizontal tag scroll (mobile) */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {

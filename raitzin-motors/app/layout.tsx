@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import './globals.css'
 
 const jakarta = Plus_Jakarta_Sans({
@@ -58,6 +59,7 @@ export default function RootLayout({
     <html lang="es" className={jakarta.variable}>
       <body className="font-sans antialiased">
         {children}
+        <WhatsAppFloat />
         <Analytics />
       </body>
     </html>

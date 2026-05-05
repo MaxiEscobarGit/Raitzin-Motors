@@ -1,1 +1,0 @@
-// components/catalog/VehicleGrid.tsx

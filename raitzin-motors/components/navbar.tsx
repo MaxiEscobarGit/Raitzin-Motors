@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, X, MessageCircle } from "lucide-react"
+import { Menu, X } from "lucide-react"
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { href: "#inicio", label: "Inicio" },
-  { href: "#vehiculos", label: "Vehículos" },
+  { href: "/", label: "Inicio" },
+  { href: "/catalogo", label: "Vehículos" },
   { href: "#servicios", label: "Servicios" },
   { href: "#nosotros", label: "Nosotros" },
   { href: "#contacto", label: "Contacto" },
@@ -37,7 +38,7 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="#inicio" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src="/logo raitzin.png"
               alt="Raitzin Motors"
@@ -72,7 +73,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                <WhatsAppIcon size={16} />
                 Consultanos
               </a>
             </Button>
@@ -113,7 +114,7 @@ export function Navbar() {
               aria-label="Consultanos por WhatsApp"
               className="flex items-center gap-2 mx-4 mt-2 px-4 py-3 bg-[#25D366] text-white rounded-full justify-center font-medium min-h-[44px]"
             >
-              <MessageCircle className="h-4 w-4" aria-hidden="true" />
+              <WhatsAppIcon size={16} />
               Consultanos por WhatsApp
             </a>
           </div>

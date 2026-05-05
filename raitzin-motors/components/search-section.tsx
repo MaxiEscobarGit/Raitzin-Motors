@@ -1,21 +1,32 @@
-"use client"
+'use client'
 
-import { Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { useRouter } from 'next/navigation'
+import { FilterBar, type Filters } from '@/components/catalogo/FilterBar'
 
-const marcas = ["Toyota", "Volkswagen", "Chevrolet", "Ford", "Fiat", "Renault", "Peugeot", "Honda"]
-const tipos = ["Sedan", "SUV", "Pickup", "Hatchback", "Coupe", "Utilitario"]
-const anos = Array.from({ length: 10 }, (_, i) => (2024 - i).toString())
+type Option = { value: string; label: string }
 
-export function SearchSection() {
+type SearchSectionProps = {
+  marcas: Option[]
+  tipos: Option[]
+  years: Option[]
+  fuels: Option[]
+}
+
+const EMPTY_FILTERS: Filters = { search: '', marca: '', tipo: '', year: '', fuel: '', sort: 'newest' }
+
+export function SearchSection({ marcas, tipos, years, fuels }: SearchSectionProps) {
+  const router = useRouter()
+
+  function handleApply(filters: Filters) {
+    const params = new URLSearchParams()
+    if (filters.search) params.set('search', filters.search)
+    if (filters.marca)  params.set('marca', filters.marca)
+    if (filters.tipo)   params.set('tipo', filters.tipo)
+    if (filters.year)   params.set('year', filters.year)
+    if (filters.fuel)   params.set('fuel', filters.fuel)
+    router.push(`/catalogo${params.size ? '?' + params.toString() : ''}`)
+  }
+
   return (
     <section id="buscar" className="py-12 md:py-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -27,87 +38,14 @@ export function SearchSection() {
             Encontrá tu próximo vehículo en segundos
           </p>
         </div>
-
-        <div className="bg-[#EBF4FA] rounded-2xl p-6 md:p-8 shadow-sm">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-            {/* Marca */}
-            <Select>
-              <SelectTrigger aria-label="Filtrar por marca" className="w-full bg-white border-[#1E2167] h-12">
-                <SelectValue placeholder="Todas las marcas" />
-              </SelectTrigger>
-              <SelectContent>
-                {marcas.map((marca) => (
-                  <SelectItem key={marca} value={marca.toLowerCase()}>
-                    {marca}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Modelo */}
-            <Select>
-              <SelectTrigger aria-label="Filtrar por modelo" className="w-full bg-white border-[#1E2167] h-12">
-                <SelectValue placeholder="Todos los modelos" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos los modelos</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {/* Tipo */}
-            <Select>
-              <SelectTrigger aria-label="Filtrar por tipo de vehículo" className="w-full bg-white border-[#1E2167] h-12">
-                <SelectValue placeholder="Tipo de vehiculo" />
-              </SelectTrigger>
-              <SelectContent>
-                {tipos.map((tipo) => (
-                  <SelectItem key={tipo} value={tipo.toLowerCase()}>
-                    {tipo}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Precio desde */}
-            <Select>
-              <SelectTrigger aria-label="Filtrar por precio" className="w-full bg-white border-[#1E2167] h-12">
-                <SelectValue placeholder="Precio desde" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="5000000">$ 5.000.000</SelectItem>
-                <SelectItem value="10000000">$ 10.000.000</SelectItem>
-                <SelectItem value="15000000">$ 15.000.000</SelectItem>
-                <SelectItem value="20000000">$ 20.000.000</SelectItem>
-                <SelectItem value="25000000">$ 25.000.000</SelectItem>
-                <SelectItem value="30000000">$ 30.000.000</SelectItem>
-                <SelectItem value="40000000">$ 40.000.000</SelectItem>
-                <SelectItem value="50000000">$ 50.000.000</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {/* Ano */}
-            <Select>
-              <SelectTrigger aria-label="Filtrar por año" className="w-full bg-white border-[#1E2167] h-12">
-                <SelectValue placeholder="Año" />
-              </SelectTrigger>
-              <SelectContent>
-                {anos.map((ano) => (
-                  <SelectItem key={ano} value={ano}>
-                    {ano}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Search Button */}
-            <Button
-              className="h-12 bg-[#8B1A1A] hover:bg-[#6B1414] text-white rounded-full font-medium"
-            >
-              <Search className="h-4 w-4 mr-2" />
-              Buscar
-            </Button>
-          </div>
-        </div>
+        <FilterBar
+          filters={EMPTY_FILTERS}
+          onApply={handleApply}
+          marcas={marcas}
+          tipos={tipos}
+          years={years}
+          fuels={fuels}
+        />
       </div>
     </section>
   )

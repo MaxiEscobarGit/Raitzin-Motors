@@ -1,5 +1,6 @@
-import { MessageCircle, MapPin } from "lucide-react"
+import { MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
 
 export function ContactSection() {
   return (
@@ -19,7 +20,7 @@ export function ContactSection() {
             {/* WhatsApp */}
             <div className="flex flex-col items-center text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#1E2167] mb-4">
-                <MessageCircle className="h-7 w-7 text-white" />
+                <span className="text-white"><WhatsAppIcon size={28} /></span>
               </div>
               <h3 className="text-lg font-semibold text-[#1E2167] mb-2">WhatsApp</h3>
               <p className="text-gray-600 mb-4">Respuesta inmediata</p>
@@ -34,7 +35,7 @@ export function ContactSection() {
                   className="flex items-center gap-2"
                   aria-label="Escribinos por WhatsApp"
                 >
-                  <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                  <WhatsAppIcon size={16} />
                   Escribinos por WhatsApp
                 </a>
               </Button>

@@ -1,1 +1,0 @@
-// components/catalog/Pagination.tsx

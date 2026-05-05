@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find C:/Users/maxim -maxdepth 6 -name *.html)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next:*)",
+      "Bash(node scripts/seed-vehicles.mjs)",
+      "Bash(node -e \":*)",
+      "Bash(supabase --version)",
+      "Bash(node -e \"const p = require\\(''''./package.json''''\\); console.log\\(''''next:'''', p.dependencies.next\\)\")",
+      "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); console.log\\(JSON.parse\\(d\\).dependencies.next\\)\")"
+    ]
+  }
+}
