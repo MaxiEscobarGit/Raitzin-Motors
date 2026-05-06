@@ -150,7 +150,7 @@ export function ReviewsSection() {
   return (
     <section id="nosotros" className="py-12 md:py-20 bg-white border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-sm font-medium text-[#1E2167] uppercase tracking-wider mb-8">
+        <h2 className="text-center text-sm font-medium text-navy uppercase tracking-wider mb-8">
           Lo que dicen nuestros clientes
         </h2>
 
@@ -159,7 +159,7 @@ export function ReviewsSection() {
           <button
             onClick={goPrev}
             aria-label="Grupo anterior"
-            className="flex-shrink-0 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#1E2167] text-[#1E2167] hover:bg-[#1E2167] hover:text-white transition-colors duration-200"
+            className="flex-shrink-0 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-navy text-navy hover:bg-navy hover:text-white transition-colors duration-200"
           >
             <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
           </button>
@@ -171,7 +171,7 @@ export function ReviewsSection() {
             {group.map((review) => (
               <div
                 key={review.name}
-                className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-[#7EB8D4] h-full"
+                className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-sky-blue h-full"
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex gap-0.5">
@@ -187,7 +187,7 @@ export function ReviewsSection() {
                 <p className="text-sm text-gray-600 leading-relaxed flex-1">
                   &ldquo;{review.text}&rdquo;
                 </p>
-                <p className="text-xs font-semibold text-[#1E2167] mt-3">{review.name}</p>
+                <p className="text-xs font-semibold text-navy mt-3">{review.name}</p>
               </div>
             ))}
           </div>
@@ -195,7 +195,7 @@ export function ReviewsSection() {
           <button
             onClick={goNext}
             aria-label="Grupo siguiente"
-            className="flex-shrink-0 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#1E2167] text-[#1E2167] hover:bg-[#1E2167] hover:text-white transition-colors duration-200"
+            className="flex-shrink-0 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-navy text-navy hover:bg-navy hover:text-white transition-colors duration-200"
           >
             <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
           </button>
@@ -209,7 +209,7 @@ export function ReviewsSection() {
               onClick={() => goTo(i)}
               aria-label={`Grupo de reseñas ${i + 1}`}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === currentGroup ? "w-6 bg-[#1E2167]" : "w-2 bg-gray-300"
+                i === currentGroup ? "w-6 bg-navy" : "w-2 bg-gray-300"
               }`}
             />
           ))}
@@ -221,7 +221,7 @@ export function ReviewsSection() {
             href="https://www.google.com/maps/place/Raitzin+Motors/@-41.1336812,-71.2983826,17z/data=!4m8!3m7!1s0x961a7b007a003b4b:0xd8b7b43351813a1!8m2!3d-41.1336812!4d-71.2958077!9m1!1b1!16s%2Fg%2F11vpl8hrj4"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#1E2167] text-sm font-medium text-[#1E2167] hover:bg-[#1E2167] hover:text-white transition-colors duration-200"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-navy text-sm font-medium text-navy hover:bg-navy hover:text-white transition-colors duration-200"
           >
             <GoogleIcon />
             Ver más reseñas en Google

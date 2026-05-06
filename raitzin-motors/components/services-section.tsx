@@ -59,7 +59,7 @@ export function ServicesSection() {
     <section id="servicios" className="py-12 md:py-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1E2167] font-sans mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-navy font-sans mb-3">
             Nuestros Servicios
           </h2>
           <p className="text-gray-500 text-lg">
@@ -74,12 +74,12 @@ export function ServicesSection() {
               ref={(el) => { cardRefs.current[index] = el }}
               className="opacity-0 translate-y-10 transition-all duration-[600ms] ease-out"
             >
-              <Card className="bg-white border-[1.5px] border-[#e5e7eb] hover:border-[#1E2167] rounded-2xl transition-all duration-300 group h-full">
+              <Card className="bg-white border-[1.5px] border-[#e5e7eb] hover:border-navy rounded-2xl transition-all duration-300 group h-full">
                 <CardContent className="p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-[#7EB8D4]/20 mb-4">
-                    <service.icon className="h-7 w-7 text-[#1E2167]" />
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-sky-blue/20 mb-4">
+                    <service.icon className="h-7 w-7 text-navy" />
                   </div>
-                  <h3 className="text-lg font-semibold text-[#1E2167] mb-2">
+                  <h3 className="text-lg font-semibold text-navy mb-2">
                     {service.title}
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">

@@ -1,6 +1,6 @@
 'use client'
 
-import { NAVY, MUTED } from "@/lib/catalog-helpers"
+import { cn } from "@/lib/utils"
 
 type TagsPillsProps = {
   activeTag: string
@@ -11,21 +11,21 @@ type TagsPillsProps = {
 export function TagsPills({ activeTag, onChange, tags }: TagsPillsProps) {
   if (tags.length === 0) return null
   return (
-    <div
-      className="flex gap-2 overflow-x-auto pb-1 lg:flex-wrap"
-      style={{ alignItems: "center", scrollbarWidth: "none" }}
-    >
-      <span style={{ fontSize: 13, color: MUTED, fontWeight: 500, whiteSpace: "nowrap", flexShrink: 0 }}>Quiero:</span>
+    <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-wrap items-center [scrollbar-width:none]">
+      <span className="text-[13px] text-muted-foreground font-medium whitespace-nowrap flex-shrink-0">Quiero:</span>
       {tags.map(tag => (
-        <button key={tag.id} onClick={() => onChange(activeTag === tag.nombre ? "" : tag.nombre)} style={{
-          padding: "6px 16px", borderRadius: 99,
-          border: `1.5px solid ${activeTag === tag.nombre ? NAVY : "#D1D5DB"}`,
-          background: activeTag === tag.nombre ? NAVY : "#fff",
-          color: activeTag === tag.nombre ? "#fff" : NAVY,
-          fontSize: 13, fontWeight: 500, cursor: "pointer",
-          transition: "all 0.15s", fontFamily: "inherit", minHeight: 36,
-          whiteSpace: "nowrap", flexShrink: 0,
-        }}>{tag.nombre}</button>
+        <button
+          key={tag.id}
+          onClick={() => onChange(activeTag === tag.nombre ? "" : tag.nombre)}
+          className={cn(
+            "px-4 py-[6px] rounded-full border-[1.5px] text-[13px] font-medium cursor-pointer transition-all duration-150 whitespace-nowrap flex-shrink-0 min-h-[36px]",
+            activeTag === tag.nombre
+              ? "border-navy bg-navy text-white"
+              : "border-gray-300 bg-white text-navy"
+          )}
+        >
+          {tag.nombre}
+        </button>
       ))}
     </div>
   )

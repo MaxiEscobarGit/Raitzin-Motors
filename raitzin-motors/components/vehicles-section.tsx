@@ -21,19 +21,19 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
     <section id="vehiculos" className="py-12 md:py-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1E2167] font-sans mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-navy font-sans mb-3">
             Autos Destacados
           </h2>
-          <p className="text-[#5A6A7A] text-lg">
+          <p className="text-text-secondary text-lg">
             Stock seleccionado — actualizado esta semana
           </p>
         </div>
 
         {vehicles.length === 0 ? (
-          <div className="text-center py-16 text-[#5A6A7A]">
+          <div className="text-center py-16 text-text-secondary">
             <p className="text-lg">No hay vehículos destacados en este momento.</p>
             <p className="mt-2">
-              <Link href="/catalogo" className="text-[#8B1A1A] font-medium underline underline-offset-4">
+              <Link href="/catalogo" className="text-burgundy font-medium underline underline-offset-4">
                 Ver todo el catálogo
               </Link>
             </p>
@@ -60,7 +60,7 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
             <Button
               asChild
               variant="link"
-              className="text-[#8B1A1A] hover:text-[#6B1414] text-lg font-medium"
+              className="text-burgundy hover:text-[#6B1414] text-lg font-medium"
             >
               <Link href="/catalogo" className="flex items-center gap-2">
                 Ver todo el catálogo

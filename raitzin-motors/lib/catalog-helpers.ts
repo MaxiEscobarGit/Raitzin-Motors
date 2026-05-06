@@ -1,5 +1,7 @@
 // lib/catalog-helpers.ts
 
+export const PAGE_SIZE = 9
+
 export const NAVY = "#1E2167"
 export const NAVY_DARK = "#151849"
 export const BURGUNDY = "#8B1A1A"
@@ -9,6 +11,15 @@ export const SECTION_BG = "#F4F8FB"
 export const SEARCH_BG = "#EBF4FA"
 export const MUTED = "#5A6A7A"
 
+
+export function generateSlug(marca: string, model: string, year: number): string {
+  return `${marca}-${model}-${year}`
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
 
 export function formatPrice(price: number, currency: "ARS" | "USD"): string {
   if (currency === "USD") return `USD ${price.toLocaleString("es-AR")}`

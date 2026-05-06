@@ -84,11 +84,13 @@
   --color-navy: var(--navy);
   --color-navy-dark: var(--navy-dark);
   --color-pastel-blue: var(--pastel-blue);
+  --color-sky-blue: var(--pastel-blue);
   --color-burgundy: var(--burgundy);
   --color-text-secondary: var(--text-secondary);
   --color-whatsapp: var(--whatsapp);
   --color-section-bg: var(--section-bg);
   --color-search-card-bg: var(--search-card-bg);
+  --color-search-bg: var(--search-card-bg);
 }
 
 @layer base {

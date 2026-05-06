@@ -8,9 +8,7 @@ import { TagsPills } from "@/components/catalogo/TagsPills"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
 import { VehicleModal } from "@/components/catalogo/VehicleModal"
 import { Pagination } from "@/components/catalogo/Pagination"
-import { NAVY_DARK, SKY_BLUE, WHATSAPP, MUTED, NAVY, getVehicleTags, type Vehicle, type Tag } from "@/lib/catalog-helpers"
-
-const PAGE_SIZE = 9
+import { PAGE_SIZE, getVehicleTags, type Vehicle, type Tag } from "@/lib/catalog-helpers"
 
 type Option = { value: string; label: string }
 
@@ -77,14 +75,15 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
   }
 
   const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
+  const igHandle = process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className="min-h-screen">
       <Navbar />
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "92px 24px 64px" }}>
+      <div className="max-w-[1280px] mx-auto px-6 pt-[92px] pb-16">
         {/* Filters */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 28 }}>
+        <div className="flex flex-col gap-4 mb-7">
           <FilterBar
             filters={filters} onApply={handleFiltersChange}
             marcas={marcas} tipos={tipos} years={years} fuels={fuels}
@@ -96,15 +95,15 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
         </div>
 
         {/* Results header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <p style={{ fontSize: 14, color: MUTED }}>
+        <div className="flex justify-between items-center mb-5">
+          <p className="text-sm text-muted-foreground">
             {filtered.length === 0
               ? "No se encontraron vehículos"
               : `${filtered.length} vehículo${filtered.length !== 1 ? "s" : ""} encontrado${filtered.length !== 1 ? "s" : ""}`}
-            {activeTag && <span> · <strong style={{ color: NAVY }}>{activeTag}</strong></span>}
+            {activeTag && <span> · <strong className="text-navy">{activeTag}</strong></span>}
           </p>
           {filtered.length > 0 && (
-            <span style={{ fontSize: 13, color: MUTED }}>
+            <span className="text-[13px] text-muted-foreground">
               Página {page} de {Math.ceil(filtered.length / PAGE_SIZE)}
             </span>
           )}
@@ -112,19 +111,17 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
 
         {/* Grid */}
         {filtered.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "80px 0", color: MUTED }}>
-            <div style={{ marginBottom: 16, display: "flex", justifyContent: "center" }}><Search size={48} color={MUTED} strokeWidth={1.5} /></div>
-            <p style={{ fontSize: 18, fontWeight: 600, color: NAVY }}>No encontramos vehículos con esos filtros</p>
-            <p style={{ marginTop: 8 }}>Probá con otra combinación o consultanos por WhatsApp</p>
+          <div className="text-center py-20 text-muted-foreground">
+            <div className="mb-4 flex justify-center">
+              <Search size={48} strokeWidth={1.5} className="text-muted-foreground" />
+            </div>
+            <p className="text-lg font-semibold text-navy">No encontramos vehículos con esos filtros</p>
+            <p className="mt-2">Probá con otra combinación o consultanos por WhatsApp</p>
             <a
               href={`https://wa.me/${waNumber}?text=${encodeURIComponent("Hola! Estoy buscando un vehículo y no encontré lo que quería en el catálogo.")}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8, marginTop: 24,
-                background: WHATSAPP, color: "#fff", padding: "12px 24px",
-                borderRadius: 99, fontSize: 14, fontWeight: 600, textDecoration: "none",
-              }}
+              className="inline-flex items-center gap-2 mt-6 bg-whatsapp text-white px-6 py-3 rounded-full text-sm font-semibold no-underline"
             >
               Consultar disponibilidad
             </a>
@@ -146,10 +143,10 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
       </div>
 
       {/* Footer strip */}
-      <div style={{ background: NAVY_DARK, color: "rgba(255,255,255,0.5)", textAlign: "center", padding: "20px 24px", fontSize: 13 }}>
+      <div className="bg-navy-dark text-white/50 text-center px-6 py-5 text-[13px]">
         © 2026 Raitzin Motors · Bariloche, Argentina ·{" "}
-        <a href={`https://wa.me/${waNumber}`} style={{ color: SKY_BLUE, textDecoration: "none", marginLeft: 4 }}>WhatsApp</a> ·{" "}
-        <a href="https://instagram.com/raitzin" style={{ color: SKY_BLUE, textDecoration: "none", marginLeft: 4 }}>@raitzin</a>
+        <a href={`https://wa.me/${waNumber}`} className="text-sky-blue no-underline ml-1">WhatsApp</a> ·{" "}
+        <a href={`https://instagram.com/${igHandle}`} className="text-sky-blue no-underline ml-1">@{igHandle}</a>
       </div>
 
       {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />}

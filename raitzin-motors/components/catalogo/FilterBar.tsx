@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { SlidersHorizontal } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { CustomSelect } from "./CustomSelect"
-import { BURGUNDY, NAVY, MUTED, SKY_BLUE, SEARCH_BG } from "@/lib/catalog-helpers"
 
 export type Filters = {
   search: string
@@ -33,6 +33,27 @@ const SORTS = [
   { value: "price_desc", label: "Mayor precio" }, { value: "km_asc", label: "Menos km" },
 ]
 
+const searchInputClass = "w-full h-11 pl-[38px] pr-[14px] border-[1.5px] border-gray-300 rounded-[10px] text-sm text-navy bg-white outline-none transition-colors duration-150 focus:border-sky-blue"
+
+function SearchIcon() {
+  return (
+    <svg
+      className="absolute left-[13px] top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
+      width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+    >
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+  )
+}
+
+function BuscarIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+  )
+}
+
 export function FilterBar({ filters, onApply, marcas, tipos, years, fuels, showFilters, onToggleFilters, activeFiltersCount = 0 }: FilterBarProps) {
   const [pending, setPending] = useState<Filters>(filters)
 
@@ -50,98 +71,63 @@ export function FilterBar({ filters, onApply, marcas, tipos, years, fuels, showF
   return (
     <>
       {/* Mobile layout */}
-      <div className="lg:hidden" style={{ position: "relative" }}>
+      <div className="lg:hidden relative">
         {/* Row: search input + Filtros button */}
-        <div style={{ display: "flex", gap: 8 }}>
-          <div style={{ position: "relative", flex: 1 }}>
-            <svg style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
-              width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2" strokeLinecap="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <SearchIcon />
             <input
               type="text"
               placeholder="Buscar marca o modelo..."
               value={pending.search}
               onChange={e => setPending(p => ({ ...p, search: e.target.value }))}
               onKeyDown={e => e.key === "Enter" && apply()}
-              style={{
-                height: 44, padding: "0 14px 0 38px",
-                border: `1.5px solid #D1D5DB`, borderRadius: 10,
-                fontSize: 14, color: NAVY, background: "#fff",
-                fontFamily: "inherit", outline: "none", width: "100%",
-                transition: "border-color 0.15s",
-              }}
-              onFocus={e => (e.target.style.borderColor = SKY_BLUE)}
-              onBlur={e => (e.target.style.borderColor = "#D1D5DB")}
+              className={searchInputClass}
             />
           </div>
           <button
             onClick={onToggleFilters}
-            style={{
-              flexShrink: 0, display: "flex", alignItems: "center", gap: 6,
-              height: 44, padding: "0 14px",
-              border: `1.5px solid ${showFilters ? NAVY : "#D1D5DB"}`,
-              borderRadius: 10,
-              fontSize: 13, fontWeight: 600,
-              color: showFilters ? "#fff" : NAVY,
-              background: showFilters ? NAVY : "#fff",
-              cursor: "pointer", fontFamily: "inherit",
-              transition: "all 0.15s",
-            }}
+            className={cn(
+              "flex-shrink-0 flex items-center gap-1.5 h-11 px-[14px] rounded-[10px] text-[13px] font-semibold cursor-pointer transition-all duration-150 border-[1.5px]",
+              showFilters ? "border-navy bg-navy text-white" : "border-gray-300 bg-white text-navy"
+            )}
           >
             <SlidersHorizontal size={15} />
             Filtros
             {activeFiltersCount > 0 && (
-              <span style={{
-                background: showFilters ? "#fff" : NAVY,
-                color: showFilters ? NAVY : "#fff",
-                borderRadius: 99, fontSize: 11, fontWeight: 700,
-                padding: "1px 6px",
-              }}>{activeFiltersCount}</span>
+              <span className={cn(
+                "rounded-full text-[11px] font-bold px-1.5 py-px",
+                showFilters ? "bg-white text-navy" : "bg-navy text-white"
+              )}>
+                {activeFiltersCount}
+              </span>
             )}
           </button>
         </div>
 
         {/* Collapsible filters panel — floats above content on mobile */}
         {showFilters && (
-          <div style={{
-            position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, zIndex: 100,
-            background: "#fff", borderRadius: 12, padding: 16,
-            border: "1px solid #E5E7EB",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
-            display: "flex", flexDirection: "column", gap: 10,
-          }}>
+          <div className="absolute top-[calc(100%+8px)] left-0 right-0 z-[100] bg-white rounded-xl p-4 border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)] flex flex-col gap-[10px]">
             {/* Wrapper divs break the flex-basis:150px behavior of CustomSelect in column context */}
             <div><CustomSelect placeholder="Todas las marcas" options={marcas} value={pending.marca} onChange={v => setPending(p => ({ ...p, marca: v }))} /></div>
             <div><CustomSelect placeholder="Tipo de vehículo" options={tipos} value={pending.tipo} onChange={v => setPending(p => ({ ...p, tipo: v }))} /></div>
             <div><CustomSelect placeholder="Año" options={years} value={pending.year} onChange={v => setPending(p => ({ ...p, year: v }))} /></div>
             <div><CustomSelect placeholder="Ordenar por" options={SORTS} value={pending.sort} onChange={v => setPending(p => ({ ...p, sort: v }))} /></div>
-            <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+            <div className="flex gap-2 mt-1">
               <button
                 onClick={apply}
-                style={{
-                  flex: 1, height: 44,
-                  background: BURGUNDY, color: "#fff",
-                  border: "none", borderRadius: 99,
-                  fontSize: 14, fontWeight: 700, cursor: "pointer",
-                  fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                }}
+                className="flex-1 h-11 bg-burgundy text-white border-none rounded-full text-sm font-bold cursor-pointer flex items-center justify-center gap-2"
               >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-                </svg>
+                <BuscarIcon />
                 Buscar
               </button>
               {hasAny && (
                 <button
                   onClick={clear}
-                  style={{
-                    height: 44, padding: "0 16px",
-                    border: `1.5px solid ${BURGUNDY}`, borderRadius: 99,
-                    fontSize: 13, color: BURGUNDY, background: "#fff",
-                    cursor: "pointer", fontWeight: 600, fontFamily: "inherit",
-                  }}
-                >✕ Limpiar</button>
+                  className="h-11 px-4 border-[1.5px] border-burgundy rounded-full text-[13px] text-burgundy bg-white cursor-pointer font-semibold"
+                >
+                  ✕ Limpiar
+                </button>
               )}
             </div>
           </div>
@@ -149,28 +135,17 @@ export function FilterBar({ filters, onApply, marcas, tipos, years, fuels, showF
       </div>
 
       {/* Desktop layout */}
-      <div className="hidden lg:block" style={{ background: SEARCH_BG, borderRadius: 16, padding: "20px 24px" }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
-          <div style={{ position: "relative", flex: "1 1 220px", minWidth: 200 }}>
-            <svg style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
-              width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2" strokeLinecap="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
+      <div className="hidden lg:block bg-search-bg rounded-2xl px-6 py-5">
+        <div className="flex flex-wrap gap-[10px] items-center">
+          <div className="relative flex-[1_1_220px] min-w-[200px]">
+            <SearchIcon />
             <input
               type="text"
               placeholder="Buscar marca o modelo..."
               value={pending.search}
               onChange={e => setPending(p => ({ ...p, search: e.target.value }))}
               onKeyDown={e => e.key === "Enter" && apply()}
-              style={{
-                height: 44, padding: "0 14px 0 38px",
-                border: `1.5px solid #D1D5DB`, borderRadius: 10,
-                fontSize: 14, color: NAVY, background: "#fff",
-                fontFamily: "inherit", outline: "none", width: "100%",
-                transition: "border-color 0.15s",
-              }}
-              onFocus={e => (e.target.style.borderColor = SKY_BLUE)}
-              onBlur={e => (e.target.style.borderColor = "#D1D5DB")}
+              className={searchInputClass}
             />
           </div>
           <CustomSelect placeholder="Todas las marcas" options={marcas} value={pending.marca} onChange={v => setPending(p => ({ ...p, marca: v }))} />
@@ -179,32 +154,18 @@ export function FilterBar({ filters, onApply, marcas, tipos, years, fuels, showF
           <CustomSelect placeholder="Ordenar por" options={SORTS} value={pending.sort} onChange={v => setPending(p => ({ ...p, sort: v }))} />
           <button
             onClick={apply}
-            style={{
-              height: 44, padding: "0 22px",
-              background: BURGUNDY, color: "#fff",
-              border: "none", borderRadius: 99,
-              fontSize: 14, fontWeight: 700, cursor: "pointer",
-              fontFamily: "inherit", display: "flex", alignItems: "center", gap: 8,
-              transition: "background 0.15s", whiteSpace: "nowrap",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#6B1414")}
-            onMouseLeave={e => (e.currentTarget.style.background = BURGUNDY)}
+            className="h-11 px-[22px] bg-burgundy hover:bg-[#6B1414] text-white border-none rounded-full text-sm font-bold cursor-pointer flex items-center gap-2 transition-colors duration-150 whitespace-nowrap"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
+            <BuscarIcon />
             Buscar
           </button>
           {hasAny && (
             <button
               onClick={clear}
-              style={{
-                height: 44, padding: "0 16px",
-                border: `1.5px solid ${BURGUNDY}`, borderRadius: 99,
-                fontSize: 13, color: BURGUNDY, background: "#fff",
-                cursor: "pointer", fontWeight: 600, fontFamily: "inherit",
-              }}
-            >✕ Limpiar</button>
+              className="h-11 px-4 border-[1.5px] border-burgundy rounded-full text-[13px] text-burgundy bg-white cursor-pointer font-semibold"
+            >
+              ✕ Limpiar
+            </button>
           )}
         </div>
       </div>

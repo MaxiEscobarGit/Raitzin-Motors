@@ -54,7 +54,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-[#1E2167] hover:text-[#8B1A1A] transition-colors"
+                className="text-sm font-medium text-navy hover:text-burgundy transition-colors"
               >
                 {link.label}
               </Link>
@@ -65,7 +65,7 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             <Button
               asChild
-              className="hidden sm:flex bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full gap-2"
+              className="hidden sm:flex bg-whatsapp hover:bg-[#20BD5A] text-white rounded-full gap-2"
               size="sm"
             >
               <a
@@ -81,7 +81,7 @@ export function Navbar() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-[#1E2167]"
+              className="md:hidden p-2 text-navy"
               aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
             >
               {isOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
@@ -102,7 +102,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-[#1E2167] hover:bg-[#F4F8FB] rounded-lg transition-colors"
+                className="px-4 py-2 text-sm font-medium text-navy hover:bg-section-bg rounded-lg transition-colors"
               >
                 {link.label}
               </Link>
@@ -112,7 +112,7 @@ export function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Consultanos por WhatsApp"
-              className="flex items-center gap-2 mx-4 mt-2 px-4 py-3 bg-[#25D366] text-white rounded-full justify-center font-medium min-h-[44px]"
+              className="flex items-center gap-2 mx-4 mt-2 px-4 py-3 bg-whatsapp text-white rounded-full justify-center font-medium min-h-[44px]"
             >
               <WhatsAppIcon size={16} />
               Consultanos por WhatsApp

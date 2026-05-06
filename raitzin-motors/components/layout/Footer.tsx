@@ -1,1 +1,0 @@
-// components/layout/Footer.tsx

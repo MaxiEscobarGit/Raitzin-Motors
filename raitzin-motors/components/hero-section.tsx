@@ -87,9 +87,9 @@ export function HeroSection() {
       </div>
 
       {/* Barra de servicios pegada al fondo */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 flex w-full bg-[#151849]">
+      <div className="absolute bottom-0 left-0 right-0 z-20 flex w-full bg-navy-dark">
         {serviceButtons.map(({ icon: Icon, label, href }, index) => {
-          const cls = `flex flex-1 flex-col items-center justify-center py-6 text-white hover:bg-[#8B1A1A] transition-colors duration-300${index < serviceButtons.length - 1 ? " border-r border-white/20" : ""}`
+          const cls = `flex flex-1 flex-col items-center justify-center py-6 text-white hover:bg-burgundy transition-colors duration-300${index < serviceButtons.length - 1 ? " border-r border-white/20" : ""}`
           const content = (<><Icon size={28} aria-hidden="true" /><span className="text-sm font-semibold mt-2 text-center">{label}</span></>)
           return href.startsWith('/') ? (
             <Link key={label} href={href} aria-label={`Ir a ${label}`} className={cls}>

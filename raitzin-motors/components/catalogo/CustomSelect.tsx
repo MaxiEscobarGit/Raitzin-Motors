@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from "react"
-import { NAVY, MUTED, SKY_BLUE, SECTION_BG } from "@/lib/catalog-helpers"
+import { cn } from "@/lib/utils"
 
 type Option = { value: string; label: string }
 
@@ -27,59 +27,38 @@ export function CustomSelect({ placeholder, options, value, onChange }: CustomSe
   const selected = options.find(o => o.value === value)
 
   return (
-    <div ref={ref} style={{ position: "relative", flex: "1 1 150px", minWidth: 140 }}>
+    <div ref={ref} className="relative flex-[1_1_150px] min-w-[140px]">
       {/* Trigger */}
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        style={{
-          width: "100%", height: 44,
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "0 14px",
-          background: "#fff",
-          border: `1.5px solid ${open ? SKY_BLUE : "#D1D5DB"}`,
-          borderRadius: 10,
-          fontSize: 14, color: selected ? NAVY : MUTED,
-          fontFamily: "inherit", cursor: "pointer",
-          outline: "none",
-          transition: "border-color 0.15s",
-          boxShadow: open ? `0 0 0 3px ${SKY_BLUE}22` : "none",
-        }}
+        className={cn(
+          "w-full h-11 flex items-center justify-between px-[14px] bg-white rounded-[10px] text-sm cursor-pointer outline-none transition-all duration-150 border-[1.5px]",
+          open ? "border-sky-blue ring-[3px] ring-sky-blue/15" : "border-gray-300",
+          selected ? "text-navy" : "text-muted-foreground"
+        )}
       >
-        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        <span className="overflow-hidden text-ellipsis whitespace-nowrap">
           {selected ? selected.label : placeholder}
         </span>
         <svg
           width="12" height="8" viewBox="0 0 12 8" fill="none"
-          style={{ flexShrink: 0, marginLeft: 8, transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "none" }}
+          className={cn("flex-shrink-0 ml-2 transition-transform duration-200", open ? "rotate-180" : "")}
         >
-          <path d="M1 1l5 5 5-5" stroke={MUTED} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground"/>
         </svg>
       </button>
 
       {/* Dropdown panel */}
       {open && (
-        <div style={{
-          position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, zIndex: 300,
-          background: "#fff",
-          border: `1.5px solid #E5E7EB`,
-          borderRadius: 12,
-          boxShadow: "0 8px 32px rgba(30,33,103,0.14)",
-          overflow: "hidden",
-          minWidth: 180,
-        }}>
+        <div className="absolute top-[calc(100%+6px)] left-0 right-0 z-[300] bg-white border-[1.5px] border-gray-200 rounded-xl shadow-[0_8px_32px_rgba(30,33,103,0.14)] overflow-hidden min-w-[180px]">
           {/* "All" option */}
           <div
             onClick={() => { onChange(""); setOpen(false) }}
-            style={{
-              padding: "11px 16px", fontSize: 14, cursor: "pointer",
-              background: value === "" ? SKY_BLUE : "#fff",
-              color: value === "" ? "#fff" : MUTED,
-              fontWeight: value === "" ? 600 : 400,
-              transition: "background 0.1s",
-            }}
-            onMouseEnter={e => { if (value !== "") (e.currentTarget as HTMLDivElement).style.background = SECTION_BG }}
-            onMouseLeave={e => { if (value !== "") (e.currentTarget as HTMLDivElement).style.background = "#fff" }}
+            className={cn(
+              "px-4 py-[11px] text-sm cursor-pointer transition-colors duration-100",
+              value === "" ? "bg-sky-blue text-white font-semibold" : "bg-white text-muted-foreground font-normal hover:bg-section-bg"
+            )}
           >
             {placeholder}
           </div>
@@ -87,16 +66,10 @@ export function CustomSelect({ placeholder, options, value, onChange }: CustomSe
             <div
               key={opt.value}
               onClick={() => { onChange(opt.value); setOpen(false) }}
-              style={{
-                padding: "11px 16px", fontSize: 14, cursor: "pointer",
-                background: value === opt.value ? SKY_BLUE : "#fff",
-                color: value === opt.value ? "#fff" : NAVY,
-                fontWeight: value === opt.value ? 600 : 400,
-                transition: "background 0.1s",
-                borderTop: "1px solid #F3F4F6",
-              }}
-              onMouseEnter={e => { if (value !== opt.value) (e.currentTarget as HTMLDivElement).style.background = SECTION_BG }}
-              onMouseLeave={e => { if (value !== opt.value) (e.currentTarget as HTMLDivElement).style.background = "#fff" }}
+              className={cn(
+                "px-4 py-[11px] text-sm cursor-pointer transition-colors duration-100 border-t border-gray-100",
+                value === opt.value ? "bg-sky-blue text-white font-semibold" : "bg-white text-navy font-normal hover:bg-section-bg"
+              )}
             >
               {opt.label}
             </div>
