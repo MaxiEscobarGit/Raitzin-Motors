@@ -1,8 +1,8 @@
 'use client'
 
 import Image from "next/image"
+import Link from "next/link"
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
-import { cn } from "@/lib/utils"
 import {
   formatPrice, formatKm, generateWALink, getVehicleTags,
   type Vehicle, type Tag,
@@ -11,17 +11,22 @@ import { TagBadge } from "./VehicleBadges"
 
 type VehicleCardProps = {
   vehicle: Vehicle
-  onSelect: (v: Vehicle) => void
+  onSelect?: (v: Vehicle) => void
   allTags: Tag[]
 }
 
-export function VehicleCard({ vehicle, onSelect, allTags }: VehicleCardProps) {
+export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
   return (
-    <article
-      onClick={() => onSelect(vehicle)}
-      className="bg-white rounded-[14px] overflow-hidden cursor-pointer border border-gray-200 shadow-sm transition-all duration-[220ms] ease-out flex flex-col hover:border-sky-blue hover:shadow-[0_8px_32px_rgba(30,33,103,0.13)] hover:-translate-y-[3px]"
-    >
-      <div className="relative h-[190px] bg-section-bg overflow-hidden">
+    <article className="relative bg-white rounded-[14px] overflow-hidden border border-gray-200 shadow-sm transition-all duration-[220ms] ease-out flex flex-col hover:border-sky-blue hover:shadow-[0_8px_32px_rgba(30,33,103,0.13)] hover:-translate-y-[3px]">
+      {/* Stretch link — covers entire card */}
+      <Link
+        href={`/autos/${vehicle.slug}`}
+        className="absolute inset-0 z-[1]"
+        aria-label={`Ver ficha de ${vehicle.marca} ${vehicle.model} ${vehicle.year}`}
+      />
+
+      {/* Image area */}
+      <div className="relative h-[190px] bg-section-bg overflow-hidden z-[2] pointer-events-none">
         {vehicle.is_sold && (
           <div className="absolute inset-0 bg-black/45 z-[2] flex items-center justify-center">
             <span className="bg-burgundy text-white font-extrabold text-lg px-7 py-2 rounded-lg -rotate-[10deg]">
@@ -56,11 +61,12 @@ export function VehicleCard({ vehicle, onSelect, allTags }: VehicleCardProps) {
         )}
       </div>
 
-      <div className="px-4 pt-[14px] pb-4 flex flex-col gap-2 flex-1">
+      {/* Info area */}
+      <div className="relative z-[2] px-4 pt-[14px] pb-4 flex flex-col gap-2 flex-1 pointer-events-none">
         <div className="flex justify-between items-start gap-2">
           <div>
             <div className="text-[17px] font-bold text-navy leading-tight">{vehicle.marca} {vehicle.model}</div>
-            <div className="text-[13px] text-muted-foreground mt-0.5">{vehicle.year} · {formatKm(vehicle.km)}</div>
+            <div className="text-[13px] text-muted-foreground mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">{vehicle.year} · {formatKm(vehicle.km)}</div>
           </div>
           <TagBadge tags={getVehicleTags(vehicle, allTags)} className="hidden lg:flex gap-2 flex-wrap" />
         </div>
@@ -78,10 +84,7 @@ export function VehicleCard({ vehicle, onSelect, allTags }: VehicleCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
-            className={cn(
-              "hidden lg:flex items-center gap-1.5",
-              "bg-whatsapp text-white px-[14px] py-2 rounded-full text-[13px] font-semibold no-underline"
-            )}
+            className="hidden lg:flex items-center gap-1.5 bg-whatsapp text-white px-[14px] py-2 rounded-full text-[13px] font-semibold no-underline relative z-[3] pointer-events-auto"
           >
             <WhatsAppIcon size={15} />
             Consultar

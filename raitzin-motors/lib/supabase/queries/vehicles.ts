@@ -19,6 +19,31 @@ export async function getFeaturedVehicles() {
   return data
 }
 
+export async function getAllVehicleSlugs() {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('vehicles')
+    .select('slug')
+    .eq('is_sold', false)
+  return data ?? []
+}
+
+export async function getRelatedVehicles(id_tipo: number | null, currentId: string) {
+  const supabase = await createClient()
+  let query = supabase
+    .from('vehicles')
+    .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre)')
+    .eq('is_sold', false)
+    .neq('id', currentId)
+    .order('created_at', { ascending: false })
+    .limit(3)
+
+  if (id_tipo) query = query.eq('id_tipo', id_tipo)
+
+  const { data } = await query
+  return data ?? []
+}
+
 export async function getVehicleBySlug(slug: string) {
   const supabase = await createClient()
   const { data, error } = await supabase

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -14,7 +14,7 @@ type VehiclesSectionProps = {
 }
 
 export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
-  const [selected, setSelected] = useState<Vehicle | null>(null)
+  // const [selected, setSelected] = useState<Vehicle | null>(null)
 
   return (
     <>
@@ -47,7 +47,6 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
               >
                 <VehicleCard
                   vehicle={vehicle}
-                  onSelect={setSelected}
                   allTags={allTags}
                 />
               </div>
@@ -72,7 +71,8 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
       </div>
     </section>
 
-    {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />}
+    {/* VehicleModal disabled — card click now navigates to /autos/[slug] */}
+    {/* {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />} */}
     </>
   )
 }

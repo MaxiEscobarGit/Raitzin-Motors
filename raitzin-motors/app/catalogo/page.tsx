@@ -38,6 +38,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vehicles: Vehicle[] = (vehiclesRaw ?? []).map((v: any) => ({
     id: v.id,
+    slug: v.slug ?? '',
     marca: v.marcas?.nombre ?? '',
     model: v.model ?? '',
     year: v.year ?? 0,

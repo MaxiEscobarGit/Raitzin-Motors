@@ -1,0 +1,232 @@
+'use client'
+
+import { useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { Calendar, Gauge, Fuel, Settings, Wrench, Car, Palette, Armchair, ChevronRight } from "lucide-react"
+import { Navbar } from "@/components/navbar"
+import { WhatsAppFloat } from "@/components/WhatsAppFloat"
+import { VehicleCard } from "@/components/catalogo/VehicleCard"
+import { TagBadge, EstadoBadge } from "@/components/catalogo/VehicleBadges"
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
+import {
+  formatPrice, formatKm, generateWALink, getVehicleTags,
+  type Vehicle, type Tag,
+} from "@/lib/catalog-helpers"
+
+type Props = {
+  vehicle: Vehicle
+  related: Vehicle[]
+  allTags: Tag[]
+}
+
+export function VehiclePageClient({ vehicle, related, allTags }: Props) {
+  const [activeImg, setActiveImg] = useState(0)
+  const tags = getVehicleTags(vehicle, allTags)
+
+  const specs: [React.ReactNode, string, string][] = [
+    [<Wrench size={14} key="motor" />, "Motor", vehicle.motor],
+    [<Car size={14} key="traccion" />, "Tracción", vehicle.traccion],
+    [<Fuel size={14} key="fuel" />, "Combustible", vehicle.fuel],
+    [<Settings size={14} key="trans" />, "Transmisión", vehicle.transmission],
+    [<Palette size={14} key="color" />, "Color", vehicle.color],
+    [<Armchair size={14} key="interior" />, "Interior", vehicle.interior],
+    [<Calendar size={14} key="year" />, "Año", String(vehicle.year)],
+    [<Gauge size={14} key="km" />, "Kilómetros", formatKm(vehicle.km)],
+  ]
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Navbar />
+
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-[84px] pb-16">
+
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-[13px] text-muted-foreground py-4 mb-2">
+          <Link href="/" className="hover:text-navy transition-colors">Inicio</Link>
+          <ChevronRight size={13} className="opacity-50" />
+          <Link href="/catalogo" className="hover:text-navy transition-colors">Vehículos</Link>
+          <ChevronRight size={13} className="opacity-50" />
+          <span className="text-navy font-medium truncate">{vehicle.marca} {vehicle.model} {vehicle.year}</span>
+        </nav>
+
+        {/* Main grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12">
+
+          {/* Left: Gallery */}
+          <div className="flex flex-col gap-3">
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-[#EBF4FA] to-[#D6EAF4]">
+              {vehicle.is_sold && (
+                <div className="absolute inset-0 bg-black/45 z-10 flex items-center justify-center">
+                  <span className="bg-burgundy text-white font-extrabold text-2xl px-10 py-3 rounded-xl -rotate-[10deg]">
+                    VENDIDO
+                  </span>
+                </div>
+              )}
+              {vehicle.images && vehicle.images.length > 0 ? (
+                <Image
+                  src={vehicle.images[activeImg]}
+                  alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  priority
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+                  <svg width="80" height="56" viewBox="0 0 80 56" fill="none">
+                    <rect x="6" y="22" width="68" height="25" rx="7" fill="#7EB8D4" opacity="0.3"/>
+                    <rect x="14" y="11" width="46" height="20" rx="6" fill="#7EB8D4" opacity="0.5"/>
+                    <circle cx="20" cy="47" r="7" fill="#1E2167" opacity="0.25"/>
+                    <circle cx="60" cy="47" r="7" fill="#1E2167" opacity="0.25"/>
+                    <rect x="31" y="13" width="14" height="11" rx="3" fill="#fff" opacity="0.6"/>
+                  </svg>
+                  <span className="text-sm text-muted-foreground">Sin fotos disponibles</span>
+                </div>
+              )}
+            </div>
+
+            {/* Thumbnails */}
+            {vehicle.images && vehicle.images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {vehicle.images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImg(i)}
+                    className={`relative flex-shrink-0 w-20 h-14 rounded-xl overflow-hidden border-2 transition-all ${
+                      i === activeImg ? "border-navy shadow-md" : "border-transparent opacity-70 hover:opacity-100"
+                    }`}
+                  >
+                    <Image
+                      src={img}
+                      alt={`Foto ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Right: Info */}
+          <div className="flex flex-col gap-4">
+            {/* Tags & tipo */}
+            <div className="flex flex-wrap items-center gap-2">
+              <TagBadge tags={tags} />
+              {vehicle.tipo && (
+                <span className="text-[12px] text-muted-foreground bg-gray-100 px-3 py-0.5 rounded-full">
+                  {vehicle.tipo}
+                </span>
+              )}
+            </div>
+
+            {/* Title */}
+            <div>
+              <h1 className="text-3xl font-extrabold text-navy leading-tight">
+                {vehicle.marca} {vehicle.model}
+              </h1>
+              <p className="text-muted-foreground mt-1 text-[15px]">
+                {vehicle.year} · {formatKm(vehicle.km)}
+              </p>
+            </div>
+
+            {/* Estado */}
+            <div className="flex items-center gap-2">
+              <span className="text-[13px] text-muted-foreground">Condición:</span>
+              <EstadoBadge
+                estado={vehicle.estado}
+                label={vehicle.estado_vehiculo?.nombre ?? 'Sin especificar'}
+              />
+            </div>
+
+            {/* Price */}
+            <div className="border-t border-gray-100 pt-4">
+              <div className="text-4xl font-extrabold text-burgundy">
+                {formatPrice(vehicle.precio_contado, vehicle.currency)}
+              </div>
+              {vehicle.precio_financiado && (
+                <div className="text-[13px] text-muted-foreground mt-1">
+                  Financiado: {formatPrice(vehicle.precio_financiado, 'ARS')}
+                </div>
+              )}
+              {vehicle.cuotas && vehicle.valor_cuota && (
+                <div className="text-[13px] text-muted-foreground">
+                  {vehicle.cuotas} cuotas de {formatPrice(vehicle.valor_cuota, 'ARS')}
+                </div>
+              )}
+            </div>
+
+            {/* CTA buttons */}
+            <div className="flex flex-col gap-3 pt-1">
+              <a
+                href={generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-4 rounded-full text-[15px] font-bold transition-colors no-underline"
+              >
+                <WhatsAppIcon size={20} />
+                Consultar por WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Specs */}
+        <div className="mt-10">
+          <h2 className="text-lg font-bold text-navy mb-4">Especificaciones</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#F4F8FB] rounded-2xl p-6">
+            {specs.map(([icon, label, value]) => (
+              <div key={label} className="flex flex-col gap-1">
+                <span className="text-[11px] text-muted-foreground font-medium flex items-center gap-1">
+                  {icon}{label}
+                </span>
+                <span className="text-sm text-navy font-semibold">{value || '—'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Description */}
+        {vehicle.description && (
+          <div className="mt-8">
+            <h2 className="text-lg font-bold text-navy mb-3">Descripción</h2>
+            <p className="text-muted-foreground leading-[1.8] text-sm whitespace-pre-line">
+              {vehicle.description}
+            </p>
+          </div>
+        )}
+
+        {/* Related */}
+        {related.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-lg font-bold text-navy mb-5">Vehículos similares</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              {related.map(v => (
+                <VehicleCard
+                  key={v.id}
+                  vehicle={v}
+                  onSelect={() => {}}
+                  allTags={allTags}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Back to catalog */}
+        <div className="mt-10 text-center">
+          <Link
+            href="/catalogo"
+            className="inline-flex items-center gap-2 text-navy font-semibold hover:text-burgundy transition-colors no-underline border-b-2 border-navy/20 hover:border-burgundy pb-0.5"
+          >
+            Ver todo el catálogo
+          </Link>
+        </div>
+      </div>
+
+      <WhatsAppFloat />
+    </div>
+  )
+}

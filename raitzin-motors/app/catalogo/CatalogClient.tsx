@@ -36,7 +36,7 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
   })
   const [activeTag, setActiveTag] = useState("")
   const [page, setPage] = useState(1)
-  const [selected, setSelected] = useState<Vehicle | null>(null)
+  // const [selected, setSelected] = useState<Vehicle | null>(null)
   const [showFilters, setShowFilters] = useState(false)
 
   const activeFiltersCount = [filters.marca, filters.tipo, filters.year, filters.fuel].filter(Boolean).length
@@ -129,7 +129,7 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {paginated.map(v => (
-              <VehicleCard key={v.id} vehicle={v} onSelect={setSelected} allTags={allTags} />
+              <VehicleCard key={v.id} vehicle={v} allTags={allTags} />
             ))}
           </div>
         )}
@@ -149,7 +149,8 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
         <a href={`https://instagram.com/${igHandle}`} className="text-sky-blue no-underline ml-1">@{igHandle}</a>
       </div>
 
-      {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />}
+      {/* VehicleModal disabled — card click now navigates to /autos/[slug] */}
+      {/* {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />} */}
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import Image from "next/image"
 import { Calendar, Gauge, Fuel, Settings, Wrench, Car, Palette, Armchair } from "lucide-react"
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
+
 import {
   formatPrice, formatKm, generateWALink, getVehicleTags,
   type Vehicle, type Tag,

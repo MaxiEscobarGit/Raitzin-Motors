@@ -52,6 +52,7 @@ export function getVehicleTags(vehicle: Vehicle, allTags: Tag[]): string[] {
 
 export type Vehicle = {
   id: string
+  slug: string
   marca: string
   model: string
   year: number

@@ -1,3 +1,4 @@
+import { GiCarWheel } from "react-icons/gi"
 import { cn } from "@/lib/utils"
 
 export function TagBadge({ tags, className }: { tags: string[]; className?: string }) {
@@ -20,9 +21,10 @@ export function EstadoBadge({ estado, label }: { estado: number; label: string }
   return (
     <span className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map(i => (
-        <span
+        <GiCarWheel
           key={i}
-          className={cn("w-[7px] h-[7px] rounded-full inline-block", i <= estado ? "bg-burgundy" : "bg-gray-200")}
+          size={18}
+          className={i <= estado ? "text-burgundy" : "text-gray-200"}
         />
       ))}
       <span className="text-[11px] text-muted-foreground ml-1">{label}</span>
