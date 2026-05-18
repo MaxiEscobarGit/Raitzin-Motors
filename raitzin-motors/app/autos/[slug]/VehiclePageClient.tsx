@@ -137,6 +137,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                       fill
                       className="object-cover"
                       sizes="80px"
+                      loading="lazy"
                     />
                   </button>
                 ))}
