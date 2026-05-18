@@ -142,14 +142,7 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
         />
       </div>
 
-      {/* Footer strip */}
-      <div className="bg-navy-dark text-white/50 text-center px-6 py-5 text-[13px]">
-        © 2026 Raitzin Motors · Bariloche, Argentina ·{" "}
-        <a href={`https://wa.me/${waNumber}`} className="text-sky-blue no-underline ml-1">WhatsApp</a> ·{" "}
-        <a href={`https://instagram.com/${igHandle}`} className="text-sky-blue no-underline ml-1">@{igHandle}</a>
-      </div>
-
-      {/* VehicleModal disabled — card click now navigates to /autos/[slug] */}
+{/* VehicleModal disabled — card click now navigates to /autos/[slug] */}
       {/* {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />} */}
     </div>
   )
