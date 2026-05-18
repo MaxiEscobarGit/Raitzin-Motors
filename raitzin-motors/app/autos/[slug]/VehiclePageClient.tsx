@@ -5,7 +5,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { Calendar, Gauge, Fuel, Settings, Wrench, Car, Palette, Armchair, ChevronRight, ChevronLeft } from "lucide-react"
 import { Navbar } from "@/components/navbar"
-import { WhatsAppFloat } from "@/components/WhatsAppFloat"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
 import { TagBadge, EstadoBadge } from "@/components/catalogo/VehicleBadges"
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
@@ -262,7 +261,6 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                 <VehicleCard
                   key={v.id}
                   vehicle={v}
-                  onSelect={() => {}}
                   allTags={allTags}
                 />
               ))}
@@ -281,7 +279,6 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
         </div>
       </div>
 
-      <WhatsAppFloat />
     </div>
   )
 }

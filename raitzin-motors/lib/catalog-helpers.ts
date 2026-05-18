@@ -30,6 +30,8 @@ export function formatKm(km: number): string {
   return `${km.toLocaleString("es-AR")} km`
 }
 
+const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944295668'
+
 export function generateWALink(
   marca: string,
   model: string,
@@ -37,12 +39,42 @@ export function generateWALink(
   price: number,
   currency: "ARS" | "USD"
 ): string {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
   const text = `Hola! Me interesa el ${marca} ${model} ${year} (${formatPrice(price, currency)}). ¿Está disponible?`
-  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`
 }
 
 export type Tag = { id: number; nombre: string }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function mapVehicle(v: any): Vehicle {
+  return {
+    id: v.id,
+    slug: v.slug ?? '',
+    marca: v.marcas?.nombre ?? '',
+    model: v.model ?? '',
+    year: v.year ?? 0,
+    km: v.km ?? 0,
+    tipo: v.tipo_vehiculo?.nombre ?? '',
+    fuel: v.fuel ?? '',
+    transmission: v.transmission ?? '',
+    traccion: v.traccion ?? '',
+    motor: v.motor ?? '',
+    color: v.color ?? '',
+    interior: v.interior ?? '',
+    estado: v.estado ?? 3,
+    estado_vehiculo: v.estado_vehiculo ?? undefined,
+    precio_contado: v.precio_contado ?? 0,
+    precio_financiado: v.precio_financiado ?? null,
+    cuotas: v.cuotas ?? null,
+    valor_cuota: v.valor_cuota ?? null,
+    currency: v.currency ?? 'ARS',
+    vehicle_tags: (v.vehicle_tags ?? []).map((vt: { tag_id: number }) => ({ tag_id: vt.tag_id })),
+    is_featured: v.is_featured ?? false,
+    is_sold: v.is_sold ?? false,
+    description: v.description ?? null,
+    images: v.images ?? [],
+  }
+}
 
 export function getVehicleTags(vehicle: Vehicle, allTags: Tag[]): string[] {
   return (vehicle.vehicle_tags ?? [])

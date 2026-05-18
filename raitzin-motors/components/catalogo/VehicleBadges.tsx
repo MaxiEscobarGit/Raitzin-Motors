@@ -1,5 +1,21 @@
-import { GiCarWheel } from "react-icons/gi"
 import { cn } from "@/lib/utils"
+
+function WheelIcon({ className }: { className?: string }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2"/>
+      <circle cx="12" cy="12" r="3"/>
+      <line x1="12" y1="2" x2="12" y2="9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="12" y1="15" x2="12" y2="22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="2" y1="12" x2="9" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="15" y1="12" x2="22" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="4.93" y1="4.93" x2="9.76" y2="9.76" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="14.24" y1="14.24" x2="19.07" y2="19.07" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="19.07" y1="4.93" x2="14.24" y2="9.76" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="9.76" y1="14.24" x2="4.93" y2="19.07" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  )
+}
 
 export function TagBadge({ tags, className }: { tags: string[]; className?: string }) {
   if (tags.length === 0) return null
@@ -21,9 +37,8 @@ export function EstadoBadge({ estado, label }: { estado: number; label: string }
   return (
     <span className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map(i => (
-        <GiCarWheel
+        <WheelIcon
           key={i}
-          size={18}
           className={i <= estado ? "text-gray-900" : "text-gray-200"}
         />
       ))}

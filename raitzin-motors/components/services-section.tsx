@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Zap, CreditCard, RefreshCw, Handshake, Shield } from "lucide-react"
+import { Zap, CreditCard, RefreshCw, Handshake } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
 const services = [

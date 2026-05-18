@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { type Vehicle, type Tag } from "@/lib/catalog-helpers"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
-import { VehicleModal } from "@/components/catalogo/VehicleModal"
 
 type VehiclesSectionProps = {
   vehicles: Vehicle[]
@@ -70,9 +69,6 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
         )}
       </div>
     </section>
-
-    {/* VehicleModal disabled — card click now navigates to /autos/[slug] */}
-    {/* {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />} */}
     </>
   )
 }

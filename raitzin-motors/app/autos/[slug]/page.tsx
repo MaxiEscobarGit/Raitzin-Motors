@@ -1,61 +1,30 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { createClient as createAnonClient } from "@supabase/supabase-js"
-import type { Vehicle, Tag } from "@/lib/catalog-helpers"
+import { createClient } from "@/lib/supabase/server"
+import { mapVehicle, type Tag } from "@/lib/catalog-helpers"
 import { VehiclePageClient } from "./VehiclePageClient"
 
 type Props = { params: Promise<{ slug: string }> }
 
-function getSupabase() {
+// generateStaticParams runs at build time without request context,
+// so we use the anon client directly to avoid cookies() issues.
+function buildTimeClient() {
   return createAnonClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapVehicle(v: any): Vehicle {
-  return {
-    id: v.id,
-    slug: v.slug ?? '',
-    marca: v.marcas?.nombre ?? '',
-    model: v.model ?? '',
-    year: v.year ?? 0,
-    km: v.km ?? 0,
-    tipo: v.tipo_vehiculo?.nombre ?? '',
-    fuel: v.fuel ?? '',
-    transmission: v.transmission ?? '',
-    traccion: v.traccion ?? '',
-    motor: v.motor ?? '',
-    color: v.color ?? '',
-    interior: v.interior ?? '',
-    estado: v.estado ?? 3,
-    estado_vehiculo: v.estado_vehiculo ?? undefined,
-    precio_contado: v.precio_contado ?? 0,
-    precio_financiado: v.precio_financiado ?? null,
-    cuotas: v.cuotas ?? null,
-    valor_cuota: v.valor_cuota ?? null,
-    currency: v.currency ?? 'ARS',
-    vehicle_tags: (v.vehicle_tags ?? []).map((vt: { tag_id: number }) => ({ tag_id: vt.tag_id })),
-    is_featured: v.is_featured ?? false,
-    is_sold: v.is_sold ?? false,
-    description: v.description ?? null,
-    images: v.images ?? [],
-  }
-}
-
 export async function generateStaticParams() {
-  const supabase = getSupabase()
-  const { data } = await supabase
-    .from('vehicles')
-    .select('slug')
-    .eq('is_sold', false)
+  const supabase = buildTimeClient()
+  const { data } = await supabase.from('vehicles').select('slug')
   return (data ?? []).map(v => ({ slug: v.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const supabase = getSupabase()
+  const supabase = await createClient()
   const { data: v } = await supabase
     .from('vehicles')
     .select('*, marcas(nombre), tipo_vehiculo(nombre)')
@@ -81,31 +50,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function VehiclePage({ params }: Props) {
   const { slug } = await params
-  const supabase = getSupabase()
+  const supabase = await createClient()
 
-  const [{ data: raw }, { data: tagsData }, ] = await Promise.all([
-    supabase
-      .from('vehicles')
-      .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre), estado_vehiculo(nombre)')
-      .eq('slug', slug)
-      .single(),
-    supabase.from('tags').select('id, nombre').order('nombre'),
-  ])
+  const { data: raw } = await supabase
+    .from('vehicles')
+    .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre), estado_vehiculo(nombre)')
+    .eq('slug', slug)
+    .single()
 
   if (!raw) notFound()
 
+  const [{ data: tagsData }, { data: relatedRaw }] = await Promise.all([
+    supabase.from('tags').select('id, nombre').order('nombre'),
+    supabase
+      .from('vehicles')
+      .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre)')
+      .eq('is_sold', false)
+      .neq('id', raw.id)
+      .eq('id_tipo', raw.id_tipo)
+      .order('created_at', { ascending: false })
+      .limit(3),
+  ])
+
   const vehicle = mapVehicle(raw)
   const allTags: Tag[] = tagsData ?? []
-
-  const { data: relatedRaw } = await supabase
-    .from('vehicles')
-    .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre)')
-    .eq('is_sold', false)
-    .neq('id', raw.id)
-    .eq('id_tipo', raw.id_tipo)
-    .order('created_at', { ascending: false })
-    .limit(3)
-
   const related = (relatedRaw ?? []).map(mapVehicle)
 
   const jsonLd = {

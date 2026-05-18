@@ -6,7 +6,6 @@ import { Navbar } from "@/components/navbar"
 import { FilterBar, type Filters } from "@/components/catalogo/FilterBar"
 import { TagsPills } from "@/components/catalogo/TagsPills"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
-import { VehicleModal } from "@/components/catalogo/VehicleModal"
 import { Pagination } from "@/components/catalogo/Pagination"
 import { PAGE_SIZE, getVehicleTags, type Vehicle, type Tag } from "@/lib/catalog-helpers"
 
@@ -23,9 +22,10 @@ type CatalogClientProps = {
   tags: Tag[]
   allTags: Tag[]
   initialFilters?: InitialFilters
+  initialTag?: string
 }
 
-export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, tags, allTags, initialFilters }: CatalogClientProps) {
+export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, tags, allTags, initialFilters, initialTag }: CatalogClientProps) {
   const [filters, setFilters] = useState<Filters>({
     search: initialFilters?.search ?? "",
     marca:  initialFilters?.marca  ?? "",
@@ -34,7 +34,7 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
     fuel:   initialFilters?.fuel   ?? "",
     sort: "newest",
   })
-  const [activeTag, setActiveTag] = useState("")
+  const [activeTag, setActiveTag] = useState(initialTag ?? "")
   const [page, setPage] = useState(1)
   // const [selected, setSelected] = useState<Vehicle | null>(null)
   const [showFilters, setShowFilters] = useState(false)
@@ -74,8 +74,7 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
     setPage(1)
   }
 
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
-  const igHandle = process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE
+  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944295668'
 
   return (
     <div className="min-h-screen">
@@ -142,8 +141,6 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
         />
       </div>
 
-{/* VehicleModal disabled — card click now navigates to /autos/[slug] */}
-      {/* {selected && <VehicleModal vehicle={selected} onClose={() => setSelected(null)} allTags={allTags} />} */}
     </div>
   )
 }

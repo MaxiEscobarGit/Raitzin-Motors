@@ -11,7 +11,6 @@ import { TagBadge } from "./VehicleBadges"
 
 type VehicleCardProps = {
   vehicle: Vehicle
-  onSelect?: (v: Vehicle) => void
   allTags: Tag[]
 }
 
@@ -47,8 +46,6 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
             className="object-cover"
             sizes="(max-width: 768px) 50vw, 25vw"
             loading="lazy"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARC AABAAEDASIA"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#EBF4FA] to-[#D6EAF4] flex flex-col items-center justify-center gap-2">

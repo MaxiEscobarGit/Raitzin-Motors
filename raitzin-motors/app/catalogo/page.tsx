@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Vehicle } from '@/lib/catalog-helpers'
+import { mapVehicle } from '@/lib/catalog-helpers'
 import CatalogClient from './CatalogClient'
 
 export const metadata = {
@@ -35,34 +35,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
 
   const allTags = tagsData ?? []
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const vehicles: Vehicle[] = (vehiclesRaw ?? []).map((v: any) => ({
-    id: v.id,
-    slug: v.slug ?? '',
-    marca: v.marcas?.nombre ?? '',
-    model: v.model ?? '',
-    year: v.year ?? 0,
-    km: v.km ?? 0,
-    tipo: v.tipo_vehiculo?.nombre ?? '',
-    fuel: v.fuel ?? '',
-    transmission: v.transmission ?? '',
-    traccion: v.traccion ?? '',
-    motor: v.motor ?? '',
-    color: v.color ?? '',
-    interior: v.interior ?? '',
-    estado: v.estado ?? 3,
-    estado_vehiculo: v.estado_vehiculo ?? undefined,
-    precio_contado: v.precio_contado ?? 0,
-    precio_financiado: v.precio_financiado ?? null,
-    cuotas: v.cuotas ?? null,
-    valor_cuota: v.valor_cuota ?? null,
-    currency: v.currency ?? 'ARS',
-    vehicle_tags: (v.vehicle_tags ?? []).map((vt: { tag_id: number }) => ({ tag_id: vt.tag_id })),
-    is_featured: v.is_featured ?? false,
-    is_sold: v.is_sold ?? false,
-    description: v.description ?? null,
-    images: v.images ?? [],
-  }))
+  const vehicles = (vehiclesRaw ?? []).map(mapVehicle)
 
   const toOption = (s: string) => ({ value: s, label: s })
 
@@ -82,5 +55,13 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
     fuel:   typeof sp.fuel   === 'string' ? sp.fuel   : '',
   }
 
-  return <CatalogClient vehicles={vehicles} marcas={marcas} tipos={tipos} years={years} fuels={fuels} tags={allTags} allTags={allTags} initialFilters={initialFilters} />
+  // Translate tag slug (e.g. "con-pocos-km") → tag nombre (e.g. "Con pocos km")
+  const slugifyTag = (s: string) =>
+    s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  const tagSlug = typeof sp.tag === 'string' ? sp.tag : ''
+  const initialTag = tagSlug
+    ? (allTags.find(t => slugifyTag(t.nombre) === tagSlug)?.nombre ?? '')
+    : ''
+
+  return <CatalogClient vehicles={vehicles} marcas={marcas} tipos={tipos} years={years} fuels={fuels} tags={allTags} allTags={allTags} initialFilters={initialFilters} initialTag={initialTag} />
 }
