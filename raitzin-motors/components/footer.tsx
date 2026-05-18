@@ -51,11 +51,11 @@ export function Footer() {
       <div className="h-px bg-gradient-to-r from-transparent via-pastel-blue/40 to-transparent" />
 
       {/* Main grid */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
 
           {/* Column 1 — Brand */}
-          <div className="sm:col-span-2 lg:col-span-1">
+          <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="inline-block mb-4">
               <Image
                 src="/logo raitzin.png"
@@ -129,7 +129,7 @@ export function Footer() {
           </div>
 
           {/* Column 4 — Contact */}
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <p className={columnHeadingClass}>Contacto</p>
             <ul className="space-y-4">
               <li>

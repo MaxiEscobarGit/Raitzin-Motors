@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Eye, Zap, MapPin, Heart, Car, CreditCard, ArrowLeftRight, FileText } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
+import { HeroAnimated } from "@/components/nosotros/HeroAnimated"
 
 export const metadata: Metadata = {
   title: "Nosotros | Raitzin Motors",
@@ -80,27 +81,7 @@ export default function NosotrosPage() {
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full bg-sky-blue/10 blur-[140px] pointer-events-none"
             aria-hidden="true"
           />
-          <div className="relative z-10 max-w-4xl mx-auto px-6 text-center pt-48 pb-28">
-            <p className="text-sky-blue text-xs font-semibold tracking-[0.2em] uppercase mb-6">
-              San Carlos de Bariloche · Patagonia
-            </p>
-            <h1
-              className="font-extrabold text-white leading-[1.05] mb-8 text-balance"
-              style={{ fontSize: "clamp(52px, 8vw, 96px)" }}
-            >
-              Más de 35 años en el negocio de los fierros.
-            </h1>
-            <p className="text-white/65 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-              Desde Bariloche para toda la Patagonia. Una familia que entiende
-              de autos, de confianza y de dar el mejor trato a cada cliente.
-            </p>
-            {/* Decorative separator */}
-            <div className="flex items-center justify-center gap-4" aria-hidden="true">
-              <div className="h-px w-16 bg-gradient-to-r from-transparent to-sky-blue/60" />
-              <div className="w-1.5 h-1.5 rounded-full bg-sky-blue/60" />
-              <div className="h-px w-16 bg-gradient-to-l from-transparent to-sky-blue/60" />
-            </div>
-          </div>
+          <HeroAnimated />
         </section>
 
         {/* ── 2. Historia ── */}

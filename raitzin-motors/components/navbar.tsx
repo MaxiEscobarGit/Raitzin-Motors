@@ -96,13 +96,13 @@ export function Navbar() {
             isOpen ? "max-h-96 pb-4" : "max-h-0"
           )}
         >
-          <div className="flex flex-col gap-2 pt-2">
+          <div className="flex flex-col gap-2 pt-2 items-center">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-navy hover:bg-section-bg rounded-lg transition-colors"
+                className="w-full px-4 py-2 text-sm font-medium text-navy hover:bg-section-bg rounded-lg transition-colors text-center"
               >
                 {link.label}
               </Link>

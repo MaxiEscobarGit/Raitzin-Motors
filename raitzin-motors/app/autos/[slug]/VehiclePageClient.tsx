@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Calendar, Gauge, Fuel, Settings, Wrench, Car, Palette, Armchair, ChevronRight } from "lucide-react"
+import { Calendar, Gauge, Fuel, Settings, Wrench, Car, Palette, Armchair, ChevronRight, ChevronLeft } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { WhatsAppFloat } from "@/components/WhatsAppFloat"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
@@ -23,6 +23,18 @@ type Props = {
 export function VehiclePageClient({ vehicle, related, allTags }: Props) {
   const [activeImg, setActiveImg] = useState(0)
   const tags = getVehicleTags(vehicle, allTags)
+
+  const prevImg = () => setActiveImg(i => (i - 1 + vehicle.images.length) % vehicle.images.length)
+  const nextImg = () => setActiveImg(i => (i + 1) % vehicle.images.length)
+
+  const touchStartX = useRef<number | null>(null)
+  const handleTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX }
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || vehicle.images.length <= 1) return
+    const delta = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(delta) > 40) delta > 0 ? nextImg() : prevImg()
+    touchStartX.current = null
+  }
 
   const specs: [React.ReactNode, string, string][] = [
     [<Calendar size={22} key="year" />, "Año", String(vehicle.year)],
@@ -55,13 +67,35 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
 
           {/* Left: Gallery */}
           <div className="flex flex-col gap-3">
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-[#EBF4FA] to-[#D6EAF4]">
+            <div
+              className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-[#EBF4FA] to-[#D6EAF4]"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               {vehicle.is_sold && (
                 <div className="absolute inset-0 bg-black/45 z-10 flex items-center justify-center">
                   <span className="bg-burgundy text-white font-extrabold text-2xl px-10 py-3 rounded-xl -rotate-[10deg]">
                     VENDIDO
                   </span>
                 </div>
+              )}
+              {vehicle.images && vehicle.images.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImg}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 border border-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-all"
+                    aria-label="Foto anterior"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    onClick={nextImg}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 border border-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-all"
+                    aria-label="Foto siguiente"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </>
               )}
               {vehicle.images && vehicle.images.length > 0 ? (
                 <Image
