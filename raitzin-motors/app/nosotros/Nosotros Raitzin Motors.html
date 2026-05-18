@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nosotros — Raitzin Motors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #1A1A2E; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f4f8fb; }
+    ::-webkit-scrollbar-thumb { background: #7EB8D4; border-radius: 4px; }
+
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr !important; gap: 32px !important; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .values-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .team-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .cta-buttons { flex-direction: column !important; }
+      h1.hero-title { font-size: clamp(36px, 8vw, 56px) !important; }
+    }
+    @media (max-width: 600px) {
+      .values-grid { grid-template-columns: 1fr !important; }
+      .team-grid { grid-template-columns: 1fr !important; }
+      .stats-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="catalog-components.jsx"></script>
+
+<script type="text/babel">
+
+const NAVY = "#1E2167";
+const NAVY_DARK = "#151849";
+const BURGUNDY = "#8B1A1A";
+const SKY_BLUE = "#7EB8D4";
+const WHATSAPP = "#25D366";
+const SECTION_BG = "#F4F8FB";
+const MUTED = "#5A6A7A";
+const BORDER = "#E5E7EB";
+
+const WA_HREF = "https://wa.me/5492944000000?text=Hola!%20Quer%C3%ADa%20consultarles";
+
+// ─── Section Label ────────────────────────────────────────────────────────────
+
+function Eyebrow({ children, dark }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+      <div style={{ width: 24, height: 2, background: dark ? SKY_BLUE : BURGUNDY }}></div>
+      <span style={{
+        color: dark ? SKY_BLUE : BURGUNDY, fontSize: 11, fontWeight: 700,
+        letterSpacing: "0.16em", textTransform: "uppercase",
+      }}>{children}</span>
+    </div>
+  );
+}
+
+// ─── Hero Section ─────────────────────────────────────────────────────────────
+
+function Hero() {
+  return (
+    <section style={{
+      background: "#0E1020", color: "#fff",
+      paddingTop: "calc(64px + 96px)", paddingBottom: 120,
+      position: "relative", overflow: "hidden",
+    }}>
+      {/* Grid pattern */}
+      <div style={{
+        position: "absolute", inset: 0, opacity: 0.04,
+        backgroundImage: `repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 1px, transparent 64px),
+                          repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 1px, transparent 64px)`,
+        pointerEvents: "none",
+      }}/>
+      {/* Sky blue radial glow */}
+      <div style={{
+        position: "absolute", top: "-20%", right: "-10%",
+        width: 720, height: 720, borderRadius: "50%",
+        background: `radial-gradient(circle, ${SKY_BLUE} 0%, transparent 60%)`,
+        opacity: 0.1, filter: "blur(20px)",
+        pointerEvents: "none",
+      }}/>
+
+      <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+        <Eyebrow dark>San Carlos de Bariloche · Patagonia</Eyebrow>
+        <h1 className="hero-title" style={{
+          margin: 0,
+          fontSize: "clamp(40px, 7vw, 84px)",
+          fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.02,
+          maxWidth: 920,
+        }}>
+          Más de 35 años{" "}
+          <span style={{ color: BURGUNDY }}>en el negocio</span><br/>
+          de los fierros.
+        </h1>
+        <p style={{
+          marginTop: 28, fontSize: 19, color: "rgba(255,255,255,0.55)",
+          maxWidth: 640, lineHeight: 1.65,
+        }}>
+          Una agencia de Bariloche apasionada por los autos y las motos.
+          Trabajamos para que cambiar de auto sea simple, claro y sin sorpresas.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// ─── Historia Section ─────────────────────────────────────────────────────────
+
+function Historia() {
+  return (
+    <section style={{ padding: "96px 0", background: "#fff" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+        <div className="two-col" style={{
+          display: "grid", gridTemplateColumns: "1.05fr 1fr",
+          gap: 80, alignItems: "start",
+        }}>
+          {/* Left: text */}
+          <div>
+            <Eyebrow>Nuestra Historia</Eyebrow>
+            <h2 style={{
+              fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800,
+              color: NAVY, lineHeight: 1.08, letterSpacing: "-0.02em", margin: 0,
+            }}>
+              Hace más de 35 años haciendo lo que nos apasiona.
+            </h2>
+            <div style={{ marginTop: 32, display: "flex", flexDirection: "column", gap: 18 }}>
+              <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.75, textWrap: "pretty" }}>
+                En <strong style={{ color: NAVY }}>Raitzin Motors</strong> hace más de 35 años nos dedicamos a la compra y venta de autos usados en Bariloche. Somos apasionados por los fierros, tanto autos como motos, y trabajamos para que cada cliente se sienta cómodo, acompañado y seguro al momento de cambiar su vehículo.
+              </p>
+              <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.75, textWrap: "pretty" }}>
+                Sabemos que este rubro muchas veces genera desconfianza, por eso nuestra prioridad es ofrecer <strong style={{ color: NAVY }}>transparencia</strong>, buena atención y hacer las cosas de manera simple y clara.
+              </p>
+              <p style={{ fontSize: 16, color: MUTED, lineHeight: 1.75, textWrap: "pretty" }}>
+                Más que vender autos, buscamos que la gente disfrute el proceso y vuelva a elegirnos.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: photo placeholder */}
+          <div style={{
+            position: "relative",
+            aspectRatio: "4 / 5",
+            background: `linear-gradient(135deg, ${SECTION_BG} 0%, #D6EAF4 100%)`,
+            border: `1px solid ${BORDER}`,
+            borderRadius: 20,
+            overflow: "hidden",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexDirection: "column", gap: 12,
+            boxShadow: "0 24px 60px rgba(14,16,32,0.10)",
+          }}>
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={SKY_BLUE} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="9" cy="9" r="2"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+            <span style={{ fontSize: 12, color: MUTED, fontFamily: "monospace", letterSpacing: "0.04em" }}>
+              foto del equipo / playón
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StatCard({ value, label }) {
+  const [hover, setHover] = React.useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        border: `1px solid ${hover ? SKY_BLUE : BORDER}`,
+        borderRadius: 16, padding: "28px 24px",
+        boxShadow: hover ? "0 12px 32px rgba(14,16,32,0.10)" : "none",
+        background: "#fff",
+        transition: "all 0.2s",
+        display: "flex", flexDirection: "column", justifyContent: "space-between",
+        minHeight: 160,
+      }}
+    >
+      <div style={{
+        fontSize: "clamp(36px, 4vw, 52px)", fontWeight: 800,
+        color: NAVY, lineHeight: 1, letterSpacing: "-0.03em",
+      }}>{value}</div>
+      <div style={{
+        marginTop: 16, fontSize: 13, color: MUTED, fontWeight: 500,
+        letterSpacing: "0.02em", lineHeight: 1.4,
+      }}>{label}</div>
+    </div>
+  );
+}
+
+// ─── Valores Section ──────────────────────────────────────────────────────────
+
+function Valores() {
+  const values = [
+    {
+      icon: <IconShield/>, title: "Transparencia total",
+      desc: "Documentación 100% al día, historial claro y precios sin letra chica. Sabés exactamente lo que comprás.",
+    },
+    {
+      icon: <IconLightning/>, title: "Agilidad real",
+      desc: "Respondemos por WhatsApp en minutos. Decisión, tasación y entrega sin trámites eternos.",
+    },
+    {
+      icon: <IconMountain/>, title: "Raíces en Bariloche",
+      desc: "Conocemos la región, los caminos y lo que cada auto necesita para andar en la Patagonia.",
+    },
+    {
+      icon: <IconHeart/>, title: "Personas, no tickets",
+      desc: "Atención cercana y trato directo. Nos importa que vuelvas a elegirnos cuando cambies de auto.",
+    },
+  ];
+
+  return (
+    <section style={{ background: SECTION_BG, padding: "96px 0" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ textAlign: "center", marginBottom: 56 }}>
+          <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
+            <Eyebrow>Lo que nos mueve</Eyebrow>
+            <h2 style={{
+              fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800,
+              color: NAVY, lineHeight: 1.08, letterSpacing: "-0.02em", margin: 0,
+              maxWidth: 720,
+            }}>
+              Cuatro principios que aplicamos en cada operación.
+            </h2>
+          </div>
+        </div>
+        <div className="values-grid" style={{
+          display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
+          gap: 20,
+        }}>
+          {values.map(v => <ValueCard key={v.title} {...v}/>)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ValueCard({ icon, title, desc }) {
+  const [hover, setHover] = React.useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        background: "#fff",
+        border: `1px solid ${hover ? SKY_BLUE : BORDER}`,
+        borderRadius: 16, padding: "32px 26px",
+        boxShadow: hover ? "0 16px 40px rgba(14,16,32,0.12)" : "0 1px 2px rgba(14,16,32,0.03)",
+        transition: "all 0.2s",
+        transform: hover ? "translateY(-4px)" : "none",
+        display: "flex", flexDirection: "column", gap: 18,
+        height: "100%",
+      }}
+    >
+      <div style={{
+        width: 48, height: 48, borderRadius: 12,
+        background: `${SKY_BLUE}1F`, color: NAVY,
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>{icon}</div>
+      <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, margin: 0, letterSpacing: "-0.01em" }}>
+        {title}
+      </h3>
+      <p style={{ fontSize: 14, color: MUTED, lineHeight: 1.65, margin: 0, textWrap: "pretty" }}>
+        {desc}
+      </p>
+    </div>
+  );
+}
+
+// ─── Equipo Section ───────────────────────────────────────────────────────────
+
+function Equipo() {
+  const team = [
+    { initials: "S", name: "Santiago", role: "Fundador y dueño", bio: "Lleva la agencia desde el día uno. Su mirada y experiencia están detrás de cada operación." },
+    { initials: "F", name: "Felipe", role: "Vendedor", bio: "Fanático de los autos. La primera cara que ves al entrar: entiende lo que buscás y encuentra las mejores opciones." },
+    { initials: "N", name: "Nacho", role: "Comodín del equipo", bio: "Atiende, vende, prepara autos y resuelve. Es quien deja cada vehículo del playón en perfectas condiciones." },
+    { initials: "F", name: "Francisco", role: "E-commerce y ventas online", bio: "Llevó la agencia al mundo digital. Si nos contactaste por la web, probablemente fue gracias a él." },
+    { initials: "🐾", name: "MAC", role: "Border collie oficial", bio: "Especialista en recibir clientes y robarse todas las miradas. El alma del playón.", isPet: true },
+  ];
+
+  return (
+    <section style={{ padding: "96px 0", background: "#fff" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ marginBottom: 48 }}>
+          <Eyebrow>El equipo</Eyebrow>
+          <h2 style={{
+            fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800,
+            color: NAVY, lineHeight: 1.08, letterSpacing: "-0.02em", margin: 0,
+            maxWidth: 720,
+          }}>
+            Las personas detrás de Raitzin.
+          </h2>
+        </div>
+        <div className="team-grid" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gap: 16,
+        }}>
+          {team.map(m => <TeamCard key={m.name} {...m}/>)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TeamCard({ initials, name, role, bio, isPet }) {
+  const [hover, setHover] = React.useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        border: `1px solid ${hover ? SKY_BLUE : BORDER}`,
+        borderRadius: 16, padding: "24px 20px",
+        background: "#fff",
+        transition: "all 0.2s",
+        boxShadow: hover ? "0 12px 32px rgba(14,16,32,0.10)" : "none",
+        transform: hover ? "translateY(-2px)" : "none",
+        display: "flex", flexDirection: "column", gap: 14,
+        height: "100%",
+      }}
+    >
+      <div style={{
+        width: 60, height: 60, borderRadius: "50%",
+        background: isPet
+          ? `linear-gradient(135deg, ${SKY_BLUE} 0%, ${NAVY} 100%)`
+          : `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_DARK} 100%)`,
+        color: "#fff",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: isPet ? 28 : 22, fontWeight: 800,
+        letterSpacing: "-0.02em",
+      }}>{initials}</div>
+      <div>
+        <div style={{ fontSize: 17, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em" }}>{name}</div>
+        <div style={{ fontSize: 11, color: BURGUNDY, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", marginTop: 4 }}>
+          {role}
+        </div>
+      </div>
+      <p style={{ fontSize: 13, color: MUTED, lineHeight: 1.6, margin: 0, textWrap: "pretty" }}>
+        {bio}
+      </p>
+    </div>
+  );
+}
+
+// ─── Servicios Section ────────────────────────────────────────────────────────
+
+function Servicios() {
+  const services = [
+    { label: "Compra y venta", desc: "Vehículos usados y semi-nuevos seleccionados, revisados y con documentación al día." },
+    { label: "Financiación", desc: "Te ayudamos a armar el plan que te convenga: prendaria, bancaria o créditos personales." },
+    { label: "Permuta", desc: "Recibimos tu auto como parte de pago. Tasación honesta y al instante." },
+    { label: "Consignación", desc: "Vendé tu auto a través nuestro. Nos ocupamos de todo el proceso por vos." },
+    { label: "Compra inmediata", desc: "¿Querés vender ya? Te hacemos una oferta firme y cerramos la operación el mismo día." },
+  ];
+
+  return (
+    <section style={{ padding: "96px 0", background: SECTION_BG }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 24px" }}>
+        <div className="two-col" style={{
+          display: "grid", gridTemplateColumns: "1fr 1.3fr",
+          gap: 80, alignItems: "start",
+        }}>
+          <div>
+            <Eyebrow>Servicios</Eyebrow>
+            <h2 style={{
+              fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800,
+              color: NAVY, lineHeight: 1.08, letterSpacing: "-0.02em", margin: 0,
+            }}>
+              Todo lo que necesitás bajo un mismo techo.
+            </h2>
+            <p style={{ marginTop: 24, fontSize: 15, color: MUTED, lineHeight: 1.7, maxWidth: 380 }}>
+              Desde la primera consulta hasta la entrega de llaves: te acompañamos en cada paso del cambio.
+            </p>
+          </div>
+          <div>
+            {services.map((s, i) => (
+              <ServiceRow key={s.label} {...s} isLast={i === services.length - 1}/>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceRow({ label, desc, isLast }) {
+  const [hover, setHover] = React.useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        display: "grid", gridTemplateColumns: "auto 1fr",
+        gap: 18,
+        padding: "22px 0",
+        borderBottom: isLast ? "none" : `1px solid ${BORDER}`,
+        alignItems: "start",
+        cursor: "pointer",
+        transition: "background 0.15s",
+      }}
+    >
+      <div style={{
+        width: 10, height: 10, borderRadius: "50%",
+        background: BURGUNDY, marginTop: 8,
+        boxShadow: `0 0 0 4px ${BURGUNDY}22`,
+      }}/>
+      <div>
+        <div style={{
+          fontSize: 18, fontWeight: 700,
+          color: hover ? BURGUNDY : NAVY,
+          letterSpacing: "-0.01em",
+          transition: "color 0.15s",
+        }}>{label}</div>
+        <p style={{ fontSize: 13, color: "#9CA3AF", marginTop: 4, lineHeight: 1.6, textWrap: "pretty" }}>
+          {desc}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── CTA Final ────────────────────────────────────────────────────────────────
+
+function CTAFinal() {
+  return (
+    <section style={{
+      background: NAVY, color: "#fff",
+      padding: "96px 24px", position: "relative", overflow: "hidden",
+    }}>
+      {/* Decorative circles */}
+      <div style={{
+        position: "absolute", top: "-160px", left: "-80px",
+        width: 480, height: 480, borderRadius: "50%",
+        background: SKY_BLUE, opacity: 0.08, filter: "blur(10px)",
+        pointerEvents: "none",
+      }}/>
+      <div style={{
+        position: "absolute", bottom: "-200px", right: "-120px",
+        width: 540, height: 540, borderRadius: "50%",
+        background: BURGUNDY, opacity: 0.18, filter: "blur(20px)",
+        pointerEvents: "none",
+      }}/>
+      <div style={{
+        position: "absolute", top: "20%", right: "15%",
+        width: 200, height: 200, borderRadius: "50%",
+        background: SKY_BLUE, opacity: 0.05,
+        pointerEvents: "none",
+      }}/>
+
+      <div style={{ position: "relative", maxWidth: 880, margin: "0 auto", textAlign: "center" }}>
+        <Eyebrow dark>¿Listo para el próximo?</Eyebrow>
+        <h2 style={{
+          fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800,
+          color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.05, margin: 0,
+        }}>
+          Pasá por el playón o escribinos.<br/>
+          <span style={{ color: SKY_BLUE }}>Te ayudamos a elegir bien.</span>
+        </h2>
+        <p style={{ marginTop: 22, color: "rgba(255,255,255,0.6)", fontSize: 17, maxWidth: 580, margin: "22px auto 0" }}>
+          Estamos en Bariloche. Atendemos en persona, por video llamada o por WhatsApp.
+        </p>
+
+        <div className="cta-buttons" style={{ marginTop: 40, display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
+          <a href="Catalogo Raitzin Motors.html" style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "#fff", color: NAVY,
+            padding: "16px 28px", borderRadius: 99,
+            fontSize: 15, fontWeight: 700, textDecoration: "none",
+            transition: "transform 0.15s",
+          }}
+            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
+            onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
+          >
+            Ver catálogo
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href={WA_HREF} target="_blank" rel="noopener noreferrer" style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            border: "1px solid rgba(255,255,255,0.2)", color: "#fff",
+            padding: "15px 28px", borderRadius: 99,
+            fontSize: 15, fontWeight: 600, textDecoration: "none",
+            background: "rgba(255,255,255,0.04)",
+            transition: "background 0.15s",
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
+            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.04)"}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Escribinos
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
+
+function IconShield() {
+  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2L4 6v6c0 5.5 3.5 9.5 8 10 4.5-.5 8-4.5 8-10V6l-8-4z"/>
+    <path d="M9 12l2 2 4-4"/>
+  </svg>;
+}
+function IconLightning() {
+  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+  </svg>;
+}
+function IconMountain() {
+  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 20l5-12 4 8 3-5 6 9z"/>
+    <circle cx="17" cy="6" r="2"/>
+  </svg>;
+}
+function IconHeart() {
+  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+  </svg>;
+}
+
+// ─── WhatsApp Float ───────────────────────────────────────────────────────────
+
+function WhatsAppFloat() {
+  return (
+    <a href={WA_HREF} target="_blank" rel="noopener noreferrer" aria-label="Consultanos por WhatsApp"
+      style={{
+        position: "fixed", bottom: 24, right: 24, zIndex: 90,
+        width: 56, height: 56, borderRadius: "50%",
+        background: WHATSAPP, color: "#fff",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        textDecoration: "none",
+        boxShadow: "0 12px 32px rgba(37,211,102,0.4)",
+        transition: "transform 0.15s",
+      }}
+      onMouseEnter={e => e.currentTarget.style.transform = "scale(1.08)"}
+      onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+    >
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+  );
+}
+
+// ─── Page ────────────────────────────────────────────────────────────────────
+
+function NosotrosPage() {
+  const [scrolled, setScrolled] = React.useState(false);
+  React.useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  return (
+    <div data-screen-label="Nosotros" style={{ minHeight: "100vh", background: "#fff" }}>
+      <Navbar scrolled={scrolled} />
+      <Hero/>
+      <Historia/>
+      <Valores/>
+      <Equipo/>
+      <Servicios/>
+      <CTAFinal/>
+
+      {/* Footer */}
+      <footer style={{ background: NAVY_DARK, color: "rgba(255,255,255,0.55)", textAlign: "center", padding: "24px", fontSize: 13 }}>
+        © 2025 Raitzin Motors · Bariloche, Argentina ·{" "}
+        <a href="https://wa.me/5492944000000" style={{ color: SKY_BLUE, textDecoration: "none" }}>WhatsApp</a>{" · "}
+        <a href="#" style={{ color: SKY_BLUE, textDecoration: "none" }}>@raitzin</a>
+      </footer>
+
+
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<NosotrosPage />);
+</script>
+</body>
+</html>

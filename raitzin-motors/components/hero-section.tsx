@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef } from "react"
 import { Car, Zap, CreditCard, RefreshCw } from "lucide-react"
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 const serviceButtons = [
   { icon: Car, label: "Comprá tu auto", href: "/catalogo" },
@@ -74,16 +75,30 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30" />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white font-sans leading-tight mb-6 text-balance animate-in fade-in duration-700">
-          Comprá y vendé tu auto en Raitzin Motors
-        </h1>
+      <div className="relative z-10 w-full text-center sm:text-left sm:pl-10 lg:pl-16">
+        <TextGenerateEffect
+          words="Comprá y vendé tu auto"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white font-sans leading-tight mb-1 text-balance"
+          duration={0.6}
+        />
 
-        <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Hace más de 35 años trabajando en Bariloche. Ayudamos a gente como vos a encontrar su próximo auto.
-          <br />
-          ¡Confianza, rapidéz y buena onda!
-        </p>
+        <TextGenerateEffect
+          words="en Raitzin Motors"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white font-sans leading-tight mb-3 text-balance"
+          duration={0.6}
+        />
+
+        <TextGenerateEffect
+          words="Hace más de 35 años trabajando en Bariloche. Ayudamos a gente como vos a encontrar su próximo auto."
+          className="text-lg sm:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed"
+          duration={0.2}
+        />
+
+        <TextGenerateEffect
+          words="¡Confianza, rapidez y buena onda!"
+          className="text-lg sm:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed"
+          duration={0.2}
+        />
       </div>
 
       {/* Barra de servicios pegada al fondo */}

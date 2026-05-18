@@ -48,5 +48,15 @@ Use `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5` — never `lg:gri
 ## Touch target minimum
 All interactive elements (tag pills, mobile nav links, icon buttons) must have `min-h-[44px]`. Use `py-3.5` for pill buttons to achieve this.
 
+## Footer pattern
+- Background: `bg-navy-dark` (maps to #151849 — the correct Navy Dark)
+- Top accent divider: `h-px bg-gradient-to-r from-transparent via-pastel-blue/40 to-transparent`
+- Bottom bar separator: `border-t border-white/8`
+- Link style: `text-sm text-white/60 hover:text-pastel-blue transition-colors duration-200`
+- Column heading style: `text-xs font-semibold uppercase tracking-widest text-white/40 mb-5`
+- Social/icon buttons: `w-9 h-9 rounded-lg bg-white/5 border border-white/10` + color-specific hover states
+- Component path: `components/footer.tsx` — named export `Footer`
+- Wired in `app/layout.tsx` above `<WhatsAppFloat />`
+
 ## Known palette violation to avoid
 Footer was accidentally using `#161A4D` instead of `#151849` (Navy Dark). Always use `#151849` for footer and hero dark backgrounds.

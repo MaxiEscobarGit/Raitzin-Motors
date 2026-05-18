@@ -24,7 +24,7 @@ export function EstadoBadge({ estado, label }: { estado: number; label: string }
         <GiCarWheel
           key={i}
           size={18}
-          className={i <= estado ? "text-burgundy" : "text-gray-200"}
+          className={i <= estado ? "text-gray-900" : "text-gray-200"}
         />
       ))}
       <span className="text-[11px] text-muted-foreground ml-1">{label}</span>

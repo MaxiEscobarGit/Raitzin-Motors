@@ -71,25 +71,3 @@ export function ContactSection() {
     </section>
   )
 }
-
-export function Footer() {
-  return (
-    <footer className="bg-navy-dark py-6">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-white/60 text-sm">
-            &copy; {new Date().getFullYear()} Raitzin Motors. Todos los derechos reservados.
-          </p>
-          <div className="flex items-center gap-6">
-            <a href="#" className="text-white/60 hover:text-white text-sm transition-colors">
-              Terminos y Condiciones
-            </a>
-            <a href="#" className="text-white/60 hover:text-white text-sm transition-colors">
-              Politica de Privacidad
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  )
-}

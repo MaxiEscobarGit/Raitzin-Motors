@@ -25,14 +25,14 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
   const tags = getVehicleTags(vehicle, allTags)
 
   const specs: [React.ReactNode, string, string][] = [
-    [<Wrench size={14} key="motor" />, "Motor", vehicle.motor],
-    [<Car size={14} key="traccion" />, "Tracción", vehicle.traccion],
-    [<Fuel size={14} key="fuel" />, "Combustible", vehicle.fuel],
-    [<Settings size={14} key="trans" />, "Transmisión", vehicle.transmission],
-    [<Palette size={14} key="color" />, "Color", vehicle.color],
-    [<Armchair size={14} key="interior" />, "Interior", vehicle.interior],
-    [<Calendar size={14} key="year" />, "Año", String(vehicle.year)],
-    [<Gauge size={14} key="km" />, "Kilómetros", formatKm(vehicle.km)],
+    [<Calendar size={22} key="year" />, "Año", String(vehicle.year)],
+    [<Gauge size={22} key="km" />, "Kilómetros", formatKm(vehicle.km)],
+    [<Fuel size={22} key="fuel" />, "Combustible", vehicle.fuel],
+    [<Settings size={22} key="trans" />, "Transmisión", vehicle.transmission],
+    [<Wrench size={22} key="motor" />, "Motor", vehicle.motor],
+    [<Car size={22} key="traccion" />, "Tracción", vehicle.traccion],
+    [<Palette size={22} key="color" />, "Color", vehicle.color],
+    [<Armchair size={22} key="interior" />, "Interior", vehicle.interior],
   ]
 
   return (
@@ -175,14 +175,16 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
 
         {/* Specs */}
         <div className="mt-10">
-          <h2 className="text-lg font-bold text-navy mb-4">Especificaciones</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#F4F8FB] rounded-2xl p-6">
+          <h2 className="text-2xl font-extrabold text-[#1E2167] mb-6">Detalle técnico</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 rounded-xl overflow-hidden border border-gray-200 gap-px bg-gray-200">
             {specs.map(([icon, label, value]) => (
-              <div key={label} className="flex flex-col gap-1">
-                <span className="text-[11px] text-muted-foreground font-medium flex items-center gap-1">
-                  {icon}{label}
-                </span>
-                <span className="text-sm text-navy font-semibold">{value || '—'}</span>
+              <div
+                key={label}
+                className="flex flex-col p-5 bg-white hover:bg-[#EEF4F8] transition-colors"
+              >
+                <span className="text-[#7EB8D4]">{icon}</span>
+                <span className="uppercase text-[11px] text-gray-400 tracking-widest mt-2">{label}</span>
+                <span className="font-bold text-[#1E2167] text-[17px] mt-1">{value || '—'}</span>
               </div>
             ))}
           </div>
@@ -190,11 +192,29 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
 
         {/* Description */}
         {vehicle.description && (
-          <div className="mt-8">
-            <h2 className="text-lg font-bold text-navy mb-3">Descripción</h2>
-            <p className="text-muted-foreground leading-[1.8] text-sm whitespace-pre-line">
-              {vehicle.description}
-            </p>
+          <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Left column */}
+            <div className="flex flex-col justify-center">
+              <div className="border-l-2 border-[#8B1A1A] pl-3 mb-4">
+                <span className="uppercase tracking-widest text-[11px] text-[#8B1A1A] font-semibold">
+                  Descripción
+                </span>
+              </div>
+              <h2 className="text-2xl font-extrabold text-[#1E2167] mb-3">
+                Sobre este vehículo
+              </h2>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Inspeccionado, garantizado y listo para entregar. 
+                <br></br>
+                Consultanos a nuestro WhatsApp por este modelo.
+              </p>
+            </div>
+            {/* Right column */}
+            <div className="flex items-center">
+              <p className="text-gray-600 text-[15px] leading-relaxed whitespace-pre-line">
+                {vehicle.description}
+              </p>
+            </div>
           </div>
         )}
 

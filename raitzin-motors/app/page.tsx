@@ -5,7 +5,7 @@ import { SearchSection } from "@/components/search-section"
 import { TagsSection } from "@/components/tags-section"
 import { ServicesSection } from "@/components/services-section"
 import { VehiclesSection } from "@/components/vehicles-section"
-import { ContactSection, Footer } from "@/components/contact-section"
+import { ContactSection } from "@/components/contact-section"
 import { createClient } from "@/lib/supabase/server"
 import type { Vehicle } from "@/lib/catalog-helpers"
 
@@ -77,7 +77,6 @@ export default async function HomePage() {
       <ServicesSection />
       <ReviewsSection />
       <ContactSection />
-      <Footer />
     </main>
   )
 }
