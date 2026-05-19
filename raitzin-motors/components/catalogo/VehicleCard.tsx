@@ -16,7 +16,7 @@ type VehicleCardProps = {
 
 export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
   return (
-    <article className="relative bg-white rounded-[14px] overflow-hidden border border-gray-200 shadow-sm transition-all duration-[220ms] ease-out flex flex-col hover:border-sky-blue hover:shadow-[0_8px_32px_rgba(30,33,103,0.13)] hover:-translate-y-[3px]">
+    <article className="relative bg-white rounded-[14px] overflow-hidden border border-gray-200 shadow-sm transition-all duration-[220ms] ease-out flex flex-col h-[340px] hover:border-sky-blue hover:shadow-[0_8px_32px_rgba(30,33,103,0.13)] hover:-translate-y-[3px]">
       {/* Stretch link — covers entire card */}
       <Link
         href={`/autos/${vehicle.slug}`}
@@ -25,7 +25,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
       />
 
       {/* Image area */}
-      <div className="relative h-[190px] bg-section-bg overflow-hidden z-[2] pointer-events-none">
+      <div className="relative h-44 shrink-0 bg-section-bg overflow-hidden z-[2] pointer-events-none">
         {vehicle.is_sold && (
           <div className="absolute inset-0 bg-black/45 z-[2] flex items-center justify-center">
             <span className="bg-burgundy text-white font-extrabold text-lg px-7 py-2 rounded-lg -rotate-[10deg]">
@@ -62,15 +62,15 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
       </div>
 
       {/* Info area */}
-      <div className="relative z-[2] px-4 pt-[14px] pb-4 flex flex-col gap-2 flex-1 pointer-events-none">
+      <div className="relative z-[2] px-4 pt-3 pb-4 flex flex-col flex-1 justify-between pointer-events-none">
         <div className="flex justify-between items-start gap-2">
-          <div>
-            <div className="text-[17px] font-bold text-navy leading-tight">{vehicle.marca} {vehicle.model}</div>
-            <div className="text-[13px] text-muted-foreground mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">{vehicle.year} · {formatKm(vehicle.km)}</div>
+          <div className="min-w-0">
+            <div className="text-[17px] font-bold text-navy leading-tight line-clamp-2 min-h-[48px]">{vehicle.marca} {vehicle.model}</div>
+            <div className="text-[13px] text-muted-foreground mt-0.5 truncate">{vehicle.year} · {formatKm(vehicle.km)}</div>
           </div>
-          <TagBadge tags={getVehicleTags(vehicle, allTags)} className="hidden lg:flex gap-2 flex-wrap" />
+          <TagBadge tags={getVehicleTags(vehicle, allTags)} className="hidden lg:flex gap-2 flex-wrap shrink-0" />
         </div>
-        <div className="mt-auto pt-2.5 border-t border-gray-100 flex justify-between items-center">
+        <div className="pt-2 border-t border-gray-100 flex justify-between items-center">
           <div>
             <div className="text-[20px] font-extrabold text-burgundy">{formatPrice(vehicle.precio_contado, vehicle.currency)}</div>
             {vehicle.cuotas && (

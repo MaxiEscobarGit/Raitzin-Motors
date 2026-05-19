@@ -171,7 +171,7 @@ export function ReviewsSection() {
             {group.map((review) => (
               <div
                 key={review.name}
-                className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-sky-blue h-full"
+                className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-sky-blue h-[220px]"
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex gap-0.5">
@@ -184,10 +184,12 @@ export function ReviewsSection() {
                     <span>Google</span>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed flex-1">
-                  &ldquo;{review.text}&rdquo;
-                </p>
-                <p className="text-xs font-semibold text-navy mt-3">{review.name}</p>
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
+                    &ldquo;{review.text}&rdquo;
+                  </p>
+                </div>
+                <p className="text-xs font-semibold text-navy mt-3 shrink-0">{review.name}</p>
               </div>
             ))}
           </div>
