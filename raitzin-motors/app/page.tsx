@@ -74,7 +74,7 @@ export default async function HomePage() {
       <TagsSection />
       <SearchSection marcas={marcas} tipos={tipos} years={years} fuels={fuels} />
       <VehiclesSection vehicles={destacados} allTags={tagsData ?? []} />
-      <ServicesSection />
+<ServicesSection />
       <ReviewsSection />
       <ContactSection />
     </main>

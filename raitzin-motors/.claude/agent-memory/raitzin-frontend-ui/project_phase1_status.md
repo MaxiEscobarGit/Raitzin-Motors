@@ -38,8 +38,16 @@ Note: TagsSection is a "Quiero un auto..." pill filter navigator that routes to 
 - Hero has 3 micro-stats bar anchored at bottom: "10+ Años en el mercado", "Semanal Stock actualizado", "Sí Permuta y financiación"
 - WhatsApp links use `process.env.NEXT_PUBLIC_WHATSAPP_NUMBER` correctly — no hardcoded numbers
 - Icon-only WhatsApp buttons require `aria-label="Consultar por WhatsApp"` for accessibility
-- `ServicesSection` cards use `border-t-2 border-t-transparent hover:border-t-[#7EB8D4]` for sky-blue accent on hover
-- `ServicesSection` body text uses `text-muted-foreground` (resolves to `#5A6A7A` via CSS var)
+- `ServicesSection` fully redesigned with GSAP scroll-driven animations (2026-05-19):
+  - Desktop: sticky layout, 4×100vh total height, wheel spins 3 full rotations via ScrollTrigger scrub, each service fades in/out as its scroll segment passes
+  - Mobile: normal flow grid (sm:grid-cols-2), wheel spins 2 rotations via ScrollTrigger scrub
+  - Two separate section refs (`sectionDesktopRef`, `sectionMobileRef`) and two wheel refs (`wheelDesktopRef`, `wheelMobileRef`) to avoid duplicate ref on hidden/shown elements
+  - GSAP imported dynamically (async) inside useEffect — never top-level — to avoid SSR issues
+  - ScrollTrigger.getAll().forEach(t => t.kill()) cleanup in useEffect return
+  - First service panel starts at opacity:1 (not 0) so content is visible on section entry
+  - Realistic SVG wheel: tyre ring r=95, rim r=78, inner ring r=30, center dot r=10 (burgundy), 5 spokes at 0/72/144/216/288deg, 5 bolts at 36/108/180/252/324deg (r=45 from center, burgundy)
+  - WheelSVG extracted as inner component accepting `svgRef` prop to allow reuse across both layouts
+  - Card content no longer uses shadcn Card/CardContent — plain divs with `rounded-2xl border border-gray-100 p-8`
 - `contact-section.tsx` exports both `ContactSection` and `Footer` — TODO comment added to split Footer to `components/layout/Footer.tsx`
 - `globals.css` now includes `--navy-dark: #151849` in `:root` and `--color-navy-dark: var(--navy-dark)` in `@theme inline`
 - SelectTriggers in `SearchSection` have explicit `aria-label` attributes for accessibility
