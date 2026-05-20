@@ -50,7 +50,7 @@ export function HeroSection() {
       >
         {/* Mobile */}
         <Image
-          src="/portada-mobile.jpg"
+          src="/portada-mobile2.png"
           alt="Raitzin Motors"
           fill
           priority
@@ -84,20 +84,20 @@ export function HeroSection() {
         
         <TextGenerateEffect
           words="en Raitzin Motors"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#8B1A1A] font-sans leading-tight mb-3 text-balance"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#B83232] font-sans leading-tight mb-3 text-balance drop-shadow-[0_2px_8px_rgba(184,50,50,0.5)]"
           duration={0.6}
         />
 
         <TextGenerateEffect
           words="Hace más de 35 años trabajando en Bariloche. Ayudamos a gente como vos a encontrar su próximo auto."
-          className="text-lg sm:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed"
+          className="text-lg sm:text-xl text-white max-w-2xl mb-10 leading-relaxed"
           duration={0.2}
           wordStagger={0.05}
         />
 
         <TextGenerateEffect
           words="¡Confianza, rapidez y buena onda!"
-          className="text-lg sm:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed"
+          className="text-lg sm:text-xl text-white max-w-2xl mb-10 leading-relaxed"
           duration={0.2}
           wordStagger={0.05}
         />

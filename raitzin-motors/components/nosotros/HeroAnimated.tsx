@@ -68,16 +68,16 @@ export function HeroAnimated() {
       >
         Más de 35 años{" "}
         <br />
-        <span className="text-[#8B1A1A]">en el negocio</span>{" "}
+        <span className="text-[#B83232]">en el negocio</span>{" "}
         <br />
         de los fierros.
       </h1>
 
       <div ref={subtitleRef} className="mt-4">
-        <p className="text-white/55 text-[17px] leading-snug">
+        <p className="text-white text-[17px] leading-snug">
           Una agencia de Bariloche apasionada por los autos y las motos.
         </p>
-        <p className="text-white/55 text-[17px] leading-snug">
+        <p className="text-white text-[17px] leading-snug">
           Trabajamos para que cambiar de auto sea simple, claro y sin sorpresas.
         </p>
       </div>

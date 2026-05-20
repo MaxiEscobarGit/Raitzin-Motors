@@ -77,12 +77,20 @@ export default function NosotrosPage() {
       <main>
         {/* ── 1. Hero ── */}
         <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-[#0E1020]">
-          {/* Background photo */}
+          {/* Background photo — mobile */}
+          <Image
+            src="/portada-mobile-nosotros.png"
+            alt="Raitzin Motors — local en Bariloche"
+            fill
+            className="object-cover object-center block md:hidden"
+            priority
+          />
+          {/* Background photo — desktop */}
           <Image
             src="/nosotros hero.jpg"
             alt="Raitzin Motors — local en Bariloche"
             fill
-            className="object-cover object-center"
+            className="object-cover object-center hidden md:block"
             priority
           />
           {/* Dark overlay */}

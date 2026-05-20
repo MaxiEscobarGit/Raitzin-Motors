@@ -7,7 +7,7 @@ import { ServicesSection } from "@/components/services-section"
 import { VehiclesSection } from "@/components/vehicles-section"
 import { ContactSection } from "@/components/contact-section"
 import { createClient } from "@/lib/supabase/server"
-import type { Vehicle } from "@/lib/catalog-helpers"
+import { generateSlug, type Vehicle } from "@/lib/catalog-helpers"
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -42,6 +42,7 @@ export default async function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const destacados: Vehicle[] = (destacadosData ?? []).map((v: any) => ({
     id: v.id,
+    slug: v.slug ?? generateSlug(v.marcas?.nombre ?? '', v.model ?? '', v.year ?? 0),
     marca: v.marcas?.nombre ?? '',
     model: v.model ?? '',
     year: v.year ?? 0,
