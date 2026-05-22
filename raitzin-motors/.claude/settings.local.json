@@ -11,7 +11,8 @@
       "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); console.log\\(JSON.parse\\(d\\).dependencies.next\\)\")",
       "Bash(npm install:*)",
       "Bash(npm uninstall:*)",
-      "WebFetch(domain:www.svgrepo.com)"
+      "WebFetch(domain:www.svgrepo.com)",
+      "WebFetch(domain:ui.aceternity.com)"
     ]
   }
 }

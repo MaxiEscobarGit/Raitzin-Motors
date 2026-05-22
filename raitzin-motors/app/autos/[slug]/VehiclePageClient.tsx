@@ -13,6 +13,14 @@ import {
   type Vehicle, type Tag,
 } from "@/lib/catalog-helpers"
 
+const ESTADO_LABEL: Record<number, string> = {
+  1: "Regular",
+  2: "Bueno",
+  3: "Muy bueno",
+  4: "Excelente",
+  5: "Como nuevo",
+}
+
 type Props = {
   vehicle: Vehicle
   related: Vehicle[]
@@ -171,20 +179,22 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
               <span className="text-[13px] text-muted-foreground">Condición:</span>
               <EstadoBadge
                 estado={vehicle.estado}
-                label={vehicle.estado_vehiculo?.nombre ?? 'Sin especificar'}
+                label={ESTADO_LABEL[vehicle.estado] ?? 'Sin especificar'}
               />
             </div>
 
             {/* Price */}
             <div className="border-t border-gray-100 pt-4">
-              <div className="text-4xl font-extrabold text-burgundy">
-                {formatPrice(vehicle.precio_contado, vehicle.currency)}
-              </div>
-              {vehicle.precio_financiado && (
-                <div className="text-[13px] text-muted-foreground mt-1">
-                  Financiado: {formatPrice(vehicle.precio_financiado, 'ARS')}
+              <div className="flex flex-col gap-1">
+                <div className="text-4xl font-extrabold text-burgundy">
+                  {formatPrice(vehicle.precio_contado, vehicle.currency)}
                 </div>
-              )}
+                {vehicle.precio_financiado && (
+                  <div className="text-sm text-gray-600">
+                    Financiado: {formatPrice(vehicle.precio_financiado, vehicle.currency)}
+                  </div>
+                )}
+              </div>
               {vehicle.cuotas && vehicle.valor_cuota && (
                 <div className="text-[13px] text-muted-foreground">
                   {vehicle.cuotas} cuotas de {formatPrice(vehicle.valor_cuota, 'ARS')}
