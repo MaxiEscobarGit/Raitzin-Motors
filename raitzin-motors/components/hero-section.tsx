@@ -84,7 +84,7 @@ export function HeroSection() {
         
         <TextGenerateEffect
           words="en Raitzin Motors"
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#B83232] font-sans leading-tight mb-3 text-balance drop-shadow-[0_2px_8px_rgba(184,50,50,0.5)]"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white font-sans leading-tight mb-3"
           duration={0.6}
         />
 
