@@ -1,5 +1,30 @@
-// app/admin/autos/nuevo/page.tsx
+import Link from 'next/link'
+import { ChevronLeft } from 'lucide-react'
+import { getMarcas, getTiposVehiculo } from '@/lib/supabase/queries/admin'
+import { VehicleForm } from '@/components/admin/VehicleForm'
 
-export default function NuevoAutoPage() {
-  return <div>Nuevo auto</div>
+export default async function NuevoAutoPage() {
+  const [marcas, tipos] = await Promise.all([getMarcas(), getTiposVehiculo()])
+
+  return (
+    <div>
+      <div className="mb-6">
+        <Link
+          href="/admin/autos"
+          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-3 transition-colors"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Volver a vehículos
+        </Link>
+        <h1 className="text-2xl font-bold" style={{ color: '#1E2167' }}>
+          Nuevo vehículo
+        </h1>
+        <p className="text-gray-500 text-sm mt-1">
+          Completá los datos del vehículo para publicarlo en el catálogo.
+        </p>
+      </div>
+
+      <VehicleForm marcas={marcas ?? []} tipos={tipos ?? []} />
+    </div>
+  )
 }

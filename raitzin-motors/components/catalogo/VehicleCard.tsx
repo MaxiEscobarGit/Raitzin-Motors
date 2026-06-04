@@ -33,7 +33,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
             </span>
           </div>
         )}
-        {vehicle.is_featured && (
+        {vehicle.is_featured && !vehicle.is_sold && (
           <div className="absolute top-2.5 left-2.5 z-[3] bg-amber-400 text-white text-[10px] font-bold px-[10px] py-[3px] rounded-full">
             DESTACADO
           </div>

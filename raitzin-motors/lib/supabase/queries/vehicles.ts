@@ -12,6 +12,7 @@ export async function getFeaturedVehicles() {
     `)
     .eq('is_featured', true)
     .eq('is_sold', false)
+    .eq('is_deleted', false)
     .order('created_at', { ascending: false })
     .limit(6)
 
@@ -34,6 +35,7 @@ export async function getRelatedVehicles(id_tipo: number | null, currentId: stri
     .from('vehicles')
     .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre)')
     .eq('is_sold', false)
+    .eq('is_deleted', false)
     .neq('id', currentId)
     .order('created_at', { ascending: false })
     .limit(3)
@@ -41,6 +43,19 @@ export async function getRelatedVehicles(id_tipo: number | null, currentId: stri
   if (id_tipo) query = query.eq('id_tipo', id_tipo)
 
   const { data } = await query
+  return data ?? []
+}
+
+export async function getSimilarVehicles(excludeId: string, limit: number = 3) {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('vehicles')
+    .select('*, vehicle_tags(tag_id), marcas(id, nombre), tipo_vehiculo(id, nombre)')
+    .eq('is_sold', false)
+    .eq('is_deleted', false)
+    .neq('id', excludeId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
   return data ?? []
 }
 
@@ -85,7 +100,8 @@ export async function getVehicles(params?: {
       tags (id, nombre)`,
       { count: 'exact' }
     )
-    .eq('is_sold', false)
+    .eq('is_deleted', false)
+    .order('is_sold', { ascending: true })
     .order('created_at', { ascending: false })
     .range((page - 1) * pageSize, page * pageSize - 1)
 

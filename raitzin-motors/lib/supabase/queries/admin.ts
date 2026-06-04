@@ -10,7 +10,27 @@ export async function getAllVehiclesAdmin() {
       marcas (id, nombre),
       tipo_vehiculo (id, nombre)
     `)
+    .eq('is_deleted', false)
     .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+
+export async function getMarcas() {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('marcas')
+    .select('id, nombre')
+    .order('nombre')
+  if (error) throw error
+  return data
+}
+
+export async function getTiposVehiculo() {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('tipo_vehiculo')
+    .select('id, nombre')
   if (error) throw error
   return data
 }
@@ -58,6 +78,26 @@ export async function toggleVehicleFeatured(id: string, is_featured: boolean) {
   const { error } = await supabase
     .from('vehicles')
     .update({ is_featured })
+    .eq('id', id)
+  if (error) throw error
+}
+
+export async function getVehicleById(id: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('vehicles')
+    .select(`*, marcas(id, nombre), tipo_vehiculo(id, nombre)`)
+    .eq('id', id)
+    .single()
+  if (error) return null
+  return data
+}
+
+export async function softDeleteVehicle(id: string) {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('vehicles')
+    .update({ is_deleted: true })
     .eq('id', id)
   if (error) throw error
 }

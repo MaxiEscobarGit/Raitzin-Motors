@@ -4,6 +4,7 @@ import { createClient as createAnonClient } from "@supabase/supabase-js"
 import { createClient } from "@/lib/supabase/server"
 import { mapVehicle, type Tag } from "@/lib/catalog-helpers"
 import { VehiclePageClient } from "./VehiclePageClient"
+import { SoldVehiclePage } from "@/components/vehicle/SoldVehiclePage"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -60,20 +61,43 @@ export default async function VehiclePage({ params }: Props) {
 
   if (!raw) notFound()
 
-  const [{ data: tagsData }, { data: relatedRaw }] = await Promise.all([
-    supabase.from('tags').select('id, nombre').order('nombre'),
-    supabase
-      .from('vehicles')
-      .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre)')
-      .eq('is_sold', false)
-      .neq('id', raw.id)
-      .eq('id_tipo', raw.id_tipo)
-      .order('created_at', { ascending: false })
-      .limit(3),
-  ])
-
   const vehicle = mapVehicle(raw)
+
+  // Fetch tags in all cases (needed for both normal and sold page)
+  const { data: tagsData } = await supabase
+    .from('tags')
+    .select('id, nombre')
+    .order('nombre')
+
   const allTags: Tag[] = tagsData ?? []
+
+  // Sold or deleted — show the sold page with similar vehicles
+  if (vehicle.is_sold || vehicle.is_deleted) {
+    const { data: similarRaw } = await supabase
+      .from('vehicles')
+      .select('*, vehicle_tags(tag_id), marcas(id, nombre), tipo_vehiculo(id, nombre)')
+      .eq('is_sold', false)
+      .eq('is_deleted', false)
+      .neq('id', raw.id)
+      .order('created_at', { ascending: false })
+      .limit(3)
+
+    const similar = (similarRaw ?? []).map(mapVehicle)
+
+    return <SoldVehiclePage vehicle={vehicle} similar={similar} allTags={allTags} />
+  }
+
+  // Normal available vehicle page
+  const { data: relatedRaw } = await supabase
+    .from('vehicles')
+    .select('*, vehicle_tags(tag_id), marcas(nombre), tipo_vehiculo(nombre)')
+    .eq('is_sold', false)
+    .eq('is_deleted', false)
+    .neq('id', raw.id)
+    .eq('id_tipo', raw.id_tipo)
+    .order('created_at', { ascending: false })
+    .limit(3)
+
   const related = (relatedRaw ?? []).map(mapVehicle)
 
   const jsonLd = {

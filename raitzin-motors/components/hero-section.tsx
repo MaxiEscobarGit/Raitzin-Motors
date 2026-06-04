@@ -8,9 +8,9 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 
 const serviceButtons = [
   { icon: Car, label: "Comprá tu auto", href: "/catalogo" },
-  { icon: Zap, label: "Vendé tu auto", href: "#servicios" },
-  { icon: CreditCard, label: "Financiá tu auto", href: "#servicios" },
-  { icon: RefreshCw, label: "Cambiá tu auto", href: "#servicios" },
+  { icon: Zap, label: "Vendé tu auto", href: "/servicios#compra-venta" },
+  { icon: CreditCard, label: "Financiá tu auto", href: "/servicios#financiacion" },
+  { icon: RefreshCw, label: "Cambiá tu auto", href: "/servicios#permutas" },
 ]
 
 export function HeroSection() {

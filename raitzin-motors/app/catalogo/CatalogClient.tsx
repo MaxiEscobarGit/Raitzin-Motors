@@ -59,6 +59,9 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
     else if (filters.sort === "km_asc") list.sort((a, b) => a.km - b.km)
     else list.sort((a, b) => b.year - a.year)
 
+    // Vendidos siempre al final, sin importar el orden activo
+    list.sort((a, b) => Number(a.is_sold) - Number(b.is_sold))
+
     return list
   }, [filters, activeTag, vehicles])
 

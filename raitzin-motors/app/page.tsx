@@ -72,7 +72,7 @@ export default async function HomePage() {
     <main>
       <Navbar />
       <HeroSection />
-      <TagsSection />
+      <TagsSection tags={tagsData ?? []} />
       <SearchSection marcas={marcas} tipos={tipos} years={years} fuels={fuels} />
       <VehiclesSection vehicles={destacados} allTags={tagsData ?? []} />
 <ServicesSection />

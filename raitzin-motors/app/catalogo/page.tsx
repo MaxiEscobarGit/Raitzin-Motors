@@ -24,12 +24,13 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
     supabase
       .from('vehicles')
       .select(`*, marcas(nombre), tipo_vehiculo(nombre), vehicle_tags(tag_id)`)
-      .eq('is_sold', false)
+      .eq('is_deleted', false)
+      .order('is_sold', { ascending: true })
       .order('created_at', { ascending: false }),
     supabase.from('marcas').select('id, nombre').order('nombre'),
     supabase.from('tipo_vehiculo').select('id, nombre').order('nombre'),
-    supabase.from('vehicles').select('year').eq('is_sold', false).order('year', { ascending: false }),
-    supabase.from('vehicles').select('fuel').eq('is_sold', false),
+    supabase.from('vehicles').select('year').eq('is_deleted', false).order('year', { ascending: false }),
+    supabase.from('vehicles').select('fuel').eq('is_deleted', false),
     supabase.from('tags').select('id, nombre').order('nombre'),
   ])
 

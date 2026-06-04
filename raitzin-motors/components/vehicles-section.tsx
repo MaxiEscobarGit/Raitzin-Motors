@@ -1,7 +1,7 @@
 'use client'
 
-
-import { ArrowRight } from "lucide-react"
+import { useRef, useState, useEffect } from "react"
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { type Vehicle, type Tag } from "@/lib/catalog-helpers"
@@ -13,7 +13,35 @@ type VehiclesSectionProps = {
 }
 
 export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
-  // const [selected, setSelected] = useState<Vehicle | null>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
+
+  function updateArrows() {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 4)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4)
+  }
+
+  useEffect(() => {
+    updateArrows()
+  }, [vehicles])
+
+  const CARD_WIDTH = 320
+  const GAP = 16
+
+  function scrollPrev() {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollBy({ left: -(CARD_WIDTH + GAP), behavior: 'smooth' })
+  }
+
+  function scrollNext() {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollBy({ left: CARD_WIDTH + GAP, behavior: 'smooth' })
+  }
 
   return (
     <>
@@ -38,18 +66,54 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
             </p>
           </div>
         ) : (
-          <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide mb-10">
-            {vehicles.map((vehicle) => (
+          <div className="relative mb-10">
+            {/* Flecha izquierda — solo desktop */}
+            <button
+              onClick={scrollPrev}
+              disabled={!canScrollLeft}
+              aria-label="Anterior"
+              className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10
+                w-11 h-11 rounded-full bg-white border border-gray-200 shadow-lg
+                items-center justify-center transition-opacity
+                disabled:opacity-40 disabled:cursor-default hover:enabled:shadow-xl"
+            >
+              <ChevronLeft size={20} color="#1E2167" />
+            </button>
+
+            {/* Overflow mask — oculta el scroll sin cortar las cards */}
+            <div className="overflow-hidden md:mx-14">
+              {/* Track scrolleable */}
               <div
-                key={vehicle.id}
-                className="flex-shrink-0 snap-center w-[85vw] sm:w-[45vw] lg:w-[calc(25%-12px)]"
+                ref={scrollRef}
+                onScroll={updateArrows}
+                className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide"
               >
-                <VehicleCard
-                  vehicle={vehicle}
-                  allTags={allTags}
-                />
+                {vehicles.map((vehicle) => (
+                  <div
+                    key={vehicle.id}
+                    className="flex-shrink-0 snap-center w-[85vw] sm:w-[45vw] lg:w-80"
+                  >
+                    <VehicleCard
+                      vehicle={vehicle}
+                      allTags={allTags}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Flecha derecha — solo desktop */}
+            <button
+              onClick={scrollNext}
+              disabled={!canScrollRight}
+              aria-label="Siguiente"
+              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10
+                w-11 h-11 rounded-full bg-white border border-gray-200 shadow-lg
+                items-center justify-center transition-opacity
+                disabled:opacity-40 disabled:cursor-default hover:enabled:shadow-xl"
+            >
+              <ChevronRight size={20} color="#1E2167" />
+            </button>
           </div>
         )}
 

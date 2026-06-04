@@ -37,8 +37,10 @@ White:     #FFFFFF
 ```env
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_WHATSAPP_NUMBER=   # Formato: 5492944XXXXXX (sin + ni espacios)
-ADMIN_PASSWORD=                # Para el panel admin (Fase 4)
+NEXT_PUBLIC_WHATSAPP_NUMBER=       # Formato: 5492944XXXXXX (sin + ni espacios)
+ADMIN_PASSWORD_HASH=               # Hash bcrypt — escapar $ con \$  (ej: \$2b\$12\$...)
+COOKIE_SECRET=                     # String random 32+ chars
+SUPABASE_SERVICE_ROLE_KEY=         # Clave de servicio Supabase (NO exponer en cliente)
 ```
 
 ---
@@ -132,36 +134,56 @@ raitzin-motors/
 
 ## Base de datos (Supabase)
 
-### Tablas
+### Schema exacto
 
-```sql
-tipo_vehiculo  (id, nombre)
--- valores: Chico, Sedán, Deportivo, SUV, Pickup, Inédito
+#### tabla: `vehicles`
+| columna | tipo | notas |
+|---|---|---|
+| id | uuid PK | default gen_random_uuid() |
+| id_tipo | integer, nullable | FK → tipo_vehiculo(id) |
+| id_marca | integer, nullable | FK → marcas(id) |
+| model | text NOT NULL | |
+| year | integer NOT NULL | |
+| km | integer NOT NULL | |
+| motor | text, nullable | |
+| fuel | text, nullable | |
+| transmission | text, nullable | |
+| traccion | text, nullable | |
+| color | text, nullable | |
+| interior | text, nullable | |
+| estado | integer, nullable | 1–5 |
+| precio_contado | numeric, nullable | |
+| precio_financiado | varchar, nullable | texto libre, ej: "24 cuotas de $420.000" |
+| cuotas | integer, nullable | |
+| valor_cuota | numeric, nullable | |
+| currency | text NOT NULL | 'ARS' \| 'USD', default 'ARS' |
+| description | text, nullable | |
+| images | text[], nullable | default '{}' |
+| slug | text NOT NULL UNIQUE | |
+| is_sold | boolean | default false |
+| is_featured | boolean | default false |
+| created_at | timestamptz | default now() |
 
-marcas         (id, nombre, logo_url)
+> **IMPORTANTE:** No existe columna `brand`. La marca viene de `id_marca` FK a `marcas`.
 
-tags           (id, nombre)
--- valores: Con pocos km, 0 km, Camioneta de batalla,
---          Buen valor de reventa, Fácil mantenimiento, Inédito
+#### tabla: `marcas`
+| columna | tipo |
+|---|---|
+| id | integer PK |
+| nombre | text |
+| logo_url | text, nullable |
 
-vehicles (
-  id uuid PK,
-  id_tipo     → tipo_vehiculo(id),
-  id_marca    → marcas(id),
-  id_tag      → tags(id),          -- un tag por auto (por ahora)
-  model, year, km,
-  motor, fuel, transmission, traccion,
-  color, interior,
-  estado      INTEGER 1–5,         -- condición del vehículo
-  precio_contado, precio_financiado,
-  cuotas, valor_cuota,
-  currency    'ARS' | 'USD',
-  description, images text[],
-  slug        UNIQUE,
-  is_sold, is_featured,
-  created_at
-)
-```
+#### tabla: `tipo_vehiculo`
+| columna | tipo | valores |
+|---|---|---|
+| id | integer PK | |
+| nombre | text | Chico, Sedán, Deportivo, SUV, Pickup, Inédito |
+
+#### tabla: `tags`
+| columna | tipo | valores |
+|---|---|---|
+| id | integer PK | |
+| nombre | text | Con pocos km, 0 km, Camioneta de batalla, Buen valor de reventa, Fácil mantenimiento, Inédito |
 
 ### Storage
 

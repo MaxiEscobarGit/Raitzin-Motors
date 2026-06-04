@@ -1,7 +1,8 @@
-// app/admin/layout.tsx
 import type { Metadata } from 'next'
+import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export const metadata: Metadata = {
+  title: 'Panel Admin — Raitzin Motors',
   robots: {
     index: false,
     follow: false,
@@ -9,5 +10,17 @@ export const metadata: Metadata = {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>
+  return (
+    <div className="flex min-h-screen" style={{ backgroundColor: '#F3F4F6' }}>
+      {/* Sidebar */}
+      <AdminSidebar />
+
+      {/* Contenido principal */}
+      <main className="flex-1 min-w-0 overflow-auto md:ml-0">
+        <div className="p-6 md:p-8 pt-16 md:pt-8">
+          {children}
+        </div>
+      </main>
+    </div>
+  )
 }

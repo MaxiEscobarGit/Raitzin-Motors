@@ -31,9 +31,9 @@ export type Database = {
           traccion: string | null
           color: string | null
           interior: string | null
-          estado: number
+          estado: number | null
           precio_contado: number | null
-          precio_financiado: number | null
+          precio_financiado: string | null
           cuotas: number | null
           valor_cuota: number | null
           currency: 'ARS' | 'USD'
@@ -42,6 +42,7 @@ export type Database = {
           slug: string
           is_sold: boolean
           is_featured: boolean
+          is_deleted: boolean
           created_at: string
         }
         Insert: {
@@ -58,7 +59,7 @@ export type Database = {
           traccion?: string | null
           color?: string | null
           interior?: string | null
-          estado: number
+          estado?: number | null
           precio_contado?: number | null
           precio_financiado?: number | null
           cuotas?: number | null
@@ -69,6 +70,7 @@ export type Database = {
           slug: string
           is_sold?: boolean
           is_featured?: boolean
+          is_deleted?: boolean
           created_at?: string
         }
         Update: {
@@ -96,6 +98,7 @@ export type Database = {
           slug?: string
           is_sold?: boolean
           is_featured?: boolean
+          is_deleted?: boolean
           created_at?: string
         }
       }

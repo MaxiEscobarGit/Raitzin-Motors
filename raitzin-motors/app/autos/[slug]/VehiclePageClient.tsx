@@ -75,7 +75,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
           {/* Left: Gallery */}
           <div className="flex flex-col gap-3">
             <div
-              className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-[#EBF4FA] to-[#D6EAF4]"
+              className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-[#EBF4FA] to-[#D6EAF4]"
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
@@ -134,7 +134,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                   <button
                     key={i}
                     onClick={() => setActiveImg(i)}
-                    className={`relative flex-shrink-0 w-20 h-14 rounded-xl overflow-hidden border-2 transition-all ${
+                    className={`relative flex-shrink-0 w-20 aspect-[4/3] rounded-xl overflow-hidden border-2 transition-all ${
                       i === activeImg ? "border-navy shadow-md" : "border-transparent opacity-70 hover:opacity-100"
                     }`}
                   >
@@ -153,7 +153,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
           </div>
 
           {/* Right: Info */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 min-w-[280px]">
             {/* Tags & tipo */}
             <div className="flex flex-wrap items-center gap-2">
               <TagBadge tags={tags} />
@@ -186,12 +186,12 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
             {/* Price */}
             <div className="border-t border-gray-100 pt-4">
               <div className="flex flex-col gap-1">
-                <div className="text-4xl font-extrabold text-burgundy">
+                <div className="text-4xl font-extrabold text-burgundy whitespace-nowrap">
                   {formatPrice(vehicle.precio_contado, vehicle.currency)}
                 </div>
                 {vehicle.precio_financiado && (
                   <div className="text-sm text-gray-600">
-                    Financiado: {formatPrice(vehicle.precio_financiado, vehicle.currency)}
+                    Financiado: {vehicle.precio_financiado}
                   </div>
                 )}
               </div>
@@ -208,7 +208,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                 href={generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-4 rounded-full text-[15px] font-bold transition-colors no-underline"
+                className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-4 rounded-full text-[15px] font-bold transition-colors no-underline w-full whitespace-nowrap"
               >
                 <WhatsAppIcon size={20} />
                 Consultar por WhatsApp

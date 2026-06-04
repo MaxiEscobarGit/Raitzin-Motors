@@ -71,6 +71,7 @@ export function mapVehicle(v: any): Vehicle {
     vehicle_tags: (v.vehicle_tags ?? []).map((vt: { tag_id: number }) => ({ tag_id: vt.tag_id })),
     is_featured: v.is_featured ?? false,
     is_sold: v.is_sold ?? false,
+    is_deleted: v.is_deleted ?? false,
     description: v.description ?? null,
     images: v.images ?? [],
   }
@@ -106,6 +107,7 @@ export type Vehicle = {
   vehicle_tags?: { tag_id: number }[]
   is_featured: boolean
   is_sold: boolean
+  is_deleted: boolean
   description: string | null
   images: string[]
 }
