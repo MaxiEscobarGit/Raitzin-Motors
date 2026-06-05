@@ -19,9 +19,14 @@ function buildTimeClient() {
 
 export async function generateStaticParams() {
   const supabase = buildTimeClient()
-  const { data } = await supabase.from('vehicles').select('slug')
+  const { data } = await supabase
+    .from('vehicles')
+    .select('slug')
+    .eq('is_deleted', false)
   return (data ?? []).map(v => ({ slug: v.slug }))
 }
+
+export const revalidate = 300
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -34,17 +39,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!v) return {}
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'
   const marca = v.marcas?.nombre ?? ''
-  const title = `${marca} ${v.model} ${v.year} | Raitzin Motors`
-  const description = `${marca} ${v.model} ${v.year}, ${v.km?.toLocaleString('es-AR')} km, ${v.fuel}. ${v.description ?? 'Disponible en Raitzin Motors, Bariloche.'}`
+  const title = `${marca} ${v.model} ${v.year} | Raitzin Motors Bariloche`
+  const description = `${marca} ${v.model} ${v.year}, ${v.km?.toLocaleString('es-AR')} km, ${v.fuel ?? ''}. En venta en Raitzin Motors, San Carlos de Bariloche. ${v.description ?? 'Consultá precio y financiación.'}`
+  const ogImage = v.images?.[0]
 
   return {
     title,
     description,
+    alternates: {
+      canonical: `${siteUrl}/autos/${slug}`,
+    },
     openGraph: {
-      title: `${marca} ${v.model} ${v.year}`,
-      description: `${v.km?.toLocaleString('es-AR')} km · ${v.fuel} · ${v.transmission}`,
-      images: v.images?.[0] ? [v.images[0]] : [],
+      title: `${marca} ${v.model} ${v.year} — Raitzin Motors Bariloche`,
+      description: `${v.km?.toLocaleString('es-AR')} km · ${v.fuel ?? ''} · ${v.transmission ?? ''}. Autos usados Bariloche.`,
+      url: `${siteUrl}/autos/${slug}`,
+      locale: 'es_AR',
+      type: 'website',
+      siteName: 'Raitzin Motors',
+      images: ogImage
+        ? [{ url: ogImage, width: 1200, height: 800, alt: `${marca} ${v.model} ${v.year} — Raitzin Motors Bariloche` }]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${marca} ${v.model} ${v.year} — Raitzin Motors`,
+      description: `${v.km?.toLocaleString('es-AR')} km · ${v.fuel ?? ''} · ${v.transmission ?? ''}`,
+      images: ogImage ? [ogImage] : [],
     },
   }
 }
@@ -100,6 +122,8 @@ export default async function VehiclePage({ params }: Props) {
 
   const related = (relatedRaw ?? []).map(mapVehicle)
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Car',
@@ -111,15 +135,24 @@ export default async function VehiclePage({ params }: Props) {
     vehicleTransmission: vehicle.transmission,
     color: vehicle.color,
     image: vehicle.images?.[0],
+    url: `${siteUrl}/autos/${vehicle.slug}`,
     offers: {
       '@type': 'Offer',
       price: vehicle.precio_contado,
       priceCurrency: vehicle.currency,
-      availability: 'https://schema.org/InStock',
+      availability: vehicle.is_sold
+        ? 'https://schema.org/SoldOut'
+        : 'https://schema.org/InStock',
       seller: {
         '@type': 'AutoDealer',
         name: 'Raitzin Motors',
-        address: 'San Carlos de Bariloche, Argentina',
+        url: siteUrl,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'San Carlos de Bariloche',
+          addressRegion: 'Río Negro',
+          addressCountry: 'AR',
+        },
       },
     },
   }

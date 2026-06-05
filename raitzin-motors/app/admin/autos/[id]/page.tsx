@@ -1,19 +1,22 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
-import { getVehicleById, getMarcas, getTiposVehiculo } from '@/lib/supabase/queries/admin'
+import { getVehicleById, getMarcas, getTiposVehiculo, getTags, getVehicleTags } from '@/lib/supabase/queries/admin'
 import { VehicleEditForm } from '@/components/admin/VehicleEditForm'
 
 export default async function EditarAutoPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
-  const [vehicle, marcas, tipos] = await Promise.all([
+  const [vehicle, marcas, tipos, tags] = await Promise.all([
     getVehicleById(id),
     getMarcas(),
     getTiposVehiculo(),
+    getTags(),
   ])
 
   if (!vehicle) redirect('/admin/autos')
+
+  const initialTagIds = await getVehicleTags(id)
 
   const vehicleWithRelations = vehicle as typeof vehicle & {
     marcas: { id: number; nombre: string } | null
@@ -41,6 +44,8 @@ export default async function EditarAutoPage({ params }: { params: Promise<{ id:
         vehicle={vehicle}
         marcas={marcas ?? []}
         tipos={tipos ?? []}
+        tags={tags ?? []}
+        initialTagIds={initialTagIds}
       />
     </div>
   )

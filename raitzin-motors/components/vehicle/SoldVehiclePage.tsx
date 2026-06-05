@@ -86,10 +86,7 @@ export function SoldVehiclePage({ vehicle, similar, allTags }: Props) {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
             <Link
               href="/catalogo"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-semibold text-white transition-colors"
-              style={{ backgroundColor: '#1E2167' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#151849' }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#1E2167' }}
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-semibold text-white bg-[#1E2167] hover:bg-[#151849] transition-colors"
             >
               Ver catálogo completo
             </Link>

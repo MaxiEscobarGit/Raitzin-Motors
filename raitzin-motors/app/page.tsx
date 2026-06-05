@@ -1,3 +1,5 @@
+import type { Metadata } from "next"
+import { Suspense } from "react"
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
 import { ReviewsSection } from "@/components/reviews-section"
@@ -8,6 +10,52 @@ import { VehiclesSection } from "@/components/vehicles-section"
 import { ContactSection } from "@/components/contact-section"
 import { createClient } from "@/lib/supabase/server"
 import { generateSlug, type Vehicle } from "@/lib/catalog-helpers"
+
+export const revalidate = 3600
+
+export const metadata: Metadata = {
+  title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
+  description: 'Comprá o vendé tu auto con Raitzin Motors, la concesionaria de confianza en San Carlos de Bariloche. Financiación, permuta y más de 35 años de experiencia.',
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
+  },
+  openGraph: {
+    title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
+    description: 'Comprá o vendé tu auto con Raitzin Motors, la concesionaria de confianza en San Carlos de Bariloche. Financiación, permuta y más de 35 años de experiencia.',
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
+    locale: 'es_AR',
+    type: 'website',
+  },
+}
+
+const autoDealerJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AutoDealer',
+  name: 'Raitzin Motors',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
+  telephone: `+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944295668'}`,
+  description: 'Concesionaria de autos usados y seminuevos en San Carlos de Bariloche, Patagonia, Argentina. Más de 35 años de experiencia en compra, venta, permuta y financiación.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'San Carlos de Bariloche',
+    addressRegion: 'Río Negro',
+    addressCountry: 'AR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -41.1335,
+    longitude: -71.3103,
+  },
+  sameAs: ['https://www.instagram.com/raitzinmotors'],
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '18:00',
+    },
+  ],
+}
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -22,13 +70,14 @@ export default async function HomePage() {
   ] = await Promise.all([
     supabase.from('marcas').select('nombre').order('nombre'),
     supabase.from('tipo_vehiculo').select('nombre').order('nombre'),
-    supabase.from('vehicles').select('year').eq('is_sold', false).order('year', { ascending: false }),
-    supabase.from('vehicles').select('fuel').eq('is_sold', false),
+    supabase.from('vehicles').select('year').eq('is_sold', false).eq('is_deleted', false).order('year', { ascending: false }),
+    supabase.from('vehicles').select('fuel').eq('is_sold', false).eq('is_deleted', false),
     supabase
       .from('vehicles')
       .select('*, marcas(nombre), tipo_vehiculo(nombre), vehicle_tags(tag_id)')
       .eq('is_featured', true)
       .eq('is_sold', false)
+      .eq('is_deleted', false)
       .limit(6),
     supabase.from('tags').select('id, nombre').order('nombre'),
   ])
@@ -64,18 +113,25 @@ export default async function HomePage() {
     vehicle_tags: (v.vehicle_tags ?? []).map((vt: { tag_id: number }) => ({ tag_id: vt.tag_id })),
     is_featured: v.is_featured ?? false,
     is_sold: v.is_sold ?? false,
+    is_deleted: v.is_deleted ?? false,
     description: v.description ?? null,
     images: v.images ?? [],
   }))
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(autoDealerJsonLd) }}
+      />
       <Navbar />
       <HeroSection />
-      <TagsSection tags={tagsData ?? []} />
+      <Suspense fallback={null}>
+        <TagsSection tags={tagsData ?? []} />
+      </Suspense>
       <SearchSection marcas={marcas} tipos={tipos} years={years} fuels={fuels} />
       <VehiclesSection vehicles={destacados} allTags={tagsData ?? []} />
-<ServicesSection />
+      <ServicesSection />
       <ReviewsSection />
       <ContactSection />
     </main>

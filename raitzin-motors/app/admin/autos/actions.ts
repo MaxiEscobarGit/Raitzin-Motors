@@ -103,6 +103,21 @@ export async function softDeleteVehicleAction(id: string): Promise<void> {
   revalidatePath('/admin/autos')
 }
 
+export async function setVehicleTagsAction(vehicleId: string, tagIds: number[]): Promise<void> {
+  const supabase = createAdminClient()
+  const { error: deleteError } = await supabase
+    .from('vehicle_tags')
+    .delete()
+    .eq('vehicle_id', vehicleId)
+  if (deleteError) throw new Error(deleteError.message)
+
+  if (tagIds.length > 0) {
+    const rows = tagIds.map((tag_id) => ({ vehicle_id: vehicleId, tag_id }))
+    const { error: insertError } = await supabase.from('vehicle_tags').insert(rows)
+    if (insertError) throw new Error(insertError.message)
+  }
+}
+
 export async function deleteImagesAction(imageUrls: string[]): Promise<void> {
   if (imageUrls.length === 0) return
   const supabase = createAdminClient()

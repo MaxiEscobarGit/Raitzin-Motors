@@ -129,7 +129,7 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
             </a>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {paginated.map(v => (
               <VehicleCard key={v.id} vehicle={v} allTags={allTags} />
             ))}

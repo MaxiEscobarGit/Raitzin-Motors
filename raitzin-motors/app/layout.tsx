@@ -14,13 +14,17 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'),
-  title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
-  description: 'Tu concesionaria de confianza en San Carlos de Bariloche, Argentina. Conectando familias con el auto ideal. Financiación, permuta y garantía.',
+  title: {
+    default: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
+    template: '%s | Raitzin Motors',
+  },
+  description: 'Tu concesionaria de confianza en San Carlos de Bariloche, Argentina. Autos usados y seminuevos con financiación, permuta y garantía.',
   keywords: [
     'autos usados Bariloche',
     'autos seminuevos Bariloche',
     'concesionaria Bariloche',
     'comprar auto San Carlos de Bariloche',
+    'compra venta autos San Carlos de Bariloche',
     'Raitzin Motors',
     'autos Patagonia',
     'financiación autos Río Negro',
@@ -30,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
     description: 'Tu concesionaria de confianza en San Carlos de Bariloche. Stock actualizado, financiación y permuta.',
-    url: '/',
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
     siteName: 'Raitzin Motors',
     locale: 'es_AR',
     type: 'website',
@@ -42,6 +46,15 @@ export const metadata: Metadata = {
         alt: 'Raitzin Motors — Autos Usados y Seminuevos en Bariloche',
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
+    description: 'Tu concesionaria de confianza en San Carlos de Bariloche. Stock actualizado, financiación y permuta.',
+    images: ['/portada.jpg'],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
   },
 }
 
@@ -57,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={jakarta.variable}>
+    <html lang="es-AR" className={jakarta.variable}>
       <body className="font-sans antialiased">
         {children}
         <Footer />

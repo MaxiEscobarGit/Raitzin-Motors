@@ -61,7 +61,7 @@ export type Database = {
           interior?: string | null
           estado?: number | null
           precio_contado?: number | null
-          precio_financiado?: number | null
+          precio_financiado?: string | null
           cuotas?: number | null
           valor_cuota?: number | null
           currency: 'ARS' | 'USD'
@@ -89,7 +89,7 @@ export type Database = {
           interior?: string | null
           estado?: number
           precio_contado?: number | null
-          precio_financiado?: number | null
+          precio_financiado?: string | null
           cuotas?: number | null
           valor_cuota?: number | null
           currency?: 'ARS' | 'USD'

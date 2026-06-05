@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export const metadata: Metadata = {
@@ -9,7 +11,16 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies()
+  const session = cookieStore.get('admin-session')
+  const cookieSecret = process.env.COOKIE_SECRET
+
+  // Redirect to login if session cookie is absent or doesn't match the secret
+  if (!session || !cookieSecret || session.value !== cookieSecret) {
+    redirect('/admin/login')
+  }
+
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: '#F3F4F6' }}>
       {/* Sidebar */}

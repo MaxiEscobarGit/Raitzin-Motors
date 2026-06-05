@@ -12,5 +12,8 @@
 ## Project
 - [project_sold_deleted_logic.md](./project_sold_deleted_logic.md) — Soft-delete pattern, SoldVehiclePage, admin delete modal, VehicleCard distinction
 
+## Feedback
+- [feedback_audit_patterns.md](./feedback_audit_patterns.md) — Recurring bugs found in full audit: is_deleted filter, admin auth, Suspense/useSearchParams, setTimeout cleanup, inline style conflicts
+
 ## Reference
 - [design_system.md](./design_system.md) — Color tokens, typography, spacing conventions, Tailwind usage patterns

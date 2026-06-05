@@ -252,7 +252,7 @@ export default function ServiciosPage() {
               <AnimatedDivider className="container mx-auto max-w-6xl px-6" />
             )}
 
-            <section id={service.sectionId} className={`py-20 ${service.bg}`}>
+            <section id={service.sectionId} className={`py-20 scroll-mt-16 ${service.bg}`}>
               <div className="container mx-auto px-6 max-w-6xl">
                 <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                   {isEven ? (

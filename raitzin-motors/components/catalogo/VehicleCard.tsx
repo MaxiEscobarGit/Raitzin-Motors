@@ -44,7 +44,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
             alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year}`}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 50vw, 25vw"
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             loading="lazy"
           />
         ) : (

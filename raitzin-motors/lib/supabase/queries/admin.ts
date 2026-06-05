@@ -101,3 +101,23 @@ export async function softDeleteVehicle(id: string) {
     .eq('id', id)
   if (error) throw error
 }
+
+export async function getTags() {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('tags')
+    .select('id, nombre')
+    .order('nombre')
+  if (error) throw error
+  return data
+}
+
+export async function getVehicleTags(vehicleId: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('vehicle_tags')
+    .select('tag_id')
+    .eq('vehicle_id', vehicleId)
+  if (error) throw error
+  return (data ?? []).map((row) => row.tag_id as number)
+}

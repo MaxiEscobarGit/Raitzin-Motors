@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
-import { getMarcas, getTiposVehiculo } from '@/lib/supabase/queries/admin'
+import { getMarcas, getTiposVehiculo, getTags } from '@/lib/supabase/queries/admin'
 import { VehicleForm } from '@/components/admin/VehicleForm'
 
 export default async function NuevoAutoPage() {
-  const [marcas, tipos] = await Promise.all([getMarcas(), getTiposVehiculo()])
+  const [marcas, tipos, tags] = await Promise.all([getMarcas(), getTiposVehiculo(), getTags()])
 
   return (
     <div>
@@ -24,7 +24,7 @@ export default async function NuevoAutoPage() {
         </p>
       </div>
 
-      <VehicleForm marcas={marcas ?? []} tipos={tipos ?? []} />
+      <VehicleForm marcas={marcas ?? []} tipos={tipos ?? []} tags={tags ?? []} />
     </div>
   )
 }

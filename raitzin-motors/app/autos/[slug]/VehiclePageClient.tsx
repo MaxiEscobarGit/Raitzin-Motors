@@ -31,13 +31,14 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
   const [activeImg, setActiveImg] = useState(0)
   const tags = getVehicleTags(vehicle, allTags)
 
-  const prevImg = () => setActiveImg(i => (i - 1 + vehicle.images.length) % vehicle.images.length)
-  const nextImg = () => setActiveImg(i => (i + 1) % vehicle.images.length)
+  const imageCount = vehicle.images?.length ?? 0
+  const prevImg = () => setActiveImg(i => imageCount > 0 ? (i - 1 + imageCount) % imageCount : 0)
+  const nextImg = () => setActiveImg(i => imageCount > 0 ? (i + 1) % imageCount : 0)
 
   const touchStartX = useRef<number | null>(null)
   const handleTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX }
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || vehicle.images.length <= 1) return
+    if (touchStartX.current === null || imageCount <= 1) return
     const delta = touchStartX.current - e.changedTouches[0].clientX
     if (Math.abs(delta) > 40) delta > 0 ? nextImg() : prevImg()
     touchStartX.current = null
@@ -86,7 +87,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                   </span>
                 </div>
               )}
-              {vehicle.images && vehicle.images.length > 1 && (
+              {imageCount > 1 && (
                 <>
                   <button
                     onClick={prevImg}
@@ -104,7 +105,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                   </button>
                 </>
               )}
-              {vehicle.images && vehicle.images.length > 0 ? (
+              {imageCount > 0 ? (
                 <Image
                   src={vehicle.images[activeImg]}
                   alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year}`}
@@ -128,12 +129,14 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
             </div>
 
             {/* Thumbnails */}
-            {vehicle.images && vehicle.images.length > 1 && (
+            {imageCount > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {vehicle.images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImg(i)}
+                    aria-label={`Ver foto ${i + 1} de ${vehicle.images.length}`}
+                    aria-pressed={i === activeImg}
                     className={`relative flex-shrink-0 w-20 aspect-[4/3] rounded-xl overflow-hidden border-2 transition-all ${
                       i === activeImg ? "border-navy shadow-md" : "border-transparent opacity-70 hover:opacity-100"
                     }`}

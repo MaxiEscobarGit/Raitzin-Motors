@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -17,16 +17,18 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
 
-  function updateArrows() {
+  const updateArrows = useCallback(() => {
     const el = scrollRef.current
     if (!el) return
     setCanScrollLeft(el.scrollLeft > 4)
     setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4)
-  }
+  }, [])
 
   useEffect(() => {
     updateArrows()
-  }, [vehicles])
+    window.addEventListener('resize', updateArrows)
+    return () => window.removeEventListener('resize', updateArrows)
+  }, [vehicles, updateArrows])
 
   const CARD_WIDTH = 320
   const GAP = 16

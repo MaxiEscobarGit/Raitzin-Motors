@@ -2,17 +2,19 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { X, Upload, AlertCircle } from 'lucide-react'
+import { Upload, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { compressImage } from '@/lib/utils/compress-image'
-import { uploadImagesAction, createVehicleAction } from '@/app/admin/autos/actions'
+import { uploadImagesAction, createVehicleAction, setVehicleTagsAction } from '@/app/admin/autos/actions'
 import { ImageCropper } from '@/components/admin/ImageCropper'
+import { SortableImageGrid, type SortableImage } from '@/components/admin/SortableImageGrid'
+import { TagSelector } from '@/components/admin/TagSelector'
 import type { Marca, TipoVehiculo } from '@/types/database'
 
 interface Props {
   marcas: Pick<Marca, 'id' | 'nombre'>[]
   tipos: Pick<TipoVehiculo, 'id' | 'nombre'>[]
+  tags: { id: number; nombre: string }[]
 }
 
 const initialForm = {
@@ -49,16 +51,13 @@ function generarSlug(marcaNombre: string, model: string, year: string): string {
   return `${base}-${random}`
 }
 
-export function VehicleForm({ marcas, tipos }: Props) {
+export function VehicleForm({ marcas, tipos, tags }: Props) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [form, setForm] = useState(initialForm)
-  const [imageFiles, setImageFiles] = useState<File[]>([])
-  const [imagePreviews, setImagePreviews] = useState<string[]>([])
-  // originalSizes[i] = tamaño original antes de comprimir, en bytes
-  const [originalSizes, setOriginalSizes] = useState<number[]>([])
-  // compressedSizes[i] = tamaño comprimido en bytes (null = aún no comprimido)
-  const [compressedSizes, setCompressedSizes] = useState<(number | null)[]>([])
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
+  // Single unified array for all images — drives both the drag-and-drop grid and the submit order
+  const [images, setImages] = useState<SortableImage[]>([])
   const [pendingFiles, setPendingFiles] = useState<File[]>([])
   const [croppingIndex, setCroppingIndex] = useState<number | null>(null)
   const [croppingImageSrc, setCroppingImageSrc] = useState<string | null>(null)
@@ -68,8 +67,8 @@ export function VehicleForm({ marcas, tipos }: Props) {
 
   useEffect(() => {
     return () => {
-      imagePreviews.forEach((url) => {
-        if (url.startsWith('blob:')) URL.revokeObjectURL(url)
+      images.forEach((img) => {
+        if (img.preview.startsWith('blob:')) URL.revokeObjectURL(img.preview)
       })
       if (croppingImageSrc) URL.revokeObjectURL(croppingImageSrc)
     }
@@ -80,17 +79,11 @@ export function VehicleForm({ marcas, tipos }: Props) {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
-  function formatFileSize(bytes: number): string {
-    if (bytes < 1024) return bytes + ' B'
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB'
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-  }
-
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(e.target.files ?? [])
     if (fileInputRef.current) fileInputRef.current.value = ''
 
-    const available = 10 - imageFiles.length
+    const available = 10 - images.length
     if (available <= 0) {
       alert('Máximo 10 fotos permitidas')
       return
@@ -112,10 +105,12 @@ export function VehicleForm({ marcas, tipos }: Props) {
     if (croppingImageSrc) URL.revokeObjectURL(croppingImageSrc)
 
     const previewUrl = URL.createObjectURL(croppedFile)
-    setImageFiles((prev) => [...prev, croppedFile])
-    setImagePreviews((prev) => [...prev, previewUrl])
-    setOriginalSizes((prev) => [...prev, croppedFile.size])
-    setCompressedSizes((prev) => [...prev, null])
+    const newImage: SortableImage = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      file: croppedFile,
+      preview: previewUrl,
+    }
+    setImages((prev) => [...prev, newImage])
 
     const nextIndex = (croppingIndex ?? 0) + 1
     if (nextIndex < pendingFiles.length) {
@@ -142,12 +137,12 @@ export function VehicleForm({ marcas, tipos }: Props) {
     }
   }
 
-  function removeImage(index: number) {
-    URL.revokeObjectURL(imagePreviews[index])
-    setImageFiles((prev) => prev.filter((_, i) => i !== index))
-    setImagePreviews((prev) => prev.filter((_, i) => i !== index))
-    setOriginalSizes((prev) => prev.filter((_, i) => i !== index))
-    setCompressedSizes((prev) => prev.filter((_, i) => i !== index))
+  function removeImage(id: string) {
+    setImages((prev) => {
+      const img = prev.find((i) => i.id === id)
+      if (img?.preview.startsWith('blob:')) URL.revokeObjectURL(img.preview)
+      return prev.filter((i) => i.id !== id)
+    })
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -168,16 +163,15 @@ export function VehicleForm({ marcas, tipos }: Props) {
     try {
       const slug = generarSlug(marca.nombre, form.model, form.year)
 
-      // 1. Comprimir imágenes
-      let filesToUpload = imageFiles
-      if (imageFiles.length > 0) {
+      // 1. Comprimir imágenes en el orden actual del grid
+      const rawFiles = images.map((img) => img.file).filter((f): f is File => !!f)
+      let filesToUpload = rawFiles
+      if (rawFiles.length > 0) {
         setUploadStep('compressing')
-        const compressed = await Promise.all(imageFiles.map((f) => compressImage(f)))
-        setCompressedSizes(compressed.map((f) => f.size))
-        filesToUpload = compressed
+        filesToUpload = await Promise.all(rawFiles.map((f) => compressImage(f)))
       }
 
-      // 2. Subir imágenes
+      // 2. Subir imágenes — el orden en FormData determina el orden en Supabase
       let imageUrls: string[] = []
       if (filesToUpload.length > 0) {
         setUploadStep('uploading')
@@ -189,17 +183,17 @@ export function VehicleForm({ marcas, tipos }: Props) {
 
       // 3. Insertar vehículo
       setUploadStep('saving')
-      await createVehicleAction({
+      const newVehicle = await createVehicleAction({
         id_marca: Number(form.id_marca),
         id_tipo: form.id_tipo ? Number(form.id_tipo) : null,
         model: form.model.trim(),
         year: Number(form.year),
         km: Number(form.km),
         currency: form.currency,
-        precio_contado: Number(form.precio_contado),
+        precio_contado: parseInt(form.precio_contado, 10),
         precio_financiado: form.precio_financiado.trim() || null,
-        cuotas: form.cuotas ? Number(form.cuotas) : null,
-        valor_cuota: form.valor_cuota ? Number(form.valor_cuota) : null,
+        cuotas: form.cuotas ? parseInt(form.cuotas, 10) : null,
+        valor_cuota: form.valor_cuota ? parseInt(form.valor_cuota, 10) : null,
         fuel: form.fuel || null,
         transmission: form.transmission || null,
         color: form.color.trim() || null,
@@ -213,6 +207,8 @@ export function VehicleForm({ marcas, tipos }: Props) {
         is_featured: form.is_featured,
         is_sold: form.is_sold,
       })
+
+      await setVehicleTagsAction(newVehicle.id, selectedTagIds)
 
       router.push('/admin/autos')
     } catch (err) {
@@ -289,7 +285,7 @@ export function VehicleForm({ marcas, tipos }: Props) {
               onChange={(e) => set('year', e.target.value)}
               disabled={loading}
               min={1990}
-              max={2026}
+              max={new Date().getFullYear() + 1}
               className={inputClass}
             />
           </div>
@@ -343,6 +339,7 @@ export function VehicleForm({ marcas, tipos }: Props) {
               disabled={loading}
               placeholder={form.currency === 'ARS' ? 'Ej: 15000000' : 'Ej: 12000'}
               min={0}
+              step={1}
               className={inputClass}
             />
           </div>
@@ -357,33 +354,6 @@ export function VehicleForm({ marcas, tipos }: Props) {
               placeholder="Ej: 36 cuotas de $420.000"
               className={inputClass}
             />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className={labelClass}>Cuotas</label>
-              <input
-                type="number"
-                value={form.cuotas}
-                onChange={(e) => set('cuotas', e.target.value)}
-                disabled={loading}
-                placeholder="Ej: 24"
-                min={0}
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <label className={labelClass}>Valor cuota</label>
-              <input
-                type="number"
-                value={form.valor_cuota}
-                onChange={(e) => set('valor_cuota', e.target.value)}
-                disabled={loading}
-                placeholder="Ej: 420000"
-                min={0}
-                className={inputClass}
-              />
-            </div>
           </div>
         </div>
       </div>
@@ -474,11 +444,10 @@ export function VehicleForm({ marcas, tipos }: Props) {
               className={inputClass}
             >
               <option value="">Sin especificar</option>
-              <option value="4x2">4x2</option>
+              <option value="Delantera">Delantera</option>
+              <option value="Trasera">Trasera</option>
+              <option value="Integral">Integral</option>
               <option value="4x4">4x4</option>
-              <option value="AWD">AWD</option>
-              <option value="FWD">FWD</option>
-              <option value="RWD">RWD</option>
             </select>
           </div>
 
@@ -528,6 +497,18 @@ export function VehicleForm({ marcas, tipos }: Props) {
         />
       </div>
 
+      {/* Tags */}
+      <div className={sectionClass}>
+        <h2 className={sectionTitleClass} style={{ color: '#1E2167' }}>
+          Tags
+        </h2>
+        <TagSelector
+          tags={tags}
+          selectedIds={selectedTagIds}
+          onChange={setSelectedTagIds}
+        />
+      </div>
+
       {/* Imágenes */}
       <div className={sectionClass}>
         <h2 className={sectionTitleClass} style={{ color: '#1E2167' }}>
@@ -537,45 +518,19 @@ export function VehicleForm({ marcas, tipos }: Props) {
           Máximo 10 imágenes. La primera imagen será la principal en el catálogo.
         </p>
 
-        {imagePreviews.length > 0 && (
-          <div className="flex flex-wrap gap-3 mb-4">
-            {imagePreviews.map((url, i) => (
-              <div key={i} className="flex flex-col items-center gap-1">
-                <div className="relative w-24 h-24 rounded-lg overflow-hidden group">
-                  <Image
-                    src={url}
-                    alt={`Preview ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(i)}
-                    disabled={loading}
-                    className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 text-white
-                      flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                  {i === 0 && (
-                    <span className="absolute bottom-1 left-1 text-[10px] bg-black/60 text-white px-1 rounded">
-                      Principal
-                    </span>
-                  )}
-                </div>
-                {/* Tamaño del archivo */}
-                <span className="text-[10px] text-gray-400 text-center leading-tight">
-                  {compressedSizes[i] != null
-                    ? `${formatFileSize(originalSizes[i])} → ${formatFileSize(compressedSizes[i]!)}`
-                    : formatFileSize(originalSizes[i] ?? 0)}
-                </span>
-              </div>
-            ))}
+        {/* Drag-and-drop sortable grid */}
+        {images.length > 0 && (
+          <div className="mb-4">
+            <SortableImageGrid
+              images={images}
+              onChange={setImages}
+              onRemove={removeImage}
+              disabled={loading}
+            />
           </div>
         )}
 
-        {imageFiles.length < 10 && (
+        {images.length < 10 && (
           <>
             <input
               ref={fileInputRef}
@@ -597,16 +552,17 @@ export function VehicleForm({ marcas, tipos }: Props) {
               )}
             >
               <Upload className="w-4 h-4" />
-              {imageFiles.length === 0
+              {images.length === 0
                 ? 'Seleccionar imágenes'
-                : `Agregar más (${imageFiles.length}/10)`}
+                : `Agregar más (${images.length}/10)`}
             </label>
           </>
         )}
 
-        {imageFiles.length > 0 && croppingIndex === null && (
+        {images.length > 0 && croppingIndex === null && !loading && (
           <p className="text-xs text-gray-500 mt-3">
-            {imageFiles.length} {imageFiles.length === 1 ? 'foto lista' : 'fotos listas'} para subir
+            {images.length} {images.length === 1 ? 'foto lista' : 'fotos listas'} para subir.
+            Arrastrá para reordenar.
           </p>
         )}
 

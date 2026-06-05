@@ -6,14 +6,15 @@ import { cn } from '@/lib/utils'
 const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/catalogo', label: 'Catálogo' },
+  { href: '/servicios', label: 'Servicios' },
   { href: '/nosotros', label: 'Nosotros' },
 ]
 
-const serviceItems = [
-  'Compra de autos',
-  'Venta de autos',
-  'Financiamiento',
-  'Tasación gratuita',
+const serviceLinks = [
+  { href: '/servicios#compra-venta', label: 'Compra y venta de autos' },
+  { href: '/servicios#financiacion', label: 'Financiamiento' },
+  { href: '/servicios#permutas', label: 'Permutas' },
+  { href: '/servicios#consignacion', label: 'Consignación' },
 ]
 
 const INSTAGRAM_URL = 'https://www.instagram.com/raitzin.motors?igsh=dGZyd3c4bzhlOWR5'
@@ -120,9 +121,11 @@ export function Footer() {
           <div>
             <p className={columnHeadingClass}>Servicios</p>
             <ul className="space-y-3">
-              {serviceItems.map((item) => (
-                <li key={item}>
-                  <span className={cn(linkClass, 'cursor-default')}>{item}</span>
+              {serviceLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className={linkClass}>
+                    {link.label}
+                  </a>
                 </li>
               ))}
             </ul>

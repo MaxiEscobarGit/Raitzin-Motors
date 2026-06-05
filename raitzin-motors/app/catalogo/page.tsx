@@ -1,10 +1,23 @@
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { mapVehicle } from '@/lib/catalog-helpers'
 import CatalogClient from './CatalogClient'
 
-export const metadata = {
-  title: 'Catálogo — Raitzin Motors',
-  description: 'Explorá nuestro stock de autos usados y semi-nuevos en Bariloche.',
+export const revalidate = 60
+
+export const metadata: Metadata = {
+  title: 'Catálogo de Autos Usados en Bariloche',
+  description: 'Explorá el stock completo de autos usados y seminuevos de Raitzin Motors en San Carlos de Bariloche. Filtrá por marca, tipo, año y combustible.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/catalogo`,
+  },
+  openGraph: {
+    title: 'Catálogo de Autos Usados en Bariloche — Raitzin Motors',
+    description: 'Explorá el stock completo de autos usados y seminuevos en San Carlos de Bariloche. Filtrá por marca, tipo, año y combustible.',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/catalogo`,
+    locale: 'es_AR',
+    type: 'website',
+  },
 }
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>

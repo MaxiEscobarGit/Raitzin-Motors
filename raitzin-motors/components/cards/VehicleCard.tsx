@@ -40,11 +40,12 @@ export function VehicleCard({ vehicle }: Props) {
           <Image
             src={thumbUrl}
             alt={title}
-            width={400}
-            height={300}
+            fill
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 320px"
             quality={80}
+            loading="lazy"
             className={cn(
-              'object-cover w-full h-full transition-transform duration-300 group-hover:scale-105',
+              'object-cover transition-transform duration-300 group-hover:scale-105',
               vehicle.is_sold && 'grayscale'
             )}
           />
@@ -149,7 +150,7 @@ export function VehicleCard({ vehicle }: Props) {
             className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors"
             style={{ backgroundColor: '#1E2167', color: '#FFFFFF' }}
           >
-            Ver mas
+            Ver más
           </span>
         </div>
       </div>

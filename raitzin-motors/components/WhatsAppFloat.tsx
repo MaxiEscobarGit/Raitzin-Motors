@@ -27,22 +27,11 @@ export function WhatsAppFloat() {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="bottom-20 lg:bottom-6"
+      aria-label="Consultanos por WhatsApp"
+      className="fixed right-6 bottom-20 lg:bottom-6 z-[999] w-14 h-14 rounded-full flex items-center justify-center text-white transition-transform duration-200 hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
       style={{
-        position: 'fixed',
-        right: 24,
-        zIndex: 999,
-        width: 56,
-        height: 56,
-        borderRadius: '50%',
         background: '#25D366',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         boxShadow: '0 4px 16px rgba(37,211,102,0.4)',
-        cursor: 'pointer',
-        textDecoration: 'none',
-        color: '#fff',
       }}
     >
       <WhatsAppIcon size={28} />

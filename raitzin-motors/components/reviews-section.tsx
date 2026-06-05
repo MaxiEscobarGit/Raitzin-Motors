@@ -117,24 +117,29 @@ export function ReviewsSection() {
 
   // Auto-rotate
   useEffect(() => {
+    let fadeTimeout: ReturnType<typeof setTimeout>
     const interval = setInterval(() => {
       setVisible(false)
-      setTimeout(() => {
+      fadeTimeout = setTimeout(() => {
         setCurrentGroup((prev) => (prev + 1) % groups.length)
         setVisible(true)
       }, 300)
     }, 5000)
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      clearTimeout(fadeTimeout)
+    }
   }, [groups.length, autoKey])
 
   const goTo = (index: number) => {
     if (index === currentGroup) return
     setVisible(false)
-    setTimeout(() => {
+    const t = setTimeout(() => {
       setCurrentGroup(index)
       setVisible(true)
     }, 300)
     setAutoKey((k) => k + 1)
+    return () => clearTimeout(t)
   }
 
   const goPrev = () => goTo((currentGroup - 1 + groups.length) % groups.length)

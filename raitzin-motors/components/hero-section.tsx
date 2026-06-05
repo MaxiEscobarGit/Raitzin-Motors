@@ -51,7 +51,7 @@ export function HeroSection() {
         {/* Mobile */}
         <Image
           src="/portada-mobile2.png"
-          alt="Raitzin Motors"
+          alt="Raitzin Motors — Concesionaria de autos usados en Bariloche, Patagonia"
           fill
           priority
           quality={90}
@@ -62,7 +62,7 @@ export function HeroSection() {
         {/* Desktop */}
         <Image
           src="/portada.jpg"
-          alt="Raitzin Motors"
+          alt="Raitzin Motors — Concesionaria de autos usados en San Carlos de Bariloche"
           fill
           priority
           quality={90}
