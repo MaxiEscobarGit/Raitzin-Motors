@@ -7,7 +7,6 @@ import {
   formatPrice, formatKm, generateWALink, getVehicleTags,
   type Vehicle, type Tag,
 } from "@/lib/catalog-helpers"
-import { TagBadge } from "./VehicleBadges"
 
 type VehicleCardProps = {
   vehicle: Vehicle
@@ -16,7 +15,7 @@ type VehicleCardProps = {
 
 export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
   return (
-    <article className="relative bg-white rounded-[14px] overflow-hidden border border-gray-200 shadow-sm transition-all duration-[220ms] ease-out flex flex-col h-[340px] hover:border-sky-blue hover:shadow-[0_8px_32px_rgba(30,33,103,0.13)] hover:-translate-y-[3px]">
+    <article className="relative bg-white rounded-[14px] overflow-hidden border border-gray-200 shadow-sm transition-all duration-[220ms] ease-out flex flex-col hover:border-sky-blue hover:shadow-[0_8px_32px_rgba(30,33,103,0.13)] hover:-translate-y-[3px]">
       {/* Stretch link — covers entire card */}
       <Link
         href={`/autos/${vehicle.slug}`}
@@ -38,6 +37,24 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
             DESTACADO
           </div>
         )}
+        {(() => {
+          const tags = getVehicleTags(vehicle, allTags)
+          const visibleTag = tags[0]
+          const extraCount = tags.length - 1
+          if (!visibleTag || vehicle.is_sold) return null
+          return (
+            <div className="absolute top-2 right-2 z-[3] hidden sm:flex gap-1 items-center">
+              <span className="bg-white/90 backdrop-blur-sm text-[#1E2167] text-xs font-medium px-2 py-1 rounded-full border border-gray-200 shadow-sm">
+                {visibleTag}
+              </span>
+              {extraCount > 0 && (
+                <span className="bg-white/90 backdrop-blur-sm text-gray-500 text-xs px-2 py-1 rounded-full border border-gray-200 shadow-sm">
+                  +{extraCount}
+                </span>
+              )}
+            </div>
+          )
+        })()}
         {vehicle.images && vehicle.images.length > 0 ? (
           <Image
             src={vehicle.images[0]}
@@ -62,17 +79,16 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
       </div>
 
       {/* Info area */}
-      <div className="relative z-[2] px-4 pt-3 pb-4 flex flex-col flex-1 justify-between pointer-events-none">
-        <div className="flex justify-between items-start gap-2">
-          <div className="min-w-0">
-            <div className="text-[17px] font-bold text-navy leading-tight line-clamp-2 min-h-[48px]">{vehicle.marca} {vehicle.model}</div>
-            <div className="text-[13px] text-muted-foreground mt-0.5 truncate">{vehicle.year} · {formatKm(vehicle.km)}</div>
-          </div>
-          <TagBadge tags={getVehicleTags(vehicle, allTags)} className="hidden lg:flex gap-2 flex-wrap shrink-0" />
+      <div className="relative z-[2] px-4 pt-2 pb-3 flex flex-col gap-1 pointer-events-none">
+        <div>
+          <div className="text-[17px] font-bold text-navy leading-tight line-clamp-2">{vehicle.marca} {vehicle.model}</div>
+          <div className="text-[13px] text-muted-foreground mt-0 truncate">{vehicle.year} · {formatKm(vehicle.km)}</div>
         </div>
-        <div className="pt-2 border-t border-gray-100 flex justify-between items-center">
-          <div>
-            <div className="text-[20px] font-extrabold text-burgundy">{formatPrice(vehicle.precio_contado, vehicle.currency)}</div>
+        <div className="pt-1.5 border-t border-gray-100 flex justify-between items-center">
+          <div className="min-w-0">
+            <div className="text-base sm:text-[20px] font-extrabold text-burgundy whitespace-nowrap">
+              {vehicle.solo_financiado ? 'Financiado' : formatPrice(vehicle.precio_contado, vehicle.currency)}
+            </div>
             {vehicle.cuotas && (
               <div className="text-[11px] text-muted-foreground">
                 o {vehicle.cuotas} cuotas de {formatPrice(vehicle.valor_cuota!, "ARS")}

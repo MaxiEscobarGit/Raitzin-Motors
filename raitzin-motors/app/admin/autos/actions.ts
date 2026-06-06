@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin-server'
+import { createMarca } from '@/lib/supabase/queries/admin'
 import type { VehicleInsert, VehicleUpdate } from '@/types/database'
 
 export async function toggleSoldAction(id: string, currentValue: boolean) {
@@ -116,6 +117,12 @@ export async function setVehicleTagsAction(vehicleId: string, tagIds: number[]):
     const { error: insertError } = await supabase.from('vehicle_tags').insert(rows)
     if (insertError) throw new Error(insertError.message)
   }
+}
+
+export async function createMarcaAction(nombre: string): Promise<{ id: number; nombre: string }> {
+  const marca = await createMarca(nombre)
+  revalidatePath('/admin/autos/nuevo')
+  return marca
 }
 
 export async function deleteImagesAction(imageUrls: string[]): Promise<void> {

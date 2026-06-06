@@ -9,6 +9,7 @@ import { uploadImagesAction, createVehicleAction, setVehicleTagsAction } from '@
 import { ImageCropper } from '@/components/admin/ImageCropper'
 import { SortableImageGrid, type SortableImage } from '@/components/admin/SortableImageGrid'
 import { TagSelector } from '@/components/admin/TagSelector'
+import { NuevaMarcaModal } from '@/components/admin/NuevaMarcaModal'
 import type { Marca, TipoVehiculo } from '@/types/database'
 
 interface Props {
@@ -17,12 +18,15 @@ interface Props {
   tags: { id: number; nombre: string }[]
 }
 
+type MarcaOption = Pick<Marca, 'id' | 'nombre'>
+
 const initialForm = {
   id_marca: '',
   model: '',
   year: String(new Date().getFullYear()),
   id_tipo: '',
   currency: 'ARS' as 'ARS' | 'USD',
+  solo_financiado: false,
   precio_contado: '',
   precio_financiado: '',
   cuotas: '',
@@ -51,10 +55,12 @@ function generarSlug(marcaNombre: string, model: string, year: string): string {
   return `${base}-${random}`
 }
 
-export function VehicleForm({ marcas, tipos, tags }: Props) {
+export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [form, setForm] = useState(initialForm)
+  const [marcas, setMarcas] = useState<MarcaOption[]>(initialMarcas)
+  const [showNuevaMarcaModal, setShowNuevaMarcaModal] = useState(false)
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
   // Single unified array for all images — drives both the drag-and-drop grid and the submit order
   const [images, setImages] = useState<SortableImage[]>([])
@@ -145,6 +151,12 @@ export function VehicleForm({ marcas, tipos, tags }: Props) {
     })
   }
 
+  function handleNuevaMarca(marca: MarcaOption) {
+    setMarcas((prev) => [...prev, marca].sort((a, b) => a.nombre.localeCompare(b.nombre)))
+    set('id_marca', String(marca.id))
+    setShowNuevaMarcaModal(false)
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -153,7 +165,7 @@ export function VehicleForm({ marcas, tipos, tags }: Props) {
     if (!form.model.trim()) return setError('El modelo es obligatorio.')
     if (!form.year || Number(form.year) < 1990) return setError('El año no es válido.')
     if (!form.km) return setError('El kilometraje es obligatorio.')
-    if (!form.precio_contado) return setError('El precio de contado es obligatorio.')
+    if (!form.solo_financiado && !form.precio_contado) return setError('El precio de contado es obligatorio.')
 
     const marca = marcas.find((m) => m.id === Number(form.id_marca))
     if (!marca) return setError('Marca inválida.')
@@ -190,7 +202,8 @@ export function VehicleForm({ marcas, tipos, tags }: Props) {
         year: Number(form.year),
         km: Number(form.km),
         currency: form.currency,
-        precio_contado: parseInt(form.precio_contado, 10),
+        solo_financiado: form.solo_financiado,
+        precio_contado: form.solo_financiado ? null : parseInt(form.precio_contado, 10),
         precio_financiado: form.precio_financiado.trim() || null,
         cuotas: form.cuotas ? parseInt(form.cuotas, 10) : null,
         valor_cuota: form.valor_cuota ? parseInt(form.valor_cuota, 10) : null,
@@ -235,6 +248,11 @@ export function VehicleForm({ marcas, tipos, tags }: Props) {
         onCancel={handleCropCancel}
       />
     )}
+    <NuevaMarcaModal
+      isOpen={showNuevaMarcaModal}
+      onClose={() => setShowNuevaMarcaModal(false)}
+      onCreated={handleNuevaMarca}
+    />
     <form onSubmit={handleSubmit} noValidate>
       {/* Información básica */}
       <div className={sectionClass}>
@@ -248,7 +266,13 @@ export function VehicleForm({ marcas, tipos, tags }: Props) {
             </label>
             <select
               value={form.id_marca}
-              onChange={(e) => set('id_marca', e.target.value)}
+              onChange={(e) => {
+                if (e.target.value === '__nueva__') {
+                  setShowNuevaMarcaModal(true)
+                } else {
+                  set('id_marca', e.target.value)
+                }
+              }}
               disabled={loading}
               className={inputClass}
             >
@@ -258,6 +282,7 @@ export function VehicleForm({ marcas, tipos, tags }: Props) {
                   {m.nombre}
                 </option>
               ))}
+              <option value="__nueva__">+ Agregar nueva marca...</option>
             </select>
           </div>
 
@@ -329,18 +354,33 @@ export function VehicleForm({ marcas, tipos, tags }: Props) {
           </div>
 
           <div>
-            <label className={labelClass}>
-              Precio de contado <span style={{ color: '#8B1A1A' }}>*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-sm font-medium text-gray-700">
+                Precio de contado {!form.solo_financiado && <span style={{ color: '#8B1A1A' }}>*</span>}
+              </label>
+              <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={form.solo_financiado}
+                  onChange={(e) => {
+                    set('solo_financiado', e.target.checked)
+                    if (e.target.checked) set('precio_contado', '')
+                  }}
+                  disabled={loading}
+                  className="w-3.5 h-3.5 rounded"
+                />
+                <span className="text-xs text-gray-500">Solo financiado</span>
+              </label>
+            </div>
             <input
               type="number"
               value={form.precio_contado}
               onChange={(e) => set('precio_contado', e.target.value)}
-              disabled={loading}
+              disabled={loading || form.solo_financiado}
               placeholder={form.currency === 'ARS' ? 'Ej: 15000000' : 'Ej: 12000'}
               min={0}
               step={1}
-              className={inputClass}
+              className={cn(inputClass, form.solo_financiado && 'opacity-50')}
             />
           </div>
 

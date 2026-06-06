@@ -25,7 +25,7 @@ const navLinks = [
     href: '/admin/autos',
     label: 'Vehículos',
     icon: Car,
-    exactMatch: false,
+    exactMatch: true,
   },
   {
     href: '/admin/autos/nuevo',

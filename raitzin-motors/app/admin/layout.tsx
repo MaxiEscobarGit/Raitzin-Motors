@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
+import { headers } from 'next/headers'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
 export const metadata: Metadata = {
@@ -12,13 +11,12 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const cookieStore = await cookies()
-  const session = cookieStore.get('admin-session')
-  const cookieSecret = process.env.COOKIE_SECRET
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') ?? ''
+  const isLoginPage = pathname === '/admin/login'
 
-  // Redirect to login if session cookie is absent or doesn't match the secret
-  if (!session || !cookieSecret || session.value !== cookieSecret) {
-    redirect('/admin/login')
+  if (isLoginPage) {
+    return <>{children}</>
   }
 
   return (

@@ -43,6 +43,7 @@ export type Database = {
           is_sold: boolean
           is_featured: boolean
           is_deleted: boolean
+          solo_financiado: boolean
           created_at: string
         }
         Insert: {
@@ -71,6 +72,7 @@ export type Database = {
           is_sold?: boolean
           is_featured?: boolean
           is_deleted?: boolean
+          solo_financiado?: boolean
           created_at?: string
         }
         Update: {
@@ -99,6 +101,7 @@ export type Database = {
           is_sold?: boolean
           is_featured?: boolean
           is_deleted?: boolean
+          solo_financiado?: boolean
           created_at?: string
         }
       }

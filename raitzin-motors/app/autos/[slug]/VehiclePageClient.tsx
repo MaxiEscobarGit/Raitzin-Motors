@@ -190,11 +190,11 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
             <div className="border-t border-gray-100 pt-4">
               <div className="flex flex-col gap-1">
                 <div className="text-4xl font-extrabold text-burgundy whitespace-nowrap">
-                  {formatPrice(vehicle.precio_contado, vehicle.currency)}
+                  {vehicle.solo_financiado ? 'Financiado' : formatPrice(vehicle.precio_contado, vehicle.currency)}
                 </div>
                 {vehicle.precio_financiado && (
                   <div className="text-sm text-gray-600">
-                    Financiado: {vehicle.precio_financiado}
+                    {vehicle.solo_financiado ? vehicle.precio_financiado : `Financiado: ${vehicle.precio_financiado}`}
                   </div>
                 )}
               </div>

@@ -3,16 +3,18 @@ import { WheelIcon } from "@/components/WheelIcon"
 
 export function TagBadge({ tags, className }: { tags: string[]; className?: string }) {
   if (tags.length === 0) return null
+  const visibleTag = tags[0]
+  const extraCount = tags.length - 1
   return (
-    <div className={cn("flex flex-wrap gap-1", className)}>
-      {tags.map(tag => (
-        <span
-          key={tag}
-          className="inline-block px-[10px] py-0.5 rounded-full text-[11px] font-semibold tracking-[0.02em] whitespace-nowrap bg-sky-blue/15 text-navy border border-sky-blue/30"
-        >
-          {tag}
+    <div className={cn("flex flex-row items-center gap-1 overflow-hidden", className)}>
+      <span className="inline-block px-[10px] py-0.5 rounded-full text-[11px] font-semibold tracking-[0.02em] whitespace-nowrap bg-sky-blue/15 text-navy border border-sky-blue/30">
+        {visibleTag}
+      </span>
+      {extraCount > 0 && (
+        <span className="inline-block flex-shrink-0 px-2 py-0.5 rounded-full text-[11px] bg-gray-100 text-gray-500">
+          +{extraCount}
         </span>
-      ))}
+      )}
     </div>
   )
 }

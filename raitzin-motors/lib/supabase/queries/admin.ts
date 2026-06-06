@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin-server'
 import type { VehicleInsert, VehicleUpdate } from '@/types/database'
 
 export async function getAllVehiclesAdmin() {
@@ -100,6 +101,17 @@ export async function softDeleteVehicle(id: string) {
     .update({ is_deleted: true })
     .eq('id', id)
   if (error) throw error
+}
+
+export async function createMarca(nombre: string): Promise<{ id: number; nombre: string }> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('marcas')
+    .insert({ nombre })
+    .select('id, nombre')
+    .single()
+  if (error) throw new Error(error.message)
+  return data
 }
 
 export async function getTags() {

@@ -1,6 +1,6 @@
 // lib/catalog-helpers.ts
 
-export const PAGE_SIZE = 9
+export const PAGE_SIZE = 16
 
 export const NAVY = "#1E2167"
 export const NAVY_DARK = "#151849"
@@ -72,6 +72,7 @@ export function mapVehicle(v: any): Vehicle {
     is_featured: v.is_featured ?? false,
     is_sold: v.is_sold ?? false,
     is_deleted: v.is_deleted ?? false,
+    solo_financiado: v.solo_financiado ?? false,
     description: v.description ?? null,
     images: v.images ?? [],
   }
@@ -108,6 +109,7 @@ export type Vehicle = {
   is_featured: boolean
   is_sold: boolean
   is_deleted: boolean
+  solo_financiado: boolean
   description: string | null
   images: string[]
 }
