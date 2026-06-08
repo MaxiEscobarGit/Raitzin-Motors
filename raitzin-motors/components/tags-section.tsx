@@ -56,11 +56,12 @@ export function TagsSection({ tags }: TagsSectionProps) {
     <section className="py-16 bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
+          <p className="text-[#7EB8D4] text-xs font-semibold uppercase tracking-[0.2em] mb-3">Filtrá por categoría</p>
           <h2 className="text-3xl md:text-4xl font-bold text-[#1E2167] font-sans mb-2">
             Quiero un auto...
           </h2>
-          <p className="text-gray-500 text-sm">
-            Encontra el que se adapta a vos
+          <p className="text-[#5A6A7A] text-base">
+            Encontrá el que se adapta a vos
           </p>
         </div>
 

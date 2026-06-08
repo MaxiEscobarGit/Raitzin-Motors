@@ -1,9 +1,22 @@
 import type { Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
 
+export const revalidate = 86400
+
 export const metadata: Metadata = {
   title: 'Términos y Condiciones | Raitzin Motors',
   description: 'Leé los términos y condiciones de uso del sitio de Raitzin Motors, tu concesionaria de autos en Bariloche.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/terminos`,
+  },
+  openGraph: {
+    title: 'Términos y Condiciones — Raitzin Motors',
+    description: 'Términos y condiciones de uso del sitio de Raitzin Motors, concesionaria en San Carlos de Bariloche.',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/terminos`,
+    siteName: 'Raitzin Motors',
+    locale: 'es_AR',
+    type: 'website',
+  },
 }
 
 export default function TerminosPage() {

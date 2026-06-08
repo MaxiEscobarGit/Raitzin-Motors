@@ -83,7 +83,15 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="max-w-[1280px] mx-auto px-6 pt-[92px] pb-16">
+      {/* Page header strip */}
+      <div className="bg-[#1E2167] pt-[64px]">
+        <div className="max-w-[1280px] mx-auto px-6 py-8">
+          <p className="text-[#7EB8D4] text-xs font-semibold uppercase tracking-[0.2em] mb-1">Stock disponible</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Catálogo de Vehículos</h1>
+        </div>
+      </div>
+
+      <div className="max-w-[1280px] mx-auto px-6 pt-6 pb-16">
         {/* Filters */}
         <div className="flex flex-col gap-4 mb-7">
           <FilterBar

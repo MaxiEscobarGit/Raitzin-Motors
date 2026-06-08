@@ -33,7 +33,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
           </div>
         )}
         {vehicle.is_featured && !vehicle.is_sold && (
-          <div className="absolute top-2.5 left-2.5 z-[3] bg-amber-400 text-white text-[10px] font-bold px-[10px] py-[3px] rounded-full">
+          <div className="absolute top-2.5 left-2.5 z-[3] bg-[#1E2167] text-[#7EB8D4] text-[10px] font-bold px-[10px] py-[3px] rounded-full tracking-wide">
             DESTACADO
           </div>
         )}
@@ -58,7 +58,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
         {vehicle.images && vehicle.images.length > 0 ? (
           <Image
             src={vehicle.images[0]}
-            alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year}`}
+            alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year} — Raitzin Motors Bariloche`}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"

@@ -7,10 +7,30 @@ import { HeroAnimated } from "@/components/nosotros/HeroAnimated"
 import { TeamSection } from "@/components/nosotros/TeamSection"
 import { ValoresGrid } from "@/components/nosotros/ValoresGrid"
 
+export const revalidate = 86400
+
 export const metadata: Metadata = {
   title: "Nosotros | Raitzin Motors",
   description:
     "Más de 35 años en el negocio de los fierros. Conocé la historia de Raitzin Motors, tu concesionaria de confianza en San Carlos de Bariloche, Patagonia.",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/nosotros`,
+  },
+  openGraph: {
+    title: "Nosotros — Raitzin Motors Bariloche",
+    description:
+      "Más de 35 años comprando y vendiendo autos en San Carlos de Bariloche. Conocé al equipo de Raitzin Motors.",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/nosotros`,
+    siteName: 'Raitzin Motors',
+    locale: 'es_AR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Nosotros — Raitzin Motors Bariloche",
+    description:
+      "Más de 35 años comprando y vendiendo autos en San Carlos de Bariloche.",
+  },
 }
 
 
@@ -84,8 +104,9 @@ export default function NosotrosPage() {
             <div className="rounded-2xl overflow-hidden h-80 md:h-[480px] relative">
               <Image
                 src="/oficina.png"
-                alt="Oficina de Raitzin Motors"
+                alt="Oficina de Raitzin Motors en San Carlos de Bariloche"
                 fill
+                loading="lazy"
                 className="object-cover"
               />
             </div>

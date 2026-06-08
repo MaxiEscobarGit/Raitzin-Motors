@@ -1,9 +1,22 @@
 import type { Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
 
+export const revalidate = 86400
+
 export const metadata: Metadata = {
   title: 'Política de Privacidad | Raitzin Motors',
   description: 'Conocé cómo Raitzin Motors trata tus datos personales y la política de privacidad del sitio.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/privacidad`,
+  },
+  openGraph: {
+    title: 'Política de Privacidad — Raitzin Motors',
+    description: 'Política de privacidad y tratamiento de datos personales de Raitzin Motors, concesionaria en Bariloche.',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/privacidad`,
+    siteName: 'Raitzin Motors',
+    locale: 'es_AR',
+    type: 'website',
+  },
 }
 
 export default function PrivacidadPage() {

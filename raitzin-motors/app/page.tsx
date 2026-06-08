@@ -23,8 +23,14 @@ export const metadata: Metadata = {
     title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
     description: 'Comprá o vendé tu auto con Raitzin Motors, la concesionaria de confianza en San Carlos de Bariloche. Financiación, permuta y más de 35 años de experiencia.',
     url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
+    siteName: 'Raitzin Motors',
     locale: 'es_AR',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
+    description: 'Comprá o vendé tu auto con Raitzin Motors, la concesionaria de confianza en San Carlos de Bariloche.',
   },
 }
 

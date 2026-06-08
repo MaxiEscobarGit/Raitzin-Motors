@@ -12,10 +12,30 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal'
 import { AnimatedDivider } from '@/components/ui/AnimatedDivider'
 import { Navbar } from '@/components/navbar'
 
+export const revalidate = 86400
+
 export const metadata: Metadata = {
   title: 'Servicios | Raitzin Motors',
   description:
-    'Compra, venta, financiación, permutas y consignación de vehículos en Bariloche.',
+    'Compra, venta, financiación, permutas y consignación de vehículos en Bariloche. Más de 35 años de experiencia en San Carlos de Bariloche, Patagonia.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/servicios`,
+  },
+  openGraph: {
+    title: 'Servicios — Raitzin Motors Bariloche',
+    description:
+      'Compra, venta, financiación, permutas y consignación de vehículos en San Carlos de Bariloche. Más de 35 años de experiencia.',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/servicios`,
+    siteName: 'Raitzin Motors',
+    locale: 'es_AR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Servicios — Raitzin Motors Bariloche',
+    description:
+      'Compra, venta, financiación, permutas y consignación de vehículos en Bariloche.',
+  },
 }
 
 interface ServiceBullet {

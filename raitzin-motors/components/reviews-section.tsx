@@ -153,11 +153,15 @@ export function ReviewsSection() {
     "grid-cols-4"
 
   return (
-    <section id="nosotros" className="py-12 md:py-20 bg-white border-b border-gray-100">
+    <section id="nosotros" className="py-16 md:py-24 bg-[#F4F8FB]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-sm font-medium text-navy uppercase tracking-wider mb-8">
-          Lo que dicen nuestros clientes
-        </h2>
+        <div className="text-center mb-10">
+          <p className="text-[#7EB8D4] text-xs font-semibold uppercase tracking-[0.2em] mb-3">Reseñas de Google</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1E2167] mb-3">
+            Lo que dicen nuestros clientes
+          </h2>
+          <p className="text-[#5A6A7A]">Más de 35 años construyendo confianza en Bariloche</p>
+        </div>
 
         {/* Cards + Arrows */}
         <div className="flex items-center gap-2 md:gap-4 mb-6">
@@ -176,7 +180,7 @@ export function ReviewsSection() {
             {group.map((review) => (
               <div
                 key={review.name}
-                className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-sky-blue h-[220px]"
+                className="flex flex-col bg-white rounded-2xl px-6 py-5 shadow-sm border-[1.5px] border-[#7EB8D4] min-h-[200px]"
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex gap-0.5">

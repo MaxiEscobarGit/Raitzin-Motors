@@ -95,7 +95,7 @@ export function SoldVehiclePage({ vehicle, similar, allTags }: Props) {
               href={generateSoldWALink(vehicle.marca, vehicle.model, vehicle.year)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-green-500 hover:bg-green-600 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-[#8B1A1A] hover:bg-[#6B1414] transition-colors"
             >
               <WhatsAppIcon size={18} />
               Consultanos por WhatsApp

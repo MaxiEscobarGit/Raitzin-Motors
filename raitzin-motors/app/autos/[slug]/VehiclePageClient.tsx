@@ -55,11 +55,13 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
     [<Armchair size={22} key="interior" />, "Interior", vehicle.interior],
   ]
 
+  const waLink = generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency)
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-[84px] pb-16">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-[84px] pb-28 lg:pb-16">
 
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-[13px] text-muted-foreground py-4 mb-2">
@@ -108,7 +110,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
               {imageCount > 0 ? (
                 <Image
                   src={vehicle.images[activeImg]}
-                  alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year}`}
+                  alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year} — Raitzin Motors Bariloche`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 60vw"
@@ -143,7 +145,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                   >
                     <Image
                       src={img}
-                      alt={`Foto ${i + 1}`}
+                      alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year} — foto ${i + 1}`}
                       fill
                       className="object-cover"
                       sizes="80px"
@@ -208,10 +210,11 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
             {/* CTA buttons */}
             <div className="flex flex-col gap-3 pt-1">
               <a
-                href={generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency)}
+                href={waLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-4 rounded-full text-[15px] font-bold transition-colors no-underline w-full whitespace-nowrap"
+                aria-label={`Consultar ${vehicle.marca} ${vehicle.model} ${vehicle.year} por WhatsApp`}
+                className="flex items-center justify-center gap-2 bg-[#8B1A1A] hover:bg-[#6B1414] text-white px-6 py-4 rounded-full text-[15px] font-bold transition-colors no-underline w-full whitespace-nowrap"
               >
                 <WhatsAppIcon size={20} />
                 Consultar por WhatsApp
@@ -282,16 +285,32 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
         )}
 
         {/* Back to catalog */}
-        <div className="mt-10 text-center">
+        <div className="mt-10 flex justify-center">
           <Link
             href="/catalogo"
-            className="inline-flex items-center gap-2 text-navy font-semibold hover:text-burgundy transition-colors no-underline border-b-2 border-navy/20 hover:border-burgundy pb-0.5"
+            className="inline-flex items-center gap-2 bg-[#1E2167] hover:bg-[#151849] text-white px-7 py-3 rounded-full text-sm font-semibold transition-colors no-underline"
           >
+            <ChevronLeft size={16} aria-hidden="true" />
             Ver todo el catálogo
           </Link>
         </div>
       </div>
 
+      {/* Sticky mobile CTA bar — hidden on lg where the sidebar CTA is already visible */}
+      {!vehicle.is_sold && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+          <a
+            href={waLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Consultar ${vehicle.marca} ${vehicle.model} ${vehicle.year} por WhatsApp`}
+            className="flex items-center justify-center gap-2 bg-[#8B1A1A] hover:bg-[#6B1414] text-white w-full py-3.5 rounded-full text-[15px] font-bold transition-colors no-underline"
+          >
+            <WhatsAppIcon size={20} />
+            Consultar por WhatsApp
+          </a>
+        </div>
+      )}
     </div>
   )
 }

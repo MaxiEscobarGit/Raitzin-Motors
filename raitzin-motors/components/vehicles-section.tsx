@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect, useCallback } from "react"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { type Vehicle, type Tag } from "@/lib/catalog-helpers"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
@@ -47,13 +46,14 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
 
   return (
     <>
-    <section id="vehiculos" className="py-12 md:py-20 bg-white">
+    <section id="vehiculos" className="py-16 md:py-24 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-navy font-sans mb-3">
+          <p className="text-[#7EB8D4] text-xs font-semibold uppercase tracking-[0.2em] mb-3">En stock</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1E2167] font-sans mb-3">
             Autos Destacados
           </h2>
-          <p className="text-text-secondary text-lg">
+          <p className="text-[#5A6A7A] text-lg">
             Stock seleccionado — actualizado esta semana
           </p>
         </div>
@@ -121,16 +121,13 @@ export function VehiclesSection({ vehicles, allTags }: VehiclesSectionProps) {
 
         {vehicles.length > 0 && (
           <div className="text-center">
-            <Button
-              asChild
-              variant="link"
-              className="text-burgundy hover:text-[#6B1414] text-lg font-medium"
+            <Link
+              href="/catalogo"
+              className="inline-flex items-center gap-2 bg-[#8B1A1A] hover:bg-[#6B1414] text-white px-8 py-3.5 rounded-full text-sm font-bold transition-colors no-underline"
             >
-              <Link href="/catalogo" className="flex items-center gap-2">
-                Ver todo el catálogo
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </Button>
+              Ver todo el catálogo
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         )}
       </div>

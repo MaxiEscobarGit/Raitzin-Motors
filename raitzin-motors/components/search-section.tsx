@@ -30,13 +30,14 @@ export function SearchSection({ marcas, tipos, years, fuels }: SearchSectionProp
   }
 
   return (
-    <section id="buscar" className="py-12 md:py-20 bg-white">
+    <section id="buscar" className="py-16 md:py-24 bg-[#F4F8FB]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-navy font-sans mb-3">
+          <p className="text-[#7EB8D4] text-xs font-semibold uppercase tracking-[0.2em] mb-3">Buscador</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1E2167] font-sans mb-3">
             ¿Qué auto estás buscando?
           </h2>
-          <p className="text-text-secondary text-lg">
+          <p className="text-[#5A6A7A] text-lg">
             Encontrá tu próximo vehículo en segundos
           </p>
         </div>

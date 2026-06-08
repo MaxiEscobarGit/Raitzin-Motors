@@ -124,11 +124,11 @@ export function TeamSection() {
     >
       <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="pt-16 pb-8 px-6 text-center flex-shrink-0">
+        <div className="pt-8 pb-4 sm:pt-16 sm:pb-8 px-6 text-center flex-shrink-0">
           <p className="text-burgundy text-xs font-semibold tracking-[0.2em] uppercase mb-3">
             El equipo
           </p>
-          <h2 className="text-4xl lg:text-5xl font-extrabold text-navy">
+          <h2 className="hidden md:block text-4xl lg:text-5xl font-extrabold text-navy">
             Las personas detrás de Raitzin.
           </h2>
         </div>
@@ -141,15 +141,15 @@ export function TeamSection() {
               <div
                 key={person.name}
                 id={`team-card-${i}`}
-                className="absolute inset-0 flex items-center px-4"
+                className="absolute inset-0 flex items-start sm:items-center px-4 pt-4 sm:pt-0 overflow-hidden"
                 style={{ opacity: i === 0 ? 1 : 0 }}
               >
                 <div
-                  className={`grid w-full ${reversed ? "lg:grid-cols-[1fr_400px]" : "lg:grid-cols-[400px_1fr]"} gap-10 lg:gap-20 items-center`}
+                  className={`grid w-full ${reversed ? "lg:grid-cols-[1fr_400px]" : "lg:grid-cols-[400px_1fr]"} gap-6 sm:gap-10 lg:gap-20 items-center`}
                 >
                   {/* Photo */}
                   <div
-                    className={`aspect-square w-full max-w-[260px] mx-auto lg:max-w-none rounded-2xl relative overflow-hidden ${person.photo ? "" : person.photoClass} ${person.borderClass}${reversed ? " lg:order-last" : ""}`}
+                    className={`aspect-square w-full max-w-[180px] sm:max-w-[260px] mx-auto lg:max-w-none rounded-2xl relative overflow-hidden ${person.photo ? "" : person.photoClass} ${person.borderClass}${reversed ? " lg:order-last" : ""}`}
                   >
                     {person.photo ? (
                       <Image
