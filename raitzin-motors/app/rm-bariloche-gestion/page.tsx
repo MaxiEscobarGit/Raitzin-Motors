@@ -8,15 +8,18 @@ async function obtenerEstadisticas() {
   const { count: total } = await supabase
     .from('vehicles')
     .select('*', { count: 'exact', head: true })
+    .eq('is_deleted', false)
 
   const { count: disponibles } = await supabase
     .from('vehicles')
     .select('*', { count: 'exact', head: true })
+    .eq('is_deleted', false)
     .eq('is_sold', false)
 
   const { count: vendidos } = await supabase
     .from('vehicles')
     .select('*', { count: 'exact', head: true })
+    .eq('is_deleted', false)
     .eq('is_sold', true)
 
   return {
