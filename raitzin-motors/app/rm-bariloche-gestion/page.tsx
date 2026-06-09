@@ -101,7 +101,7 @@ export default async function AdminDashboardPage() {
           </p>
         </div>
         <Link
-          href="/admin/autos/nuevo"
+          href="/rm-bariloche-gestion/autos/nuevo"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold
             whitespace-nowrap transition-all hover:brightness-90 active:scale-[0.98]"
           style={{ backgroundColor: '#8B1A1A' }}

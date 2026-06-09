@@ -56,6 +56,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: Sea
   const marcas = (marcasData ?? []).map(m => toOption(m.nombre))
   const tipos = (tiposData ?? []).map(t => toOption(t.nombre))
   const years = [...new Set((yearsData ?? []).map(r => r.year).filter(Boolean))]
+    .sort((a, b) => b - a)
     .map(y => toOption(String(y)))
   const fuels = [...new Set((fuelsData ?? []).map(r => r.fuel).filter(Boolean))]
     .sort()

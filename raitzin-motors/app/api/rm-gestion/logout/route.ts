@@ -13,5 +13,5 @@ export async function POST() {
     path: '/',
   })
 
-  return NextResponse.redirect(new URL('/admin/login', process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'))
+  return NextResponse.redirect(new URL('/rm-bariloche-gestion/login', process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'))
 }

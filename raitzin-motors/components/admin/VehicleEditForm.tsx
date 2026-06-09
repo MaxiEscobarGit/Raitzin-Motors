@@ -11,7 +11,7 @@ import {
   deleteVehicleAction,
   deleteImagesAction,
   setVehicleTagsAction,
-} from '@/app/admin/autos/actions'
+} from '@/app/rm-bariloche-gestion/autos/actions'
 import { ImageCropper } from '@/components/admin/ImageCropper'
 import { SortableImageGrid, type SortableImage } from '@/components/admin/SortableImageGrid'
 import { TagSelector } from '@/components/admin/TagSelector'
@@ -275,7 +275,7 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
         await deleteImagesAction(removedUrls)
       }
 
-      router.push('/admin/autos')
+      router.push('/rm-bariloche-gestion/autos')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al guardar los cambios.')
       setLoading(false)
@@ -293,7 +293,7 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
         new Set([...(vehicle.images ?? []), ...removedUrls]),
       )
       await deleteVehicleAction(vehicle.id, allOriginalImages)
-      router.push('/admin/autos')
+      router.push('/rm-bariloche-gestion/autos')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al eliminar el vehículo.')
       setDeleting(false)
@@ -774,7 +774,7 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
         <div className="flex items-center justify-end gap-3 pb-4">
           <button
             type="button"
-            onClick={() => router.push('/admin/autos')}
+            onClick={() => router.push('/rm-bariloche-gestion/autos')}
             disabled={loading}
             className="px-5 py-2.5 rounded-lg text-sm font-medium border border-gray-200 text-gray-600
               hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

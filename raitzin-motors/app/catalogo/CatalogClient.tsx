@@ -7,7 +7,7 @@ import { FilterBar, type Filters } from "@/components/catalogo/FilterBar"
 import { TagsPills } from "@/components/catalogo/TagsPills"
 import { VehicleCard } from "@/components/catalogo/VehicleCard"
 import { Pagination } from "@/components/catalogo/Pagination"
-import { PAGE_SIZE, getVehicleTags, type Vehicle, type Tag } from "@/lib/catalog-helpers"
+import { PAGE_SIZE, getVehicleTags, toPriceARS, type Vehicle, type Tag } from "@/lib/catalog-helpers"
 
 type Option = { value: string; label: string }
 
@@ -50,12 +50,12 @@ export default function CatalogClient({ vehicles, marcas, tipos, years, fuels, t
     }
     if (filters.marca) list = list.filter(v => v.marca === filters.marca)
     if (filters.tipo) list = list.filter(v => v.tipo === filters.tipo)
-    if (filters.year) list = list.filter(v => String(v.year) === filters.year)
+    if (filters.year) list = list.filter(v => v.year >= Number(filters.year))
     if (filters.fuel) list = list.filter(v => v.fuel === filters.fuel)
     if (activeTag) list = list.filter(v => getVehicleTags(v, allTags).includes(activeTag))
 
-    if (filters.sort === "price_asc") list.sort((a, b) => (a.currency === b.currency ? a.precio_contado - b.precio_contado : a.currency === "USD" ? 1 : -1))
-    else if (filters.sort === "price_desc") list.sort((a, b) => (a.currency === b.currency ? b.precio_contado - a.precio_contado : a.currency === "USD" ? -1 : 1))
+    if (filters.sort === "price_asc") list.sort((a, b) => toPriceARS(a.precio_contado, a.currency) - toPriceARS(b.precio_contado, b.currency))
+    else if (filters.sort === "price_desc") list.sort((a, b) => toPriceARS(b.precio_contado, b.currency) - toPriceARS(a.precio_contado, a.currency))
     else if (filters.sort === "km_asc") list.sort((a, b) => a.km - b.km)
     else list.sort((a, b) => b.year - a.year)
 

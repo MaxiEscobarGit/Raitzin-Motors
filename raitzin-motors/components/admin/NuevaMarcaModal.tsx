@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { X, Loader2 } from 'lucide-react'
-import { createMarcaAction } from '@/app/admin/autos/actions'
+import { createMarcaAction } from '@/app/rm-bariloche-gestion/autos/actions'
 
 interface NuevaMarcaModalProps {
   isOpen: boolean

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const headersList = await headers()
   const pathname = headersList.get('x-pathname') ?? ''
-  const isLoginPage = pathname === '/admin/login'
+  const isLoginPage = pathname === '/rm-bariloche-gestion/login'
 
   if (isLoginPage) {
     return <>{children}</>

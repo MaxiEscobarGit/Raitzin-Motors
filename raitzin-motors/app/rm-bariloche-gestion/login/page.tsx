@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
     setMensajeError('')
 
     try {
-      const res = await fetch('/api/admin/login', {
+      const res = await fetch('/api/rm-gestion/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: contraseña }),
@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
 
       if (res.ok) {
         // Redirigir al panel
-        router.push('/admin')
+        router.push('/rm-bariloche-gestion')
         router.refresh()
         return
       }

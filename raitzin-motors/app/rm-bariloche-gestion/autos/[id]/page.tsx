@@ -14,7 +14,7 @@ export default async function EditarAutoPage({ params }: { params: Promise<{ id:
     getTags(),
   ])
 
-  if (!vehicle) redirect('/admin/autos')
+  if (!vehicle) redirect('/rm-bariloche-gestion/autos')
 
   const initialTagIds = await getVehicleTags(id)
 
@@ -26,7 +26,7 @@ export default async function EditarAutoPage({ params }: { params: Promise<{ id:
     <div>
       <div className="mb-6">
         <Link
-          href="/admin/autos"
+          href="/rm-bariloche-gestion/autos"
           className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-3 transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />

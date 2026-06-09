@@ -16,19 +16,19 @@ import { cn } from '@/lib/utils'
 
 const navLinks = [
   {
-    href: '/admin',
+    href: '/rm-bariloche-gestion',
     label: 'Dashboard',
     icon: LayoutDashboard,
     exactMatch: true,
   },
   {
-    href: '/admin/autos',
+    href: '/rm-bariloche-gestion/autos',
     label: 'Vehículos',
     icon: Car,
     exactMatch: true,
   },
   {
-    href: '/admin/autos/nuevo',
+    href: '/rm-bariloche-gestion/autos/nuevo',
     label: 'Nuevo vehículo',
     icon: PlusCircle,
     exactMatch: true,
@@ -49,8 +49,8 @@ export function AdminSidebar() {
   async function handleLogout() {
     setCerrando(true)
     try {
-      await fetch('/api/admin/logout', { method: 'POST' })
-      router.push('/admin/login')
+      await fetch('/api/rm-gestion/logout', { method: 'POST' })
+      router.push('/rm-bariloche-gestion/login')
       router.refresh()
     } catch {
       setCerrando(false)

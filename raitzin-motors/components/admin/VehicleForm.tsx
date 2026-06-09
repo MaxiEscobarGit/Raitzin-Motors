@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Upload, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { compressImage } from '@/lib/utils/compress-image'
-import { uploadImagesAction, createVehicleAction, setVehicleTagsAction } from '@/app/admin/autos/actions'
+import { uploadImagesAction, createVehicleAction, setVehicleTagsAction } from '@/app/rm-bariloche-gestion/autos/actions'
 import { ImageCropper } from '@/components/admin/ImageCropper'
 import { SortableImageGrid, type SortableImage } from '@/components/admin/SortableImageGrid'
 import { TagSelector } from '@/components/admin/TagSelector'
@@ -223,7 +223,7 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
 
       await setVehicleTagsAction(newVehicle.id, selectedTagIds)
 
-      router.push('/admin/autos')
+      router.push('/rm-bariloche-gestion/autos')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al guardar el vehículo.')
       setLoading(false)
@@ -677,7 +677,7 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
       <div className="flex items-center justify-end gap-3 pb-8">
         <button
           type="button"
-          onClick={() => router.push('/admin/autos')}
+          onClick={() => router.push('/rm-bariloche-gestion/autos')}
           disabled={loading}
           className="px-5 py-2.5 rounded-lg text-sm font-medium border border-gray-200 text-gray-600
             hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

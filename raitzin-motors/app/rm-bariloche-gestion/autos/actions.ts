@@ -13,7 +13,7 @@ export async function toggleSoldAction(id: string, currentValue: boolean) {
     .update({ is_sold: newValue, ...(newValue && { is_featured: false }) })
     .eq('id', id)
   if (error) throw new Error(error.message)
-  revalidatePath('/admin/autos')
+  revalidatePath('/rm-bariloche-gestion/autos')
 }
 
 export async function uploadImagesAction(formData: FormData): Promise<string[]> {
@@ -52,7 +52,7 @@ export async function createVehicleAction(data: VehicleInsert) {
     .select()
     .single()
   if (error) throw new Error(error.message)
-  revalidatePath('/admin/autos')
+  revalidatePath('/rm-bariloche-gestion/autos')
   revalidatePath('/catalogo')
   return vehicle
 }
@@ -64,7 +64,7 @@ export async function updateVehicleAction(id: string, data: VehicleUpdate): Prom
     .update(data)
     .eq('id', id)
   if (error) throw new Error(error.message)
-  revalidatePath('/admin/autos')
+  revalidatePath('/rm-bariloche-gestion/autos')
   revalidatePath('/catalogo')
 }
 
@@ -90,7 +90,7 @@ export async function deleteVehicleAction(id: string, imageUrls: string[]): Prom
   const { error } = await supabase.from('vehicles').delete().eq('id', id)
   if (error) throw new Error(error.message)
 
-  revalidatePath('/admin/autos')
+  revalidatePath('/rm-bariloche-gestion/autos')
   revalidatePath('/catalogo')
 }
 
@@ -101,7 +101,7 @@ export async function softDeleteVehicleAction(id: string): Promise<void> {
     .update({ is_deleted: true })
     .eq('id', id)
   if (error) throw new Error(error.message)
-  revalidatePath('/admin/autos')
+  revalidatePath('/rm-bariloche-gestion/autos')
 }
 
 export async function setVehicleTagsAction(vehicleId: string, tagIds: number[]): Promise<void> {
@@ -121,7 +121,7 @@ export async function setVehicleTagsAction(vehicleId: string, tagIds: number[]):
 
 export async function createMarcaAction(nombre: string): Promise<{ id: number; nombre: string }> {
   const marca = await createMarca(nombre)
-  revalidatePath('/admin/autos/nuevo')
+  revalidatePath('/rm-bariloche-gestion/autos/nuevo')
   return marca
 }
 

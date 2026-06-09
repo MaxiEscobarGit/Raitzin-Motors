@@ -2,6 +2,18 @@
 
 export const PAGE_SIZE = 16
 
+/**
+ * Tipo de cambio de referencia fijo (USD → ARS).
+ * Actualizar manualmente cuando el mercado cambie significativamente.
+ * Usado SOLO para ordenamiento relativo de precios en el catálogo — no se muestra al usuario.
+ */
+export const USD_TO_ARS = 1200
+
+/** Normaliza cualquier precio a ARS para comparaciones de ordenamiento */
+export function toPriceARS(price: number, currency: "ARS" | "USD"): number {
+  return currency === "USD" ? price * USD_TO_ARS : price
+}
+
 export const NAVY = "#1E2167"
 export const NAVY_DARK = "#151849"
 export const BURGUNDY = "#8B1A1A"

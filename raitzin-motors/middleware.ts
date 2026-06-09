@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
   requestHeaders.set('x-pathname', pathname)
 
   // Login page is always accessible
-  if (pathname === '/admin/login') {
+  if (pathname === '/rm-bariloche-gestion/login') {
     return NextResponse.next({ request: { headers: requestHeaders } })
   }
 
@@ -18,12 +18,12 @@ export function middleware(request: NextRequest) {
 
   // Si no hay cookie válida, redirigir al login
   if (!session || !cookieSecret || session.value !== cookieSecret) {
-    return NextResponse.redirect(new URL('/admin/login', request.url))
+    return NextResponse.redirect(new URL('/rm-bariloche-gestion/login', request.url))
   }
 
   return NextResponse.next({ request: { headers: requestHeaders } })
 }
 
 export const config = {
-  matcher: '/admin/:path*',
+  matcher: '/rm-bariloche-gestion/:path*',
 }

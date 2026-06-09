@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: '/admin/',
+        disallow: '/rm-bariloche-gestion/',
       },
     ],
     sitemap: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar'}/sitemap.xml`,

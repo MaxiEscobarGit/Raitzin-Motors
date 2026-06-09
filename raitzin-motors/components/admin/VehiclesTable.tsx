@@ -12,7 +12,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog'
-import { toggleSoldAction, softDeleteVehicleAction } from '@/app/admin/autos/actions'
+import { toggleSoldAction, softDeleteVehicleAction } from '@/app/rm-bariloche-gestion/autos/actions'
 import type { VehicleWithRelations } from '@/types/database'
 
 function formatPrice(price: number | null, currency: string): string {
@@ -172,7 +172,7 @@ export function VehiclesTable({ vehicles }: Props) {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <Link
-                          href={`/admin/autos/${v.id}`}
+                          href={`/rm-bariloche-gestion/autos/${v.id}`}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
                             border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors"
                         >
@@ -227,11 +227,10 @@ export function VehiclesTable({ vehicles }: Props) {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle style={{ color: '#1E2167' }}>
-              ¿Eliminar este vehículo?
+              ¿Desea eliminar este vehículo?
             </DialogTitle>
             <DialogDescription className="text-gray-500 text-sm leading-relaxed pt-1">
-              El vehículo desaparecerá del panel pero su página web se mantendrá activa
-              para preservar el SEO.
+              Esta acción no se puede deshacer.
             </DialogDescription>
           </DialogHeader>
 
