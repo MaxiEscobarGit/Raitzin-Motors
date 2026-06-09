@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react"
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
-import { BUSINESS_ADDRESS, MAPS_EMBED_URL } from "@/lib/constants"
+import { MAPS_EMBED_URL } from "@/lib/constants"
 
 function InstagramIcon({ size = 20 }: { size?: number }) {
   return (
@@ -26,7 +26,7 @@ export function ContactSection() {
             Contactanos
           </h2>
           <p className="text-gray-500 text-lg max-w-md mx-auto">
-            Respondemos rápido. De lunes a sábado, 9 a 18 hs.
+            De lunes a sábado, 9 a 18 hs.
           </p>
         </div>
 
@@ -52,7 +52,13 @@ export function ContactSection() {
           </a>
           <div className="flex items-center gap-2">
             <MapPin size={18} className="text-[#7EB8D4]" aria-hidden="true" />
-            <span>{BUSINESS_ADDRESS}</span>
+            <span>
+              Vice Almte. O&apos;Connor 970
+              <br className="sm:hidden" />
+              <span className="hidden sm:inline">, </span>
+              San Carlos de Bariloche
+              <span className="hidden sm:inline">, Río Negro</span>
+            </span>
           </div>
         </div>
 
@@ -80,7 +86,7 @@ export function ContactSection() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Ubicacion de Raitzin Motors en Bariloche, Argentina"
+            title="Ubicación de Raitzin Motors en Bariloche, Argentina"
           />
         </div>
       </div>

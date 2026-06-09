@@ -38,7 +38,7 @@ const team = [
     num: "04",
     name: "Nacho",
     role: "Comodín del equipo",
-    desc: "Comodin del equipo. Fanatico de los autos. Atiende, vende, prepara autos y resuelve. Es quien deja cada vehículo del playón en perfectas condiciones.",
+    desc: "Comodín del equipo. Fanático de los autos. Atiende, vende, prepara autos y resuelve. Es quien deja cada vehículo del playón en perfectas condiciones.",
     initial: "N",
     photo: "/nacho.jpg",
     photoClass: "bg-gradient-to-br from-[#0E1020] to-[#1E2167]",

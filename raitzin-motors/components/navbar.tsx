@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon"
 import { Button } from "@/components/ui/button"
@@ -13,12 +14,13 @@ const navLinks = [
   { href: "/catalogo", label: "Vehículos" },
   { href: "/servicios", label: "Servicios" },
   { href: "/nosotros", label: "Nosotros" },
-  { href: "#contacto", label: "Contacto" },
+  { href: "/#contacto", label: "Contacto" },
 ]
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +29,19 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  /**
+   * When the user is already on the home page, intercept the /#contacto link
+   * and smooth-scroll to the section instead of triggering a full navigation.
+   * From any other route, the link behaves normally (navigates to / then anchors).
+   */
+  function handleContactClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (pathname === "/") {
+      e.preventDefault()
+      document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" })
+      setIsOpen(false)
+    }
+  }
 
   return (
     <nav
@@ -54,6 +69,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={link.href === "/#contacto" ? handleContactClick : undefined}
                 className="text-sm font-medium text-navy hover:text-burgundy transition-colors"
               >
                 {link.label}
@@ -101,7 +117,11 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setIsOpen(false)}
+                onClick={
+                  link.href === "/#contacto"
+                    ? handleContactClick
+                    : () => setIsOpen(false)
+                }
                 className="w-full px-4 py-2 text-sm font-medium text-navy hover:bg-section-bg rounded-lg transition-colors text-center"
               >
                 {link.label}
