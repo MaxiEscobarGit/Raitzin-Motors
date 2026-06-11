@@ -157,6 +157,15 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
     setShowNuevaMarcaModal(false)
   }
 
+  // Strips thousands separators (dots in es-AR locale) before parsing to integer.
+  // Handles values like "16.000.000" that can appear when pasting formatted strings.
+  function parseIntField(val: string): number | null {
+    if (!val) return null
+    const clean = val.replace(/\./g, '').replace(/,/g, '')
+    const n = parseInt(clean, 10)
+    return isNaN(n) ? null : n
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -203,10 +212,10 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
         km: Number(form.km),
         currency: form.currency,
         solo_financiado: form.solo_financiado,
-        precio_contado: form.solo_financiado ? null : parseInt(form.precio_contado, 10),
+        precio_contado: form.solo_financiado ? null : parseIntField(form.precio_contado),
         precio_financiado: form.precio_financiado.trim() || null,
-        cuotas: form.cuotas ? parseInt(form.cuotas, 10) : null,
-        valor_cuota: form.valor_cuota ? parseInt(form.valor_cuota, 10) : null,
+        cuotas: form.cuotas ? parseIntField(form.cuotas) : null,
+        valor_cuota: form.valor_cuota ? parseIntField(form.valor_cuota) : null,
         fuel: form.fuel || null,
         transmission: form.transmission || null,
         color: form.color.trim() || null,
