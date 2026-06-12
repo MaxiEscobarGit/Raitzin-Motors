@@ -4,8 +4,9 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Upload, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { compressImage } from '@/lib/utils/compress-image'
-import { uploadImagesAction, createVehicleAction, setVehicleTagsAction } from '@/app/rm-bariloche-gestion/autos/actions'
+import { compressImage, isHeic, convertHeicToJpeg } from '@/lib/utils/compress-image'
+import { uploadImageToStorage } from '@/lib/utils/upload-image-client'
+import { createVehicleAction, setVehicleTagsAction } from '@/app/rm-bariloche-gestion/autos/actions'
 import { ImageCropper } from '@/components/admin/ImageCropper'
 import { SortableImageGrid, type SortableImage } from '@/components/admin/SortableImageGrid'
 import { TagSelector } from '@/components/admin/TagSelector'
@@ -69,6 +70,7 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
   const [croppingImageSrc, setCroppingImageSrc] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [uploadStep, setUploadStep] = useState<'idle' | 'compressing' | 'uploading' | 'saving'>('idle')
+  const [uploadProgress, setUploadProgress] = useState<{ current: number; total: number } | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -184,23 +186,33 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
     try {
       const slug = generarSlug(marca.nombre, form.model, form.year)
 
-      // 1. Comprimir imágenes en el orden actual del grid
-      const rawFiles = images.map((img) => img.file).filter((f): f is File => !!f)
-      let filesToUpload = rawFiles
-      if (rawFiles.length > 0) {
+      // 1. Para cada imagen nueva: convertir HEIC si corresponde → comprimir → subir
+      //    directamente al bucket (sin pasar por el servidor).
+      const newImages = images.filter((img) => !!img.file)
+      const uploadedUrlMap = new Map<string, string>() // SortableImage.id → URL pública
+
+      for (let i = 0; i < newImages.length; i++) {
+        const img = newImages[i]
+        let file: File = img.file!
+
+        // Convertir HEIC/HEIF a JPEG antes de comprimir (solo necesario en Safari iOS/macOS)
         setUploadStep('compressing')
-        filesToUpload = await Promise.all(rawFiles.map((f) => compressImage(f)))
+        if (isHeic(file)) {
+          file = await convertHeicToJpeg(file)
+        }
+        file = await compressImage(file)
+
+        // Subir directamente a Supabase Storage desde el cliente
+        setUploadStep('uploading')
+        setUploadProgress({ current: i + 1, total: newImages.length })
+        const url = await uploadImageToStorage(file, slug, i)
+        uploadedUrlMap.set(img.id, url)
       }
 
-      // 2. Subir imágenes — el orden en FormData determina el orden en Supabase
-      let imageUrls: string[] = []
-      if (filesToUpload.length > 0) {
-        setUploadStep('uploading')
-        const fd = new FormData()
-        fd.append('slug', slug)
-        filesToUpload.forEach((f) => fd.append('images', f))
-        imageUrls = await uploadImagesAction(fd)
-      }
+      // 2. Armar el array final respetando el orden del drag-and-drop
+      const imageUrls = images
+        .map((img) => (img.url ? img.url : uploadedUrlMap.get(img.id) ?? null))
+        .filter((u): u is string => !!u)
 
       // 3. Insertar vehículo
       setUploadStep('saving')
@@ -237,6 +249,7 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
       setError(err instanceof Error ? err.message : 'Error al guardar el vehículo.')
       setLoading(false)
       setUploadStep('idle')
+      setUploadProgress(null)
     }
   }
 
@@ -624,8 +637,10 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
         {loading && uploadStep === 'compressing' && (
           <p className="text-sm text-blue-600 mt-3">Comprimiendo imágenes...</p>
         )}
-        {loading && uploadStep === 'uploading' && (
-          <p className="text-sm text-blue-600 mt-3">Subiendo imágenes...</p>
+        {loading && uploadStep === 'uploading' && uploadProgress && (
+          <p className="text-sm text-blue-600 mt-3">
+            Subiendo imagen {uploadProgress.current} de {uploadProgress.total}...
+          </p>
         )}
         {loading && uploadStep === 'saving' && (
           <p className="text-sm text-blue-600 mt-3">Guardando vehículo...</p>
@@ -703,8 +718,8 @@ export function VehicleForm({ marcas: initialMarcas, tipos, tags }: Props) {
         >
           {loading && uploadStep === 'compressing'
             ? 'Comprimiendo...'
-            : loading && uploadStep === 'uploading'
-            ? 'Subiendo...'
+            : loading && uploadStep === 'uploading' && uploadProgress
+            ? `Subiendo ${uploadProgress.current}/${uploadProgress.total}...`
             : loading
             ? 'Guardando...'
             : 'Guardar vehículo'}

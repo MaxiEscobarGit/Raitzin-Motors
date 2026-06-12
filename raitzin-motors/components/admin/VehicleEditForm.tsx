@@ -4,9 +4,9 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Upload, Trash2, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { compressImage } from '@/lib/utils/compress-image'
+import { compressImage, isHeic, convertHeicToJpeg } from '@/lib/utils/compress-image'
+import { uploadImageToStorage } from '@/lib/utils/upload-image-client'
 import {
-  uploadImagesAction,
   updateVehicleAction,
   deleteVehicleAction,
   deleteImagesAction,
@@ -104,6 +104,7 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
 
   const [loading, setLoading] = useState(false)
   const [uploadStep, setUploadStep] = useState<'idle' | 'compressing' | 'uploading' | 'saving'>('idle')
+  const [uploadProgress, setUploadProgress] = useState<{ current: number; total: number } | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -220,33 +221,35 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
     setLoading(true)
 
     try {
-      // 1. Comprimir las imágenes nuevas (las que tienen `file`) en el orden actual del grid
+      // 1. Para cada imagen nueva: convertir HEIC si corresponde → comprimir → subir
+      //    directamente al bucket (sin pasar por el servidor).
+      //    Las imágenes que ya son URLs de Supabase (img.url) no se resuben.
       const newImages = images.filter((img) => !!img.file)
-      let compressedFiles: File[] = newImages.map((img) => img.file!)
-      if (newImages.length > 0) {
+      const uploadedUrlMap = new Map<string, string>() // SortableImage.id → URL pública
+
+      for (let i = 0; i < newImages.length; i++) {
+        const img = newImages[i]
+        let file: File = img.file!
+
+        // Convertir HEIC/HEIF a JPEG antes de comprimir (solo necesario en Safari iOS/macOS)
         setUploadStep('compressing')
-        compressedFiles = await Promise.all(newImages.map((img) => compressImage(img.file!)))
-      }
+        if (isHeic(file)) {
+          file = await convertHeicToJpeg(file)
+        }
+        file = await compressImage(file)
 
-      // 2. Subir imágenes nuevas al Storage
-      let uploadedUrls: string[] = []
-      if (compressedFiles.length > 0) {
+        // Subir directamente a Supabase Storage desde el cliente
         setUploadStep('uploading')
-        const fd = new FormData()
-        fd.append('slug', vehicle.slug)
-        compressedFiles.forEach((f) => fd.append('images', f))
-        uploadedUrls = await uploadImagesAction(fd)
+        setUploadProgress({ current: i + 1, total: newImages.length })
+        const url = await uploadImageToStorage(file, vehicle.slug, i)
+        uploadedUrlMap.set(img.id, url)
       }
 
-      // 3. Build the final ordered array respecting the drag-and-drop order.
-      //    Replace each SortableImage with its resolved URL:
-      //    - existing images keep their Storage URL
-      //    - new images get the URL returned from the upload (in the same relative order)
-      let newUrlCursor = 0
-      const finalImages = images.map((img) => {
-        if (img.url) return img.url          // already-stored image
-        return uploadedUrls[newUrlCursor++]  // newly uploaded image
-      })
+      // 2. Armar el array final respetando el orden del drag-and-drop.
+      //    Las URLs ya existentes se mantienen intactas; las nuevas usan el mapa.
+      const finalImages = images
+        .map((img) => (img.url ? img.url : uploadedUrlMap.get(img.id) ?? null))
+        .filter((u): u is string => !!u)
 
       // 4. Guardar en la DB
       setUploadStep('saving')
@@ -289,6 +292,7 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
       setError(err instanceof Error ? err.message : 'Error al guardar los cambios.')
       setLoading(false)
       setUploadStep('idle')
+      setUploadProgress(null)
     }
   }
 
@@ -721,8 +725,10 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
           {loading && uploadStep === 'compressing' && (
             <p className="text-sm text-blue-600 mt-3">Comprimiendo imágenes...</p>
           )}
-          {loading && uploadStep === 'uploading' && (
-            <p className="text-sm text-blue-600 mt-3">Subiendo imágenes...</p>
+          {loading && uploadStep === 'uploading' && uploadProgress && (
+            <p className="text-sm text-blue-600 mt-3">
+              Subiendo imagen {uploadProgress.current} de {uploadProgress.total}...
+            </p>
           )}
           {loading && uploadStep === 'saving' && (
             <p className="text-sm text-blue-600 mt-3">Guardando cambios...</p>
@@ -800,8 +806,8 @@ export function VehicleEditForm({ vehicle, marcas: initialMarcas, tipos, tags, i
           >
             {loading && uploadStep === 'compressing'
               ? 'Comprimiendo...'
-              : loading && uploadStep === 'uploading'
-              ? 'Subiendo...'
+              : loading && uploadStep === 'uploading' && uploadProgress
+              ? `Subiendo ${uploadProgress.current}/${uploadProgress.total}...`
               : loading
               ? 'Guardando...'
               : 'Guardar cambios'}

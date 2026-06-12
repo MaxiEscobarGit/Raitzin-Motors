@@ -1,4 +1,70 @@
 /**
+ * isHeic
+ * Detecta si un archivo es HEIC/HEIF por MIME type o extensión.
+ */
+export function isHeic(file: File): boolean {
+  return (
+    file.type === 'image/heic' ||
+    file.type === 'image/heif' ||
+    /\.(heic|heif)$/i.test(file.name)
+  )
+}
+
+/**
+ * convertHeicToJpeg
+ *
+ * Convierte un archivo HEIC/HEIF a JPEG usando Canvas API.
+ *
+ * IMPORTANTE: Esta conversión depende del soporte nativo del navegador para
+ * decodificar HEIC. Funciona en Safari (iOS y macOS). En Chrome o Firefox de
+ * escritorio, los archivos HEIC no pueden cargarse en <img> y esta función
+ * lanzará un error con un mensaje descriptivo. Si se necesita soporte
+ * cross-browser, reemplazar con la librería `heic2any`.
+ */
+export async function convertHeicToJpeg(file: File): Promise<File> {
+  const objectUrl = URL.createObjectURL(file)
+
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const el = new Image()
+      el.onload = () => resolve(el)
+      el.onerror = () =>
+        reject(
+          new Error(
+            `No se pudo convertir "${file.name}" (HEIC). ` +
+            `Este formato solo es compatible con Safari en iOS/macOS. ` +
+            `Intentá convertir la foto a JPG antes de subirla.`,
+          ),
+        )
+      el.src = objectUrl
+    })
+
+    const canvas = document.createElement('canvas')
+    canvas.width = img.naturalWidth
+    canvas.height = img.naturalHeight
+    const ctx = canvas.getContext('2d')
+    if (!ctx) throw new Error('No se pudo obtener el contexto 2D del canvas.')
+    ctx.drawImage(img, 0, 0)
+
+    const blob = await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (b) => {
+          if (b) resolve(b)
+          else reject(new Error('canvas.toBlob devolvió null al convertir HEIC.'))
+        },
+        'image/jpeg',
+        0.95,
+      )
+    })
+
+    const baseName = file.name.replace(/\.[^.]+$/, '')
+    return new File([blob], `${baseName}.jpg`, { type: 'image/jpeg' })
+  } finally {
+    URL.revokeObjectURL(objectUrl)
+  }
+}
+
+/**
  * compressImage
  *
  * Comprime una imagen en el navegador usando Canvas API.
