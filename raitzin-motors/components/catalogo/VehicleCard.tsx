@@ -87,7 +87,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
         <div className="pt-1.5 border-t border-gray-100 flex justify-between items-center">
           <div className="min-w-0">
             <div className="text-base sm:text-[20px] font-extrabold text-burgundy whitespace-nowrap">
-              {vehicle.solo_financiado ? 'Financiado' : formatPrice(vehicle.precio_contado, vehicle.currency)}
+              {(vehicle.solo_financiado || !vehicle.precio_contado) ? '¡Financialo!' : formatPrice(vehicle.precio_contado, vehicle.currency)}
             </div>
             {vehicle.cuotas && (
               <div className="text-[11px] text-muted-foreground">
