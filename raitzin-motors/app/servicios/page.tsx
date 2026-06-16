@@ -8,6 +8,7 @@ import {
   MessageCircle,
   type LucideIcon,
 } from 'lucide-react'
+import Image from 'next/image'
 import { ScrollReveal } from '@/components/ui/ScrollReveal'
 import { AnimatedDivider } from '@/components/ui/AnimatedDivider'
 import { Navbar } from '@/components/navbar'
@@ -51,6 +52,7 @@ interface Service {
   id: number
   sectionId: string
   icon: LucideIcon
+  image: string
   accent: string
   title: string
   bg: string
@@ -66,6 +68,7 @@ const services: Service[] = [
     id: 1,
     sectionId: 'compra-venta',
     icon: ShoppingCart,
+    image: '/servicios_compraventa.png',
     accent: '#8B1A1A',
     title: 'Compra / Venta',
     bg: 'bg-white',
@@ -84,6 +87,7 @@ const services: Service[] = [
     id: 2,
     sectionId: 'financiacion',
     icon: CreditCard,
+    image: '/servicios_financiacion.png',
     accent: '#1E2167',
     title: 'Financiación',
     bg: 'bg-gray-50',
@@ -106,6 +110,7 @@ const services: Service[] = [
     id: 3,
     sectionId: 'permutas',
     icon: ArrowLeftRight,
+    image: '/servicios_permutas.png',
     accent: '#8B1A1A',
     title: 'Permutas',
     bg: 'bg-white',
@@ -127,6 +132,7 @@ const services: Service[] = [
     id: 4,
     sectionId: 'consignacion',
     icon: Store,
+    image: '/servicios_consignacion.png',
     accent: '#1E2167',
     title: 'Consignación',
     bg: 'bg-gray-50',
@@ -181,9 +187,15 @@ export default function ServiciosPage() {
 
         const imagePlaceholder = (
           <ScrollReveal direction={imageDirection} delay={0} className="w-full">
-            <div className="relative aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden flex flex-col items-center justify-center gap-3">
-              <ServiceIcon className="w-16 h-16 text-gray-300" aria-hidden="true" />
-              <p className="text-sm text-gray-400">Foto próximamente</p>
+            <div className="rounded-2xl overflow-hidden">
+              <Image
+                src={service.image}
+                alt={service.title}
+                width={0}
+                height={0}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="w-full h-auto"
+              />
             </div>
           </ScrollReveal>
         )
