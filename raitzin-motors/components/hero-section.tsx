@@ -90,14 +90,14 @@ export function HeroSection() {
 
         <TextGenerateEffect
           words="Hace más de 35 años trabajando en Bariloche. Ayudamos a gente como vos a encontrar su próximo auto."
-          className="text-lg sm:text-xl text-white max-w-2xl mb-10 leading-relaxed"
+          className="text-lg sm:text-xl text-white max-w-2xl mb-10 leading-relaxed px-6 sm:px-0"
           duration={0.2}
           wordStagger={0.05}
         />
 
         <TextGenerateEffect
           words="¡Confianza, rapidez y buena onda!"
-          className="text-lg sm:text-xl text-white max-w-2xl mb-10 leading-relaxed"
+          className="text-lg sm:text-xl text-white max-w-2xl mb-10 leading-relaxed px-6 sm:px-0"
           duration={0.2}
           wordStagger={0.05}
         />
