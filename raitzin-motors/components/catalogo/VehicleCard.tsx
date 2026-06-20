@@ -96,7 +96,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
             )}
           </div>
           <a
-            href={generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency)}
+            href={generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency, vehicle.solo_financiado)}
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}

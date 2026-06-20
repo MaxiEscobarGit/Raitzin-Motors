@@ -133,7 +133,7 @@ export function VehicleModal({ vehicle, onClose, allTags }: VehicleModalProps) {
 
           <div className="flex gap-3 flex-wrap">
             <a
-              href={generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency)}
+              href={generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency, vehicle.solo_financiado)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 min-w-[200px] flex items-center justify-center gap-2 bg-whatsapp text-white px-6 py-[14px] rounded-full text-[15px] font-bold no-underline"

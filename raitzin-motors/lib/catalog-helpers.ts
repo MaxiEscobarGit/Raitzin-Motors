@@ -49,9 +49,13 @@ export function generateWALink(
   model: string,
   year: number,
   price: number,
-  currency: "ARS" | "USD"
+  currency: "ARS" | "USD",
+  soloFinanciado = false
 ): string {
-  const text = `Hola! Me interesa el ${marca} ${model} ${year} (${formatPrice(price, currency)}). ¿Está disponible?`
+  const priceLabel = soloFinanciado || !price
+    ? 'Financiado'
+    : formatPrice(price, currency)
+  const text = `Hola! Me interesa el ${marca} ${model} ${year} (${priceLabel}). ¿Está disponible?`
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`
 }
 

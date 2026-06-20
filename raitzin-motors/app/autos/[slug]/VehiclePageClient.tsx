@@ -55,7 +55,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
     [<Armchair size={22} key="interior" />, "Interior", vehicle.interior],
   ]
 
-  const waLink = generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency)
+  const waLink = generateWALink(vehicle.marca, vehicle.model, vehicle.year, vehicle.precio_contado, vehicle.currency, vehicle.solo_financiado)
 
   return (
     <div className="min-h-screen bg-white">
