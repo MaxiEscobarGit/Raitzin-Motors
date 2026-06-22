@@ -54,6 +54,7 @@ export function ImageGallery({ images, alt }: Props) {
           src={images[activeIndex]}
           alt={`${alt} — imagen ${activeIndex + 1}`}
           fill
+          unoptimized
           quality={85}
           className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
           priority
@@ -123,6 +124,7 @@ export function ImageGallery({ images, alt }: Props) {
                 src={src}
                 alt={`${alt} — miniatura ${i + 1}`}
                 fill
+                unoptimized
                 quality={60}
                 className="object-contain"
                 sizes="64px"
@@ -153,6 +155,7 @@ export function ImageGallery({ images, alt }: Props) {
                 src={images[activeIndex]}
                 alt={`${alt} — imagen ${activeIndex + 1}`}
                 fill
+                unoptimized
                 quality={90}
                 className="object-contain"
                 sizes="100vw"

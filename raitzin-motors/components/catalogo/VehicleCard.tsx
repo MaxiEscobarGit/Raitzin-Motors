@@ -60,6 +60,7 @@ export function VehicleCard({ vehicle, allTags }: VehicleCardProps) {
             src={vehicle.images[0]}
             alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year} — Raitzin Motors Bariloche`}
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             loading="lazy"

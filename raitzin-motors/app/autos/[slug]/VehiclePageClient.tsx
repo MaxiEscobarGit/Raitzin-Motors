@@ -112,6 +112,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                   src={vehicle.images[activeImg]}
                   alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year} — Raitzin Motors Bariloche`}
                   fill
+                  unoptimized
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority
@@ -147,6 +148,7 @@ export function VehiclePageClient({ vehicle, related, allTags }: Props) {
                       src={img}
                       alt={`${vehicle.marca} ${vehicle.model} ${vehicle.year} — foto ${i + 1}`}
                       fill
+                      unoptimized
                       className="object-cover"
                       sizes="80px"
                       loading="lazy"
