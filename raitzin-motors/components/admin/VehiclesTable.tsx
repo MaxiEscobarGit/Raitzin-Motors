@@ -120,6 +120,7 @@ export function VehiclesTable({ vehicles }: Props) {
                             width={60}
                             height={60}
                             quality={70}
+                            unoptimized
                             className="object-cover w-full h-full"
                           />
                         ) : (

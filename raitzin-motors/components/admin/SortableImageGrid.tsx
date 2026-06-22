@@ -79,7 +79,7 @@ function SortableImageItem({ image, index, onRemove, disabled }: SortableImageIt
         alt={`Imagen ${index + 1}`}
         fill
         className="object-cover"
-        unoptimized={!!image.file}
+        unoptimized
       />
 
       {/* Drag handle — top left */}
