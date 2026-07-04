@@ -15,7 +15,9 @@
       "WebFetch(domain:ui.aceternity.com)",
       "Bash(powershell -Command \"Remove-Item -Path 'C:\\\\Users\\\\maxim\\\\OneDrive\\\\Desktop\\\\Raitzin Motors\\\\raitzin-motors\\\\.next' -Recurse -Force -ErrorAction SilentlyContinue; Write-Host 'Listo'\")",
       "Bash(ls:*)",
-      "Bash(node -e \"require\\(''sharp''\\); console.log\\(''sharp ok''\\)\")"
+      "Bash(node -e \"require\\(''sharp''\\); console.log\\(''sharp ok''\\)\")",
+      "Bash(node:*)",
+      "Bash(grep -rn \"logo raitzin\\\\|logo\\\\.png\\\\|/logo\" 'C:/Users/maxim/OneDrive/Desktop/Raitzin Motors/raitzin-motors/app/' --include=*.tsx --include=*.ts)"
     ]
   }
 }

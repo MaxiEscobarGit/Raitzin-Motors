@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/servicios_permutas.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Raitzin Motors - Showroom Digital Bariloche',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Raitzin Motors | Autos Usados y Seminuevos en Bariloche',
     description: 'Tu concesionaria de confianza en San Carlos de Bariloche. Stock actualizado, financiación y permuta.',
-    images: ['/servicios_permutas.png'],
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
