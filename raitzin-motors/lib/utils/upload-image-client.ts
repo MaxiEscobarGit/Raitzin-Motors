@@ -41,7 +41,7 @@ export async function uploadImageToStorage(
 
   const { error } = await supabase.storage
     .from('vehicle-images')
-    .upload(path, file, { contentType: 'image/webp', upsert: false })
+    .upload(path, file, { contentType: 'image/webp', upsert: false, cacheControl: '31536000' })
 
   if (error) throw new Error(`Error al subir la imagen ${index + 1}: ${error.message}`)
 

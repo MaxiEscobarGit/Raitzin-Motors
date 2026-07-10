@@ -30,7 +30,7 @@ export async function uploadImagesAction(formData: FormData): Promise<string[]> 
     const buffer = await file.arrayBuffer()
     const { error } = await supabase.storage
       .from('vehicle-images')
-      .upload(path, buffer, { contentType: file.type, upsert: false })
+      .upload(path, buffer, { contentType: file.type, upsert: false, cacheControl: '31536000' })
 
     if (error) throw new Error(`Error subiendo imagen: ${error.message}`)
 

@@ -17,7 +17,9 @@
       "Bash(ls:*)",
       "Bash(node -e \"require\\(''sharp''\\); console.log\\(''sharp ok''\\)\")",
       "Bash(node:*)",
-      "Bash(grep -rn \"logo raitzin\\\\|logo\\\\.png\\\\|/logo\" 'C:/Users/maxim/OneDrive/Desktop/Raitzin Motors/raitzin-motors/app/' --include=*.tsx --include=*.ts)"
+      "Bash(grep -rn \"logo raitzin\\\\|logo\\\\.png\\\\|/logo\" 'C:/Users/maxim/OneDrive/Desktop/Raitzin Motors/raitzin-motors/app/' --include=*.tsx --include=*.ts)",
+      "Bash(grep -rn \"unoptimized\\\\|priority\\\\|loading.*lazy\\\\|loading.*eager\" 'C:/Users/maxim/OneDrive/Desktop/Raitzin Motors/raitzin-motors/components/' 'C:/Users/maxim/OneDrive/Desktop/Raitzin Motors/raitzin-motors/app/' --include=*.tsx)",
+      "Bash(npx tsx:*)"
     ]
   }
 }
