@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { createClient as createAnonClient } from "@supabase/supabase-js"
-import { createClient } from "@/lib/supabase/server"
 import { mapVehicle, type Tag } from "@/lib/catalog-helpers"
 import { VehiclePageClient } from "./VehiclePageClient"
 import { SoldVehiclePage } from "@/components/vehicle/SoldVehiclePage"
@@ -30,7 +29,7 @@ export const revalidate = 300
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = buildTimeClient()
   const { data: v } = await supabase
     .from('vehicles')
     .select('*, marcas(nombre), tipo_vehiculo(nombre)')
@@ -73,7 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function VehiclePage({ params }: Props) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = buildTimeClient()
 
   const { data: raw } = await supabase
     .from('vehicles')
