@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
+import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import { Footer } from '@/components/footer'
@@ -71,7 +72,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es-AR" className={jakarta.variable}>
+      <head>
+        {/* Google Tag Manager */}
+        <Script id="gtm-script" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-MZRWGB2M');`}
+        </Script>
+
+        {/* GA4 directo — OJO: si se configura un tag de GA4 en el panel de GTM con el
+            mismo Measurement ID (G-N8TXB7HXSB), se van a duplicar los pageviews.
+            En ese caso, eliminar este bloque y dejar solo el de GTM. */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-N8TXB7HXSB" strategy="afterInteractive" />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-N8TXB7HXSB');`}
+        </Script>
+
+        {/* Ahrefs Analytics */}
+        <Script src="https://analytics.ahrefs.com/analytics.js" data-key="cqewdtKiPrPYfbwqtUnhkA" strategy="afterInteractive" />
+      </head>
       <body className="font-sans antialiased">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZRWGB2M"
+            height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}>
+          </iframe>
+        </noscript>
         {children}
         <Footer />
         <WhatsAppFloat />
