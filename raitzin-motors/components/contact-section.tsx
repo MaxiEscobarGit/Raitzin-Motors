@@ -26,7 +26,7 @@ export function ContactSection() {
             Contactanos
           </h2>
           <p className="text-gray-500 text-lg max-w-md mx-auto">
-            De lunes a sábado, 9 a 18 hs.
+            De lunes a sábado, 9:30 a 18:30 hs.
           </p>
         </div>
 
