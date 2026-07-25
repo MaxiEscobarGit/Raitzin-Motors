@@ -42,7 +42,7 @@ export function formatKm(km: number): string {
   return `${km.toLocaleString("es-AR")} km`
 }
 
-const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944295668'
+const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944204718'
 
 export function generateWALink(
   marca: string,

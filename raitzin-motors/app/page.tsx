@@ -39,7 +39,7 @@ const autoDealerJsonLd = {
   '@type': 'AutoDealer',
   name: 'Raitzin Motors',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://raitzinmotors.com.ar',
-  telephone: `+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944295668'}`,
+  telephone: `+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944204718'}`,
   description: 'Concesionaria de autos usados y seminuevos en San Carlos de Bariloche, Patagonia, Argentina. Más de 35 años de experiencia en compra, venta, permuta y financiación.',
   address: {
     '@type': 'PostalAddress',

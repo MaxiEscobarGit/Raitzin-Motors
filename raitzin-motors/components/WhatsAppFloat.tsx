@@ -25,7 +25,7 @@ export function WhatsAppFloat() {
 
   if (hidden) return null
 
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944295668'
+  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5492944204718'
   const url = `https://wa.me/${number}?text=${encodeURIComponent('Hola! Estoy viendo su página y quería consultar.')}`
 
   return (
